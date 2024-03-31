@@ -1,5 +1,6 @@
-<%- include('header.ejs') %>
-  <%- include('aside.ejs') %>
+<%- include('../layout/header.ejs') %>
+    <%- include('../layout/aside.ejs') %>
+
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
@@ -36,10 +37,10 @@
 
               <thead>
                 <tr>
-                  <th scope="col">id</th>
-                  <th scope="col">name</th>
-                  <th scope="col">email</th>
-                  <th scope="col">admin</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Password</th>
+                  <th scope="col">Check</th>
                 </tr>
               </thead>
               <tbody>
@@ -47,26 +48,26 @@
 
                 <% dataUser.map((item,index)=>{ %>
                   <th scope="row">
-                    <%= item.id%>
+                    <%= item.Username%>
                   </th>
 
                   <td>
-                    <%= item.username%>
+                    <%= item.Email%>
                   </td>
 
                   <td>
-                    <%= item.email%>
+                    <%= item.Password%>
                   </td>
 
                   <td>
-                    <%= item.admin%>
+                    <%= item.Check%>
                   </td>
 
                   <td>
-                    <a href="http://localhost:8082/admin/v1/accounts/edit/<%= item.id%>"
+                    <a href="http://localhost:8082/admin/v1/accounts/edit/<%= item.Username%>"
                       class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> sua</a>
                      
-                    <a href="#" aboriginal="<%= item.id%>" class="btn btn-sm btn-danger btn-xoa "><i
+                    <a href="#" aboriginal="<%= item.Username%>" class="btn btn-sm btn-danger btn-xoa "><i
                           class="fa fa-trash"></i>
                       xoa</a>
                   </td>
@@ -109,14 +110,14 @@
     <script>
       $(document).ready(function () {
 
-        function confirmDelete(id) {
+        function confirmDelete(username) {
           const response = confirm("Bạn có chắc chắn muốn xóa?");
           if (response) {
             $.ajax({
               url: 'http://localhost:8082/admin/v1/accounts',
               type: 'POST',
               contentType: 'application/json',
-              data: JSON.stringify({ id: id }),
+              data: JSON.stringify({ Username: username }),
               success: function (response) {
                 location.reload();
               },
@@ -129,14 +130,14 @@
 
         $('a.btn-xoa').click(function (e) {
           e.preventDefault();
-          const id = $(this).attr('aboriginal');;
-          console.log("day la id ",id)
-          confirmDelete(id);
+          const username = $(this).attr('aboriginal');;
+          console.log("day la username ",username)
+          confirmDelete(username);
         });
 
       })
     </script>
 
-    <%- include('footer.ejs') %>
+<%- include('../layout/footer.ejs')%>
 
       

@@ -1,5 +1,5 @@
-<%- include('header.ejs')%>
-<%- include('aside.ejs')%>
+<%- include('../layout/header.ejs')%>
+<%- include('../layout/aside.ejs')%>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -23,6 +23,11 @@
 
 
           <form action="http://localhost:8082/admin/v1/accounts/edit/" method="post">
+            <!-- username -->
+            <div class="form-group">
+              <label for="exampleInputPassword1">Username</label>
+              <input name="UserName" type="text" class="form-control" id="exampleInputUsername1">
+            </div>
 
             <!-- email -->
             <div class="form-group">
@@ -33,11 +38,6 @@
                 else.</small>
             </div>
 
-            <!-- username -->
-            <div class="form-group">
-              <label for="exampleInputPassword1">Username</label>
-              <input name="UserName" type="text" class="form-control" id="exampleInputUsername1">
-            </div>
 
             <!-- password -->
             <div class="form-group">
@@ -48,6 +48,12 @@
             <!-- comfirm password -->
             <div class="form-group">
               <label for="exampleInputPassword1">Comfirm Password</label>
+              <input name="ConfirmPassWord" type="password" class="form-control" id="exampleInputConfirmPassword1">
+            </div>
+
+             <!-- comfirm password -->
+             <div class="form-group">
+              <label for="exampleInputPassword1">Check</label>
               <input name="ConfirmPassWord" type="password" class="form-control" id="exampleInputConfirmPassword1">
             </div>
 
@@ -189,4 +195,4 @@
 
 
   </script>
-<%- include('footer.ejs')%>
+<%- include('../layout/footer.ejs')%>

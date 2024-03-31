@@ -1,22 +1,18 @@
-const { Pool } = require("pg");
+const mysql = require("mysql2/promise");
 
-const pool = new Pool({
-    user: 'postgres',
-    password: '123',
+const pool = mysql.createPool({
+    
+    
     host: 'localhost',
-    port: 5432,
-    database: 'nodejsbasic1',
+    database: 'csdlweb',
+    user: 'root'
+
+    // port : 3306 ,
+    // host: '14.225.218.25',
+    // database: 'CSDLWeb',
+    // user:'huynguyen1',
+    // password:'123',
 });
 
-async function connectToDatabase() {
-    try {
-        await pool.connect();
-        console.log('Connected to PostgreSQL database');
-    } catch (err) {
-        console.error('Error connecting to PostgreSQL database', err);
-    }
-}
-
-connectToDatabase();
 
 module.exports = pool;
