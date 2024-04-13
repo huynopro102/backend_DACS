@@ -1,0 +1,117 @@
+<%- include('../layout/header.ejs') %>
+    <%- include('../layout/aside.ejs') %>
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Quản lý sản phẩm
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a href="#">Examples</a></li>
+                    <li class="active">Blank page</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+
+                <!-- Default box -->
+                <div class="box">
+
+
+                    <div class="box-body">
+                        <table class="table">
+
+                            <form class="form-inline" method="get">
+                                <div class="form-group mb-2">
+                                    <label for="staticEmail2" class="sr-only">Email</label>
+                                    <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
+                                        placeholder="input field">
+                                    <button type="submit" class="btn btn-primary mb-5"><i
+                                            class="fa fa-search"></i></button>
+                                    <a href="http://localhost:8082/admin/v1/product/create"
+                                        class="btn btn-success mb-5"><i class="fa fa-plus"></i> Create</a>
+                                </div>
+                            </form>
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">IDProduct</th>
+                                    <th scope="col">ProductName</th>
+                                    <th scope="col">ProductTypeName</th>
+                                    <th scope="col">price/sale_price</th>
+                                    <th scope="col">status</th>
+                                 
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                <% dataProduct.map(item=> { %>
+
+                                    <th scope="row">
+                                        <%= item.IDProduct%>
+                                    </th>
+                                    <td>
+                                        <%= item.ProductName%>
+                                    </td>
+                                    <td>
+                                        <%= item.ProductTypeName%>
+                                    </td>
+                                    <td>
+                                        <%= item.Price %>/<%= item.Sale%>
+                                    </td>
+                                    <td>
+                                        <%= item.status==0 ? "tạm ẩn" : "hiển thị" %>
+                                    </td>
+
+                                    <td>
+                                        <img width="70"
+                                            src="https://thoitrangdarkt-com.onrender.com/congkhai/img_product/<%= item.image %>"
+                                            alt="">
+                                        <input hidden type="text" value="<%= item.image%>">
+                                    </td>
+
+                                    <td>
+                                        <a href="http://localhost:8082/admin/v1/product/edit/<%= item.IDProduct%>"
+                                            class="btn btn-sm btn-primary "><i class="fa fa-edit"></i> sua</a>
+                                        <a href="https://thoitrangdarkt-com.onrender.com/admin/v1/productsdelete/<%= item.IDProduct%>"
+                                            class="btn btn-sm btn-danger  "><i class="fa fa-trash"></i> xoa</a>
+                                    </td>
+
+
+                                    </tr>
+                                    <% }); %>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <!-- pagination -->
+                    <div class="box-footer">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link"
+                                        href="?page=<%= page <=1 ? page=1 : page -1 %>">Previous</a>
+                                </li>
+                                <% for(i=1 ;i<=totalPage;i++) { %>
+                                    <li class="<%= page == i ? 'active' : '' %>"> <a href="?page=<%=i%>">
+                                            <%= i%>
+                                        </a> </li>
+                                    <% } %>
+                                        <li class="page-item"><a class="page-link"
+                                                href="?page=<%= page >= totalPage ? totalPage : page+1   %>">Next</a>
+                                        </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+
+                </div>
+
+            </section>
+
+        </div>
+        <%- include('../layout/footer.ejs')%>

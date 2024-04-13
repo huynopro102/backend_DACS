@@ -94,15 +94,7 @@ let getAdminV1AccountsCreate = (req,res) =>{
     res.render("./accounts/accountsCreate.ejs")
 }
 
-
-
-let getAdminV1Dashboard = (req, res) => {
-    res.render('Dashboard.ejs');
-}
-
-
 module.exports = {
-    getAdminV1Dashboard,
     getAdminV1Accounts,
     postAdminV1Accounts,
     getAdminV1AccountsEdit,

@@ -1,0 +1,146 @@
+<%- include('../layout/header.ejs') %>
+<%- include('../layout/aside.ejs') %>
+
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Quản lý danh mục
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li><a href="#">Examples</a></li>
+      <li class="active">Blank page</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+
+
+      <div class="box-body">
+        <table class="table">
+
+          <form class="form-inline" method="get">
+            <div class="form-group mb-2">
+              <label for="staticEmail2" class="sr-only">Email</label>
+              <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
+                placeholder="input field">
+              <button type="submit" class="btn btn-primary mb-5"><i class="fa fa-search"></i></button>
+              <a href="http://localhost:8082/admin/v1/supplier/create" class="btn btn-success mb-5"><i
+                  class="fa fa-plus"></i> Create</a>
+            </div>
+          </form>
+
+          <thead>
+            <tr>
+              <th scope="col">ID Supplier</th>
+              <th scope="col">SupplierName</th>
+              <th scope="col">PhoneSupplier</th>
+              <th scope="col">SupplierAddress</th>
+              <th scope="col">EmailSupplier</th>
+            </tr>
+          </thead>
+          <tbody>
+
+
+            <% dataUser.map((item,index)=>{ %>
+              <th scope="row">
+                <%= item.IDSupplier%>
+              </th>
+
+              <td>
+                <%= item.SupplierName%>
+              </td>
+
+              <td>
+                <%= item.PhoneSupplier%>
+              </td>
+
+              <td>
+                <%= item.SupplierAddress%>
+              </td>
+
+              <td>
+                <%= item.EmailSupplier%>
+              </td>
+
+              <td>
+                <a href="http://localhost:8082/admin/v1/supplier/edit/<%= item.IDSupplier%>"
+                  class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> sua</a>
+                 
+                <a href="#" aboriginal="<%= item.IDSupplier%>" class="btn btn-sm btn-danger btn-xoa "><i
+                      class="fa fa-trash"></i>
+                  xoa</a>
+              </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+
+      <!-- pagination -->
+      <div class="box-footer">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="?page=<%= page <=1 ? page=1 : page -1 %>">Previous</a>
+            </li>
+            <% for(i=1 ;i<=totalPage;i++) { %>
+              <li class="<%= page == i ? 'active' : '' %>"> <a href="?page=<%=i%>">
+                  <%= i%>
+                </a> </li>
+              <% } %>
+                <li class="page-item"><a class="page-link"
+                    href="?page=<%= page >= totalPage ? totalPage : page+1   %>">Next</a></li>
+          </ul>
+        </nav>
+      </div>
+
+
+    </div>
+
+  </section>
+
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+
+    function confirmDelete(username) {
+      const response = confirm("Bạn có chắc chắn muốn xóa?");
+      if (response) {
+        $.ajax({
+          url: 'http://localhost:8082/admin/v1/supplier',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ Username: username }),
+          success: function (response) {
+            location.reload();
+          },
+          error: function (xhr, status, error) {
+            console.error('Lỗi:', error);
+          }
+        });
+      }
+    }
+
+    $('a.btn-xoa').click(function (e) {
+      e.preventDefault();
+      const username = $(this).attr('aboriginal');;
+      console.log("day la username ",username)
+      confirmDelete(username);
+    });
+
+  })
+</script>
+
+<%- include('../layout/footer.ejs')%>
+
+  
