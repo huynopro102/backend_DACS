@@ -4,13 +4,15 @@ const webAdminControllerAccounts = require('../controller/webAdminController/acc
 const webAdminControllerSupplier = require("../controller/webAdminController/supplierController");
 const webAdminControllerProducts = require("../controller/webAdminController/productsController");
 const webAdminControllerDashBoard = require("../controller/webAdminController/dashboardController")
+
 const uploadCloud = require("../middlewares/uploadFileCould")
-const fileUploader = require("../utils/fileUpload")
 const assignPathNameImage = require("../middlewares/assignPathNameImage");
-const fileUploader = require('../utils/fileUpload');
+const deleteImage = require("../middlewares/deleteFileCould")
+
 
 // upload file could 
-router.post("/admin/v1/cloudinary-upload123" ,uploadCloud.single('image2') , fileUploader )
+router.post("/admin/v1/cloudinary-upload" , uploadCloud.array('image') , webAdminControllerProducts.handleUploadFileCould )
+router.delete("/admin/v1/cloudinary-upload" , deleteImage , webAdminControllerProducts.handleDeleteFileCould  )
 
 // dashboard
 router.get("/admin/v1",webAdminControllerDashBoard.getAdminV1Dashboard)
@@ -34,8 +36,8 @@ router.get('/admin/v1/product/create',webAdminControllerProducts.getAdminV1Produ
 
 // post product
 router.post("/admin/v1/product/edit/:id",webAdminControllerProducts.postAdminV1ProductEdit)
-router.post("/admin/v1/product/create" , uploadCloud.single('image') ,  assignPathNameImage ,
-    webAdminControllerProducts.postAdminV1ProductsCreate)
+router.post("/admin/v1/product/create" , uploadCloud.single('image') ,  assignPathNameImage , 
+webAdminControllerProducts.postAdminV1ProductsCreate)
 
 
 // get product type

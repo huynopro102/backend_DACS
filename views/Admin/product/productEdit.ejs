@@ -45,8 +45,7 @@
                                         </label>
                                         <input type="file" style="display: none;" id="exampleInputImage">
                                         <div class="card-body">
-                                            <button>delete</button>
-                                            <button>update</button>
+                                            <button id="btn-delete-image">delete</button>
                                         </div>
                                     </div>
                                     <% }); %>
@@ -70,6 +69,8 @@
                                                 font-size: 16px; justify-content: center; align-items: center;">
                                                     <i class="fa fa-cloud-upload"></i> Upload image
                                                 </label>
+                                                <button id="btn-update-image" style="width: 140px;"> update image
+                                                </button>
                                             </div>
                                         </div>
 
@@ -192,8 +193,11 @@
 
 
                             <!-- button submit -->
-                            <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i>
-                                Submit</button>
+                            <button type="submit" class="btn btn-primary btnSubmit">
+                                <i class="fa fa-save"></i>
+                                Submit
+                            </button>
+
                             <a href="http://localhost:8082/admin/v1/product" class="btn btn-default"><i
                                     class="fa fa-arrow-left"></i> Trở lại</a>
 
@@ -210,48 +214,118 @@
 
             <script>
 
-           
-               
-        
 
 
-                // update static
+                // Bắt sự kiện click vào nút "delete" trên từng ảnh
+                document.querySelectorAll("#btn-delete-image").forEach(button => {
+                    button.addEventListener("click", async event => {
+                        const result = confirm("chắc chẵn xóa")
+                        const card = event.target.closest('.card');
+                        const imageUrl = card.querySelector('img').src;
+                        const publicId = imageUrl.match(/\/v\d+\/(.*?)\./)[1];
+                        const productId = document.querySelector("#cachCuChuoi").value.trim();
+                
+                        
+                        if(result){
+                            try {
+                                const response = await fetch('/admin/v1/cloudinary-upload', {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ publicId, productId , imageUrl })
+                                });
+                                if (response.ok ) {                                  
+                                    alert("Ảnh đã được xóa thành công!");
+                                    location.reload(`http://localhost:8082/admin/v1/product/edit/${productId}`)
+                                } else {
+                                    // Xóa không thành công, xử lý lỗi nếu cần
+                                    const errorMessage = await response.text();
+                                    console.error('Failed to delete image:', errorMessage);
+                                    alert("Đã có lỗi xảy ra khi xóa ảnh.");
+                                }
+                            } catch (error) {
+                                console.error('Error during fetch:', error);
+                                alert("Đã có lỗi xảy ra khi xóa ảnh.");
+                            }
+                        }else{
+
+                            console.log("no")
+                        }
+                    });
+                });
+
+
+
+
+                document.querySelector("#btn-update-image").addEventListener("click", async e => {
+                    const fileInput = document.querySelector("#file-upload");
+                    const file = fileInput.files[0];
+
+                    if (!file) {
+                        alert("Không được để trống");
+                        return;
+                    }
+
+                    // Kiểm tra loại tệp
+                    if (!file.type.startsWith('image')) {
+                        alert('Chỉ chấp nhận các tệp hình ảnh.');
+                        return;
+                    }
+
+                    // Kiểm tra kích thước tệp (vd: tối đa 5MB)
+                    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+                    if (file.size > maxSizeInBytes) {
+                        alert('Kích thước tệp quá lớn. Vui lòng chọn một tệp nhỏ hơn.');
+                        return;
+                    }
+
+                    const id = document.querySelector("#cachCuChuoi").value.trim();
+                    const formData = new FormData();
+                    formData.append("image", file);
+                    formData.append("id", id);
+
+                    try {
+                        // Tiếp tục với quá trình tải lên nếu tất cả các kiểm tra đều đã được vượt qua
+                        const response = await fetch(`http://localhost:8082/admin/v1/cloudinary-upload`, {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        if (response.ok) {
+                            const responseData = await response.json();
+                            alert(responseData.message);
+                            location.reload(`http://localhost:8082/admin/v1/product/edit/${id}`)
+                        } else {
+                            const errorMessage = await response.text();
+                            alert(errorMessage);
+                            console.error('Failed to upload file:', response.statusText);
+                        }
+                    } catch (error) {
+                        console.error('Error during fetch:', error);
+                    }
+                });
+
+
+
+                // show image on wrap
                 document.getElementById('file-upload').addEventListener("change", async (e) => {
                     const selectedFile = event.target.files[0];
-                    console.log(selectedFile)
-                    try {
-                            const response = await fetch(`http://localhost:8082/admin/v1/cloudinary-upload`, {
-                                method: 'POST',
-                                body: selectedFile,
-                                headers: {
-                                    'Content-Type': 'image/jpeg', 
-                                },
-                            });
-                            if (response.ok) {
-                                const responseData = await response.json();
-                                alert(responseData.message);
-                            } else {
-                                const errorMessage = await response.text();
-                                alert(errorMessage);
-                                console.error('Failed to upload file:', response.statusText);
-                            }
-                        } catch (error) {
-                            console.error('Error during fetch:', error);
-                        }
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const imageUrl = event.target.result;
+                        document.querySelector(".card-img-top-2").src = imageUrl
+                    };
+
+                    reader.readAsDataURL(selectedFile);
+                    console.log(selectedFile);
+                });
 
 
 
-                    // const reader = new FileReader();
-                    // reader.onload = function (event) {
-                    //     const imageUrl = event.target.result;
-                    //     document.querySelector(".card-img-top-2").src = imageUrl
-                    // };
 
-                    // reader.readAsDataURL(selectedFile);
-                })
 
-                // btnSumbit
-
+                // function 
                 const postRequired = async (requestBody) => {
                     try {
                         const response = await fetch(`http://localhost:8082/admin/v1/product/edit/${document.querySelector("#cachCuChuoi").value.trim()}`, {
@@ -266,7 +340,7 @@
                         if (response.ok) {
                             const responseData = await response.json();
                             alert(responseData.message);
-                            window.location.href = 'http://localhost:8082/admin/v1/producttype';
+                            window.location.href = `http://localhost:8082/admin/v1/product/edit/${document.querySelector("#cachCuChuoi").value.trim()}`;
                         } else if (response.status === 404) {
                             const responseData = await response.json();
                             alert(responseData.message);
@@ -294,12 +368,14 @@
                     const radio2 = document.querySelector("#exampleRadios2");
                     const categorySelect = document.querySelector("#categorySelect");
                     const supplierSelect = document.querySelector("#supplierSelect");
-                    const description = document.querySelector("#editor1");
-                    const image = document.getElementById("pro-img");
+
+                    // Lấy dữ liệu từ SummerNote Editor
+                    const description = document.querySelector(".noi-dung-summernote-editer").value;
+                    console.log(description)
+
                     if (name.value == "" || radio1.checked == false && radio2.checked == false
                         || sale_price.value == "" || price.value == "" || categorySelect.value == "chọn danh mục"
-                        || supplierSelect.value == "chọn nhà cung cấp" || description.value.trim() == ""
-                        || image.src == "http://localhost:8082/admin/v1/product/edit/123") {
+                        || supplierSelect.value == "chọn nhà cung cấp" || description.value === "") {
                         return false;
                     }
                     return true;
@@ -321,8 +397,9 @@
                         const radio2 = document.querySelector("#exampleRadios2");
                         const categorySelect = document.querySelector("#categorySelect");
                         const supplierSelect = document.querySelector("#supplierSelect");
-                        const description = document.querySelector("#editor1");
-                        const image = document.getElementById("pro-img");
+                        const description = document.querySelector(".noi-dung-summernote-editer");
+                        const productId = document.querySelector("#cachCuChuoi").value.trim()
+
 
                         const exampleData = {
                             ProductDescription: description.value,
@@ -332,7 +409,7 @@
                             productType: categorySelect.value,
                             Supplier: supplierSelect.value,
                             radio: radio1.checked == true ? 1 : 0,
-
+                            productId: productId
                         };
 
                         await postRequired(exampleData);

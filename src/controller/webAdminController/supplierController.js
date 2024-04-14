@@ -24,7 +24,7 @@ let getAdminV1Supplier = async (req,res) =>{
             "SELECT * FROM `supplier` where `SupplierName` like ? limit ? , ? ",
             [`%${name}%`, start, limit]
           );
-          res.render("./supplier/supplier.ejs", {
+          res.render("./Admin/supplier/supplier.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,
             page: parseInt(_page),
@@ -34,7 +34,7 @@ let getAdminV1Supplier = async (req,res) =>{
             "SELECT * FROM `supplier` limit ? , ? ",
             [start, limit]
           );
-          res.render("./supplier/supplier.ejs", {
+          res.render("./Admin/supplier/supplier.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
             page: parseInt(_page),
@@ -47,7 +47,7 @@ let getAdminV1Supplier = async (req,res) =>{
 }
 
 let getAdminV1SupplierCreate = async (req,res) =>{
-    res.render("./supplier/supplierCreate.ejs")
+    res.render("./Admin/supplier/supplierCreate.ejs")
 }
 
 let getAdminV1SupplierEdit = async (req,res) =>{
@@ -57,7 +57,7 @@ let getAdminV1SupplierEdit = async (req,res) =>{
       [itemId]
     );
   
-    res.render("./supplier/supplierEdit.ejs",{
+    res.render("./Admin/supplier/supplierEdit.ejs",{
         row: rows,
     })
 }

@@ -1,0 +1,252 @@
+<%- include('../Client/layout/header.ejs') %>
+    <section>
+        <div class="breadcrumb-contact">
+            <div class="container-fluid">
+                <div class="breadcrumb-list">
+                    <ul class="breadcrumb breadcrumb-arrows">
+                        <li>
+                            <a href="#"><span>Trang chủ</span></a>
+                        </li>
+                        <li class="active">
+                            <a href="#"><span>Sản phẩm</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="grid-container inside_product_cat_hero">
+            <h2 class="inside_product_cat_hero_des_cat">
+                <p style="text-align: center;"><img class="alignnone wp-image-4506 size-full"
+                        src="https://vinbike.com/wp-content/uploads/2023/09/Banner-Web.jpg" alt="" width="100%"
+                        height="100%"></p>
+            </h2>
+        </div>
+        <div class="d-flex filter-log">
+            <p class="filter-log-title"><span>Sắp xếp theo: </span></p>
+            <form class="woocommerce-ordering" method="get">
+                <select name="orderby" class="orderby" aria-label="Shop order">
+                    <option value="popularity">Thứ tự theo mức độ phổ biến</option>
+                    <option value="date">Mới nhất</option>
+                    <option value="price">Thứ tự theo giá: Thấp đến cao</option>
+                    <option value="price-desc" selected="selected">Thứ tự theo giá: Cao đến thấp</option>
+                </select>
+                <input type="hidden" name="paged" value="1">
+            </form>
+        </div>
+        <div class="shop-content container-fluid">
+            <div class="box-shop mt-5">
+                <div class="row">
+                    <div class="col-3 filter-col" id="filter-col">
+                        <div class="box filter-toggle-box">
+                            <button class="">Close</button>
+                        </div>
+
+                        <div class="box-shop">
+                            <div class="form form-search">
+                                <i class="bx bx-search"></i>
+                                <input type="text" class="form-control form-input" placeholder="Tìm kiếm...">
+                            </div>
+                            <span class="filter-header">
+                                Sản phẩm
+                            </span>
+                            <ul class="filter-list">
+                                <li><a href="">Xe đạp thể thao</a></li>
+                                <li><a href="">Xe đạp địa hình</a></li>
+                                <li><a href="">Xe đạp thời trang</a></li>
+                                <li><a href="">Xe đạp trẻ em</a></li>
+                            </ul>
+                        </div>
+                        <div class="box-shop">
+                            <span class="filter-header">
+                                Giá
+                            </span>
+                            <div class="price-range">
+                                <input type="text">
+                                <span>-</span>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="box-shop">
+                            <ul class="filter-list">
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="status1">
+                                        <label for="status1">
+                                            Giảm giá
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="status2">
+                                        <label for="status2">
+                                            Mới
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="status3">
+                                        <label for="status3">
+                                            Đã sử dụng
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="box-shop">
+                            <span class="filter-header">
+                                Hãng
+                            </span>
+                            <ul class="filter-list">
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Cannondale</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Merida</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Scott</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Santa Cruz</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Kona</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="box-shop">
+                            <span class="filter-header">
+                                Màu
+                            </span>
+                            <ul class="filter-list">
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Trắng</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Đen</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Đỏ</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Xanh</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group-checkbox">
+                                        <input type="checkbox" id="remember1">
+                                        <label for="remember1">Vàng</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="box filter-toggle-box">
+                            <button class="">Lọc</button>
+                        </div>
+                        <div class="box-shop">
+                            <div class="row d-flex align-items-center ml-5" id="products">
+
+
+
+                                <% products.forEach((element,index)=>{ %>
+                                    <div class="col-lg-3 col-md-6 col-sm-12 mt-4">
+                                        <div class="box">
+                                            <div class="product-content">
+                                                <a href=""><img src="<%= element.url%>" alt="" class="product-img"></a>
+
+                                                <div class="product-data">
+                                                    <span class="product-band">Dung Chinh</span>
+                                                    <h2 class="product-title">
+                                                        <%= element.ProductName %>
+                                                    </h2>
+                                                    <p class="product-price">
+                                                        <%= element.Price %>$
+                                                    </p>
+                                                    <div class="productbtn-box d-flex">
+                                                        <a href="#" class="product-btn">Chi tiết</a>
+                                                        <a href="#" class="product-buy"
+                                                            onclick="updateProduct(<%= JSON.stringify(element.IDProduct) %>)">Mua
+                                                            ngay</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+
+
+
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="box-shop">
+                            <ul class="pagination">
+
+                                <li><a href="?page=<%= page <= 1 ? 1 : page -1 %>"><i
+                                            class="bx bxs-chevron-left"></i></a></li>
+
+                                <% for(let i=1 ; i <=totalPage ; i++) { %>
+                                    <li><a href="?page=<%= i%>" class="<%= parseInt(page) === i ? 'active' : '' %>">
+                                            <%= i %>
+                                        </a></li>
+                                    <% } %>
+
+                                        <li><a href="?page=<%= page >= totalPage ? totalPage : parseInt(page) + 1 %>"><i
+                                                    class="bx bxs-chevron-right"></i></a></li>
+
+                            </ul>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <%- include('../Client/layout/footer.ejs') %>
+        <script>
+            function updateProduct(element) {
+                let gioHang = JSON.parse(localStorage.getItem("giohang")) || [];
+
+                gioHang.push(element);
+
+                localStorage.setItem("giohang", JSON.stringify(gioHang));
+            }
+        </script>

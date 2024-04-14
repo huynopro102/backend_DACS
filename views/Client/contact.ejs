@@ -1,0 +1,117 @@
+<%- include('../Client/layout/header.ejs') %>
+<section class="main-content">
+    <div class="contact-page">
+        <div class="breadcrumb-contact">
+            <div class="container-fluid">
+                <div class="breadcrumb-list">
+                    <ul class="breadcrumb breadcrumb-arrows">
+                        <li>
+                            <a href="#"><span>Trang chủ</span></a>
+                        </li>
+                        <li class="active">
+                            <a href="#"><span>Liên hệ</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="contact-body">
+            <div class="box-content-contact">
+                <div class="container-fluid pd-top">
+                    <div class="row contactwidth">
+                        <div class="col-lg-6 col-md-12 col-12 content-left">
+                            <div class="info-contact">
+                                <h2>Thông tin liên hệ</h2>
+                                <div class="box-contact">
+                                    <ul class="row info-list-contact">
+                                        <li class="col-md-12 col-xs-12">
+                                            <span><i class='bx bx-map'></i></span>
+                                            <p>
+                                                <strong>Địa chỉ</strong>
+                                                <br>
+                                                1067 Tạ Quang Bửu, phường 6, quận 8, Tp. HCM.
+                                            </p>
+                                        </li>
+                                        <li class="col-md-12 col-xs-12">
+                                            <span><i class='bx bx-phone'></i></span>
+                                            <p>
+                                                <strong>Điện thoại</strong>
+                                                <br>
+                                                0999332572 - 0865888261
+                                            </p>
+                                        </li>
+                                    </ul>
+                                    <ul class="row info-list-contact">
+                                        <li class="col-md-12 col-xs-12">
+                                            <span><i class='bx bx-calendar'></i></span>
+                                            <p>
+                                                <strong>Thời gian làm việc</strong>
+                                                <br>
+                                                Thứ 2 đến Thứ 6: từ 8h - 17h
+                                            </p>
+                                        </li>
+                                        <li class="col-md-12 col-xs-12">
+                                            <span><i class='bx bx-envelope' ></i></span>
+                                            <p>
+                                                <strong>Email</strong>
+                                                <br>
+                                                bikedungchinh@gmail.com
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="send-contact">
+                                <h2>Gửi thắc mắc cho chúng tôi</h2>
+                                <p>Nếu bạn có thắc mắc gì, có thể gửi yêu cầu cho chúng tôi, và chúng tôi sẽ liên lạc lại với bạn sớm nhất có thể .</p>
+                                <div class="contact-FormWrapper">
+                                    <div class="contact-form">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <input required="" type="text" name="contact[name]" class="form-control" placeholder="Tên của bạn" aria-describedby="basic-addon1">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="input-group">
+                                                    <input required="" type="text" name="contact[email]" class="form-control" placeholder="Email của bạn" aria-describedby="basic-addon1">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="input-group">
+                                                    <input pattern="[0-9]{10,12}" required="" type="text" name="contact[phone]" class="form-control" placeholder="Số điện thoại của bạn" aria-describedby="basic-addon1">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <textarea required="" name="contact[body]" placeholder="Nội dung"></textarea>
+                                                    <div class="sitebox-recaptcha ">
+                                                        This site is protected by reCAPTCHA and the Google
+                                                        <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Privacy Policy</a> 
+                                                        and <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer">Terms of Service</a> apply.
+                                                    </div>	
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-xs-12">
+                                                <button class="button dark cta-submitform">Gửi cho chúng tôi</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 col-12 content-right">
+                            <div class="contact-map">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4206985424494!2d106.78252951103353!3d10.855572157683403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175276e7ea103df%3A0xb6cf10bb7d719327!2zSFVURUNIIC0gxJDhuqFpIGjhu41jIEPDtG5nIG5naOG7hyBUUC5IQ00gKFRodSBEdWMgQ2FtcHVzKQ!5e0!3m2!1svi!2s!4v1712906823954!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<%- include('../Client/layout/footer.ejs') %>

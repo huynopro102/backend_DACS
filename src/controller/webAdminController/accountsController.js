@@ -34,7 +34,7 @@ let getAdminV1Accounts = async (req, res) => {
             "SELECT * FROM `user` limit ? , ? ",
             [start, limit]
           );
-          res.render("accounts/accounts.ejs", {
+          res.render("./Admin/accounts/accounts.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
             page: parseInt(_page),
@@ -86,12 +86,12 @@ let postAdminV1Accounts = async (req, res) => {
 let getAdminV1AccountsEdit = async (req,res)=>{
     const id = req.params.id
     console.log("id ",id)
-    return await res.render("./accounts/accountsEdit.ejs")
+    return await res.render("./Admin/accounts/accountsEdit.ejs")
 }
 
 
 let getAdminV1AccountsCreate = (req,res) =>{
-    res.render("./accounts/accountsCreate.ejs")
+    res.render("./Admin/accounts/accountsCreate.ejs")
 }
 
 module.exports = {
