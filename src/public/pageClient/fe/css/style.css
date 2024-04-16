@@ -260,7 +260,6 @@ body {
     width: 100%;
     height: 200px;
     margin-bottom: 15px;
-    object-fit: contain;
 }
 
 .box {
@@ -1022,4 +1021,59 @@ textarea.form-control {
 
 .link-primary {
     color: #a70000 !important;
+}
+
+/* CART */
+.box-total-right {
+    float: inline-end;
+}
+
+.btn-right {
+    float: inline-end;
+    border-radius: 0 !important;
+}
+
+.checkout {
+    flex-direction: column;
+    border-bottom: 1px solid #c8c8c8;
+    border-top: 1px solid #c8c8c8;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.checkout-item {
+    gap: 10px;
+}
+
+.checkout-cate {
+    gap: 10px;
+}
+
+
+
+.infor-checkout {
+    gap: 2rem;
+}
+
+.infor-content label {
+    font-size: 18px;
+}
+
+.infor-content input {
+    width: 500px !important;
+}
+
+.form-infor {
+    margin-top: -5px;
+}
+
+.btn-checkout {
+    padding: 5px;
+    transition: .3s;
+    border: none;
+}
+.btn-checkout.active {
+    /* CSS tùy chỉnh khi nút được kích hoạt */
+    background: #d2d1d1; /* Màu nền */
+    color: #fff; /* Màu chữ */
 }

@@ -1,0 +1,122 @@
+<%- include('../Client/layout/header.ejs') %>
+
+<section class="pt-5 pb-5">
+<div class="container">
+  <div class="row w-100">
+      <div class="col-lg-12 col-md-12 col-12">
+          <h2 class="display-5 mb-2 text-center">Giỏ Hàng</h2>
+          <p class="mb-5 text-center">
+              <i class="text-danger font-weight-bold">3</i> sản phẩm trong giỏ hàng</p>
+          <table id="shoppingCart" class="table table-condensed table-responsive">
+              <thead>
+                  <tr>
+                      <th style="width:60%">Sản phẩm</th>
+                      <th style="width:12%">Giá</th>
+                      <th style="width:10%">Số lượng</th>
+                      <th style="width:16%"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td data-th="Product">
+                          <div class="row">
+                              <div class="col-md-3 text-left">
+                                  <img src="http://localhost:8082/congkhai/pageClient/fe/images/pro2.png" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                              </div>
+                              <div class="col-md-9 text-left mt-sm-2">
+                                  <h4>Xe Đạp Touring LIV Alight 3 DD'</h4>
+                                  <p class="font-weight-light">Tronix</p>
+                              </div>
+                          </div>
+                      </td>
+                      <td data-th="Price">1.300.000 VND</td>
+                      <td data-th="Quantity">
+                          <input type="number" class="form-control form-control-lg text-center" value="1">
+                      </td>
+                      <td class="actions" data-th="">
+                          <div class="text-right">
+                              <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                  <i class="fas fa-sync"></i>
+                              </button>
+                              <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                  <i class="fas fa-trash"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td data-th="Product">
+                          <div class="row">
+                              <div class="col-md-3 text-left">
+                                  <img src="http://localhost:8082/congkhai/pageClient/fe/images/pro3.png" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                              </div>
+                              <div class="col-md-9 text-left mt-sm-2">
+                                  <h4>Xe Đạp Touring LIV Alight 3 DD'</h4>
+                                  <p class="font-weight-light">Tronix</p>
+                              </div>
+                          </div>
+                      </td>
+                      <td data-th="Price">1.300.000 VND</td>
+                      <td data-th="Quantity">
+                          <input type="number" class="form-control form-control-lg text-center" value="1">
+                      </td>
+                      <td class="actions" data-th="">
+                          <div class="text-right">
+                              <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                  <i class="fas fa-sync"></i>
+                              </button>
+                              <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                  <i class="fas fa-trash"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td data-th="Product">
+                          <div class="row">
+                              <div class="col-md-3 text-left">
+                                  <img src="http://localhost:8082/congkhai/pageClient/fe/images/pro4.png" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                              </div>
+                              <div class="col-md-9 text-left mt-sm-2">
+                                  <h4>Xe Đạp Touring LIV Alight 3 DD'</h4>
+                                  <p class="font-weight-light">SWAT</p>
+                              </div>
+                          </div>
+                      </td>
+                      <td data-th="Price">1.300.000 VND</td>
+                      <td data-th="Quantity">
+                          <input type="number" class="form-control form-control-lg text-center" value="1">
+                      </td>
+                      <td class="actions" data-th="">
+                          <div class="text-right">
+                              <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                  <i class="fas fa-sync"></i>
+                              </button>
+                              <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                  <i class="fas fa-trash"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+          <div class="box-total-right float-right text-right">
+              <h4>Tổng tiền:</h4>
+              <h1>3.900.000 VND</h1>
+          </div>
+      </div>
+  </div>
+  <div class="row mt-4 d-flex align-items-center">
+      <div class="col-sm-6 order-md-2">
+          <a href="/checkout" class="btn-right btn btn-danger mb-4 btn-lg pl-5 pr-5">Mua Hàng</a>
+      </div>
+      <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+          <a href="/shop">
+              <i class="fas fa-arrow-left mr-2"></i> Tiếp tục mua hàng</a>
+      </div>
+  </div>
+</div>
+</section>
+
+
+<%- include('../Client/layout/footer.ejs') %>

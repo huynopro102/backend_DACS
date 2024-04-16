@@ -46,7 +46,7 @@
                   </div>
                   <div class="col-12">
                     <div class="d-grid">
-                      <button class="btn btn-danger btn-lg" type="submit">Đăng nhập</button>
+                      <button class="btn btn-danger btn-lg btn-submit" type="submit">Đăng nhập</button>
                     </div>
                   </div>
                 </div>
@@ -84,3 +84,42 @@
 </section>
 
 <%- include('../Client/layout/footer.ejs') %>
+<script>
+    const password = document.querySelector("#password");
+    const email = document.querySelector("#email");
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", async (e) => {
+        
+      e.preventDefault();
+
+        const formData = {
+            email: email.value,
+            password: password.value
+        };
+
+        try {
+            const response = await fetch('http://localhost:8082/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            const responseData = await response.json();
+            if (response.ok) {
+                alert(responseData.message)
+            }else if(response.status === 404) {
+              alert(responseData.message)
+            }else if(response.status === 401 )
+              alert(responseData.message)
+            else {
+                // Xử lý lỗi nếu có
+                console.error('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        
+    });
+</script>

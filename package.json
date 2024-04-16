@@ -11,19 +11,18 @@
   "license": "ISC",
   "dependencies": {
     "app-root-path": "^3.1.0",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cloudinary": "^1.41.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.18.3",
     "iconv-lite": "^0.6.3",
+    "joi": "^17.12.3",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.9.2",
     "nodemon": "^3.1.0",
-    "pg": "^8.11.3",
-    "pg-pool": "^3.6.1",
-    "rand-token": "^1.0.1",
     "util": "^0.12.5"
   }
 }

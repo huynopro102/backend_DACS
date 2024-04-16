@@ -1,0 +1,152 @@
+<%- include('../Client/layout/header.ejs') %>
+  
+<section class="pt-5 pb-5">
+    <div class="container">
+      <div class="row w-100">
+          <div class="col-lg-12 col-md-12 col-12">
+              <h2 class="display-5 mb-5 text-center">Thanh Toán</h2>
+              <table id="shoppingCart" class="table table-condensed table-responsive">
+                  <thead>
+                      <tr>
+                          <th style="width:60%">Sản phẩm</th>
+                          <th style="width:12%">Giá</th>
+                          <th style="width:10%">Số lượng</th>
+                          <th style="width:10%">Thành tiền</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td data-th="Product">
+                              <div class="row">
+                                  <div class="col-md-3 text-left">
+                                      <img src="http://localhost:8082/congkhai/pageClient/fe/images/pro6.png" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                  </div>
+                                  <div class="col-md-9 text-left mt-sm-2">
+                                      <h4>Xe Đạp Touring LIV Alight 3 DD</h4>
+                                      <p class="font-weight-light">Tronix</p>
+                                  </div>
+                              </div>
+                          </td>
+                          <td data-th="Price">1.300.000 VND</td>
+                          <td data-th="Quantity">
+                            <div class="text-center">
+                                1
+                            </div>
+                          </td>
+                          <td class="actions" data-th="">
+                            <div class="text-right">
+                                1.300.000 VND
+                              </div>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td data-th="Product">
+                              <div class="row">
+                                  <div class="col-md-3 text-left">
+                                      <img src="http://localhost:8082/congkhai/pageClient/fe/images/pro4.png" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                  </div>
+                                  <div class="col-md-9 text-left mt-sm-2">
+                                      <h4>Xe Đạp Touring LIV Alight 3 DD</h4>
+                                      <p class="font-weight-light">Tronix</p>
+                                  </div>
+                              </div>
+                          </td>
+                          <td data-th="Price">1.300.000 VND</td>
+                          <td data-th="Quantity">
+                            <div class="text-center">
+                                1
+                            </div>
+                          </td>
+                          <td class="actions" data-th="">
+                            <div class="text-right">
+                                1.300.000 VND
+                              </div>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td data-th="Product">
+                              <div class="row">
+                                  <div class="col-md-3 text-left">
+                                      <img src="http://localhost:8082/congkhai/pageClient/fe/images/pro2.png" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                  </div>
+                                  <div class="col-md-9 text-left mt-sm-2">
+                                      <h4>Xe Đạp Touring LIV Alight 3 DD'</h4>
+                                      <p class="font-weight-light">SWAT</p>
+                                  </div>
+                              </div>
+                          </td>
+                          <td data-th="Price">1.300.000 VND</td>
+                          <td data-th="Quantity">
+                            <div class="text-center">
+                                1
+                            </div>
+                          </td>
+                          <td class="actions" data-th="">
+                              <div class="text-right">
+                                1.300.000 VND
+                              </div>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+              <div class="infor-checkout d-flex justify-content-between">
+                <h3>Thông tin nhận hàng</h3>
+                <form action="" class="form-infor">
+                    <div class="infor-content mb-2">
+                        <label for="fname" class="form-label">Tên khách hàng</label>
+                        <input class="form-control" type="text" id="fname" name="firstname" placeholder="">
+                    </div>
+                    
+                    <div class="infor-content mb-2">
+                        <label for="email" class="form-label">Số diện thoại</label>
+                        <input class="form-control" type="text" id="email" name="email" placeholder="">
+                    </div>
+
+                    <div class="infor-content">
+                        <label for="adr" class="form-label">Địa chỉ</label>
+                        <textarea class="form-control" rows="4" id="adr" name="address"></textarea>
+                    </div>
+                    
+                </form>
+              </div>
+              <div class="d-flex justify-content-between mt-4">
+                <h3>Phương thức thanh toán</h3>
+                <div class="checkout-cate d-flex">
+                    <button class="btn-checkout online-payment-btn">Thanh toán trực tuyến</button>
+                    <button class="btn-checkout cash-on-delivery-btn">Thanh toán khi nhận hàng</button>
+                </div>
+              </div>
+              <div class="checkout d-flex justify-content-end mt-5">
+                <div class="checkout-item d-flex justify-content-end">
+                    <h5>Phí vận chuyển:</h5>
+                    <h5>0</h5>
+                </div>
+                <div class="checkout-item d-flex justify-content-end">
+                    <h5>Tổng số lượng:</h5>
+                    <h5>0</h5>
+                </div>
+                <div class="checkout-item d-flex justify-content-end">
+                    <h5>Tổng tiền hàng:</h5>
+                    <h5>1.000.000 VND</h5>
+                </div>
+                <div class="checkout-item d-flex align-items-center justify-content-end">
+                  <h5>Tổng thanh toán:</h5>
+                  <h4 style="color: red;">1.000.000 VND</h4>
+              </div>
+              </div>
+              
+          </div>
+      </div>
+      <div class="row mt-4 d-flex align-items-center">
+          <div class="col-sm-6 order-md-2 text-right">
+              <a href="#" class="btn-right btn btn-danger mb-4 btn-lg pl-5 pr-5">Đặt Hàng</a>
+          </div>
+          <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+              <a href="/cart">
+                  <i class="fas fa-arrow-left mr-2"></i> Trở lại</a>
+          </div>
+      </div>
+  </div>
+  </section>
+
+<%- include('../Client/layout/footer.ejs') %>

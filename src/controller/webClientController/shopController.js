@@ -13,8 +13,11 @@ const getShop = async (req, res) => {
         const [detailiImage, detailImageFields] = await pool.execute('select * from productimagesdetails where IDProduct = ? limit 1 ', [element.IDProduct]);
     
         const [image, imageFields] = await pool.execute("select * from images where IDImages = ? limit 1 ", [detailiImage[0].IDImages]);
-    
+        
+        const [nameSupplier , nameSupplierFields] = await pool.execute("select * from supplier where IDSupplier = ?",[element.IDSupplier])
+
         rows[index].url = image[0].UrlImages
+        rows[index].SupplierName = nameSupplier[0].SupplierName
       
       }) )    
       res.render("./Client/shop.ejs", { 

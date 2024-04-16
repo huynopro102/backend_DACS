@@ -229,10 +229,6 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
     const itemId = req.params.id;
     const { name, radio } = req.body;
 
-    console.log("Đây là params id: ", itemId);
-    console.log("Đây là body name: ", name);
-    console.log("Đây là body radio ", radio);
-
     if (!name || !radio == undefined || !itemId) {
       console.log("Thông tin không đủ hoặc không hợp lệ.");
       return res
