@@ -11,7 +11,8 @@ let getRegister = (req, res) => {
 let postRegister = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
-    const result = validateRegistration(req.body);
+    console.log(req.body)
+    const result = validateRegistration(firstName, lastName, email, password);
 
     if (result.success) {
       const conn = await pool.getConnection();
@@ -26,12 +27,13 @@ let postRegister = async (req, res) => {
           console.log(doubleCheck[0]);
           return res.status(409).json({ message: "đã có người dùng họ tên này" });
         } else {
-        
-          
             let hash = null
             await hashPassword(password)
             .then(data =>{
                 hash = data
+            })
+            .catch(err =>{
+              throw err
             })
         
           // Thêm người dùng vào bảng user

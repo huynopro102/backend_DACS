@@ -43,7 +43,7 @@ const comparePassword = async (password, hash) => {
         const result = await bcrypt.compare(password, hash);
         return result;
     } catch (error) {
-        throw new Error('Error comparing passwords');
+        throw error
     }
 };
 
@@ -52,7 +52,7 @@ const hashPassword = async (password) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         return hashedPassword;
     } catch (error) {
-        throw new Error('Error hashing password');
+        throw error
     }
 };
 

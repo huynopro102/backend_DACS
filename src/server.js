@@ -5,12 +5,13 @@ const webAdmin = require("./router/webAdmin")
 const webClient = require("./router/webClient")
 const configeViewEngine = require("../config/viewEngine")
 const configeFileStatic = require("../config/staticFile")
-const configeBodyParser = require("../config/bodyParser")
+require("../config/cookieParser")(app,express)
+require('../config/cookieParser')(app, express);
 const {errorHandlerNotFound , errorHandler} = require("./utils/errorHandler")
 
 configeViewEngine(app, path, __dirname)
 configeFileStatic(app,path,__dirname)
-configeBodyParser(app)
+
 
 // configure dotenv
 require('dotenv').config()

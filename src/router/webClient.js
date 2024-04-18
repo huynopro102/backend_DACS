@@ -9,13 +9,16 @@ const controllerContact = require("../controller/webClientController/contactCont
 const controllerBlog = require("../controller/webClientController/blogController")
 const controllerCart = require("../controller/webClientController/cartController")
 const controllerCheckout = require("../controller/webClientController/checkoutController")
+const controllerGuild = require("../controller/webClientController/guildController")
+const controllerProfile = require("../controller/webClientController/profileController")
+const {verifyAccessToken} = require("../utils/jwt_services")
 
 // get sign 
-router.get("/signin", controllerSgin.getSign)
-router.post("/signin", controllerSgin.postSign)
+router.get("/signin" , controllerSgin.getSign)
+router.post("/signin" , controllerSgin.postSign)
 
 // get home 
-router.get("/home",controllerHome.getHome)
+router.get("/home" ,controllerHome.getHome)
 
 // post get register 
 router.get("/register",controllerRegister.getRegister)
@@ -38,6 +41,12 @@ router.get("/cart", controllerCart.getCart)
 
 // get checkout 
 router.get("/checkout", controllerCheckout.getCheckout )
+
+// get guild
+router.get("/guild" ,controllerGuild.getGuild)
+
+// get profile
+router.get("/profile", controllerProfile.getProfile)
 
 
 module.exports = router;

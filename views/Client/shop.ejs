@@ -194,9 +194,9 @@
                                                     </p>
                                                     <div class="productbtn-box d-flex">
                                                         <a href="#" class="product-btn">Chi tiết</a>
-                                                        <a href="#" class="product-buy"
-                                                            onclick="updateProduct(<%= JSON.stringify(element) %>)">Mua
-                                                            ngay</a>
+                                                        <button href="#" class="product-buy"
+                                                            onclick="updateProduct(<%= JSON.stringify(element) %>) ">Mua
+                                                            ngay</button>
                                                     </div>
                                                 </div>
 
@@ -231,8 +231,6 @@
                             </ul>
                         </div>
 
-
-
                     </div>
                 </div>
             </div>
@@ -242,19 +240,44 @@
 
     <%- include('../Client/layout/footer.ejs') %>
         <script>
+
+
             function updateProduct(element) {
-               const list_cart = []
-               list_cart.push(element.IDProduct)
-               list_cart.push(element.Price)
-               list_cart.push(element.ProductName)
-               list_cart.push(element.Sale)
-               list_cart.push(element.url)
-               list_cart.push(element.SupplierName)
-               console.log(list_cart)
+                const productInfo = {
+                    IDProduct: element.IDProduct,
+                    Price: element.Price,
+                    ProductName: element.ProductName,
+                    Sale: element.Sale,
+                    url: element.url,
+                    SupplierName: element.SupplierName,
+                };
+
                 let gioHang = JSON.parse(localStorage.getItem("giohang")) || [];
 
-                gioHang.push(list_cart);
+                const existingProductIndex = gioHang.findIndex(item => item.IDProduct === productInfo.IDProduct);
+
+                if (existingProductIndex !== -1) {
+                    gioHang[existingProductIndex].soluong = (gioHang[existingProductIndex].soluong || 1) + 1;
+                } else {
+                    productInfo.soluong = 1;
+                    gioHang.push(productInfo);
+                }
 
                 localStorage.setItem("giohang", JSON.stringify(gioHang));
+                changeNumberCart()
             }
+
+
+            function changeNumberCart() {
+                const gioHang = JSON.parse(localStorage.getItem("giohang")) || [];
+                let totalQuantity = 0;
+                gioHang.forEach(item => {
+                    totalQuantity += item.soluong;
+                });
+                document.querySelector(".cart_view").textContent = totalQuantity
+            }
+
+            
+
+
         </script>

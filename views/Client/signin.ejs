@@ -109,12 +109,13 @@
             const responseData = await response.json();
             if (response.ok) {
                 alert(responseData.message)
+                localStorage.setItem("Username",responseData.Username)
+                window.location.reload()
             }else if(response.status === 404) {
               alert(responseData.message)
             }else if(response.status === 401 )
               alert(responseData.message)
             else {
-                // Xử lý lỗi nếu có
                 console.error('Error:', response.statusText);
             }
         } catch (error) {
