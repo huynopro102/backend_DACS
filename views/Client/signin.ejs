@@ -1,5 +1,5 @@
 <%- include('../Client/layout/header.ejs') %>
-<section class="login-container py-3 py-md-5 py-xl-8">
+  <section class="login-container py-3 py-md-5 py-xl-8">
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -17,13 +17,15 @@
                 <div class="row gy-3 overflow-hidden">
                   <div class="col-12">
                     <div class="form-floating mb-3">
-                      <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="email" placeholder="name@example.com" required>
+                      <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="email"
+                        placeholder="name@example.com" required>
                       <label for="email" class="form-label">Email</label>
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="form-floating mb-3">
-                      <input type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="password" value="" placeholder="Password" required>
+                      <input type="password" class="form-control border-0 border-bottom rounded-0" name="password"
+                        id="password" value="" placeholder="Password" required>
                       <label for="password" class="form-label">Mật khẩu</label>
                     </div>
                   </div>
@@ -61,66 +63,94 @@
             </div>
             <div class="col-12 col-lg-5 d-flex align-items-center">
               <div class="d-flex gap-3 flex-column w-100 ">
-                <a href="#" class="text-center"><img src="http://localhost:8082/congkhai/pageClient/fe/images/Satelite Bike.png" alt="" width="200px" height="100%"></a>
-                <a href="#!" class="btn btn-lg btn-danger">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-                    <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
+                <a href="#" class="text-center"><img
+                    src="http://localhost:8082/congkhai/pageClient/fe/images/Satelite Bike.png" alt="" width="200px"
+                    height="100%"></a>
+                <a href="http://localhost:8082/api/auth/google" class="btn btn-lg btn-danger">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-google" viewBox="0 0 16 16">
+                    <path
+                      d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
                   </svg>
-                  <span class="ms-2 fs-6">Đăng nhập với Google</span>
+                  <span onclick("handleAuthGoogle()") class="ms-2 fs-6">Đăng nhập với Google</span>
                 </a>
                 <a href="#!" class="btn btn-lg btn-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-facebook" viewBox="0 0 16 16">
+                    <path
+                      d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
                   </svg>
                   <span class="ms-2 fs-6">Đăng nhập với Facebook</span>
                 </a>
-                
+
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-</section>
+  </section>
 
-<%- include('../Client/layout/footer.ejs') %>
-<script>
-    const password = document.querySelector("#password");
-    const email = document.querySelector("#email");
-    const form = document.querySelector("form");
+  <%- include('../Client/layout/footer.ejs') %>
+    <script>
+      const password = document.querySelector("#password");
+      const email = document.querySelector("#email");
+      const form = document.querySelector("form");
 
-    form.addEventListener("submit", async (e) => {
-        
-      e.preventDefault();
+      form.addEventListener("submit", async (e) => {
+
+        e.preventDefault();
 
         const formData = {
-            email: email.value,
-            password: password.value
+          email: email.value,
+          password: password.value
         };
 
         try {
-            const response = await fetch('http://localhost:8082/signin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-            const responseData = await response.json();
-            if (response.ok) {
-                alert(responseData.message)
-                localStorage.setItem("Username",responseData.Username)
-                window.location.reload()
-            }else if(response.status === 404) {
-              alert(responseData.message)
-            }else if(response.status === 401 )
-              alert(responseData.message)
-            else {
-                console.error('Error:', response.statusText);
-            }
+          const response = await fetch('http://localhost:8082/signin', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          const responseData = await response.json();
+          if (response.ok) {
+            alert(responseData.message)
+            localStorage.setItem("Username", responseData.Username)
+            window.location.reload()
+          } else if (response.status === 404) {
+            alert(responseData.message)
+          } else if (response.status === 401)
+            alert(responseData.message)
+          else {
+            console.error('Error:', response.statusText);
+          }
         } catch (error) {
-            console.error('Error:', error);
+          console.error('Error:', error);
         }
-        
-    });
-</script>
+
+      });
+
+      // Thêm hàm handleAuthGoogle để gửi yêu cầu khi click vào thẻ span
+      async function handleAuthGoogle() {
+        try {
+          const response = await fetch('http://localhost:8082/api/auth/google', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          const responseData = await response.json();
+          if (response.ok) {
+            // Xử lý dữ liệu trả về khi đăng nhập thành công với Google
+          } else {
+            console.error('Error:', responseData.message);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+
+
+    </script>

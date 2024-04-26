@@ -11,7 +11,7 @@ const controllerCart = require("../controller/webClientController/cartController
 const controllerCheckout = require("../controller/webClientController/checkoutController")
 const controllerGuild = require("../controller/webClientController/guildController")
 const controllerProfile = require("../controller/webClientController/profileController")
-const {verifyAccessToken} = require("../utils/jwt_services")
+const {verifyAccessToken ,verifyAccessTokenCheckout} = require("../utils/jwt_services")
 
 // get sign 
 router.get("/signin" , controllerSgin.getSign)
@@ -40,13 +40,14 @@ router.get("/shop" , controllerShop.getShop)
 router.get("/cart", controllerCart.getCart) 
 
 // get checkout 
-router.get("/checkout", controllerCheckout.getCheckout )
+router.get("/checkout" ,controllerCheckout.getCheckout ) 
+router.post("/checkout" , verifyAccessTokenCheckout ,controllerCheckout.postCheckout ) 
 
 // get guild
 router.get("/guild" ,controllerGuild.getGuild)
 
 // get profile
-router.get("/profile", controllerProfile.getProfile)
+router.get("/profile" ,controllerProfile.getProfile)
 
 
 module.exports = router;

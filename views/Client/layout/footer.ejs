@@ -201,9 +201,21 @@
     var usernameCookie = document.cookie.match(/(^|;) ?Username=([^;]*)(;|$)/)[2];
     var decodedString = decodeURIComponent(usernameCookie);
     if (usernameCookie) {
-        document.querySelector("#Username").innerHTML = decodedString
+
+        var ulElement = document.querySelector(".menu-icon"); // Lấy thẻ ul
+        // Tạo một phần tử li mới
+        var newLi = document.createElement("li");
+        newLi.classList.add("nav-item", "mx-2");
+        newLi.innerHTML = `<a class="nav-link text-dark" href="/profile">${decodedString}</a>`;
+
+        // Chèn phần tử mới vào trước phần tử có id là Username
+        ulElement.append(newLi);
+
+
     } else {
         document.querySelector("#Username").classList.add("display-none");
+        document.cookie = "Username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     }
 
     // ]]>

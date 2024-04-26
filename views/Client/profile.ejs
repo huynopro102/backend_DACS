@@ -84,8 +84,7 @@
                                     đặt</button>
                                 <button class="order-tab-btn processing-orders-btn" data-tab="processing-orders">Đơn
                                     đang giao</button>
-                                <button class="order-tab-btn delivered-orders-btn" data-tab="delivered-orders">Đơn đã
-                                    giao</button>
+                               
                                 <button class="order-tab-btn order-history-btn" data-tab="order-history">Lịch sử
                                     mua</button>
                             </div>
@@ -367,139 +366,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div id="delivered-orders" class="order-tab-content">
-                                    <!-- Nội dung của tab "Đơn đã giao" -->
-                                    <div class="addr-user d-flex mt-2">
-                                        <h4 class="text-dark">Đia chỉ nhận hàng</h4>
-                                        <p class="text-dark">Nguyễn Tuấn Huy</p>
-                                        <p class="text-dark">0937026887</p>
-                                        <p class="text-dark">920/20 Xa lộ Hà Nội, Phường Hiệp Phú, Thành Phố Thủ Đức,
-                                            TP. Hồ Chí Minh</p>
-                                    </div>
-                                    <table id="delivered-orders-table" class="table table-condensed table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th style="width:50%">Sản Phẩm</th>
-                                                <th style="width:12%">Giá</th>
-                                                <th style="width:10%">Số lượng</th>
-                                                <th style="width:15%">Thành tiền</th>
-                                                <th style="width:15%">Tình trạng</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td data-th="Product">
-                                                    <div class="row">
-                                                        <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
-                                                                alt=""
-                                                                class="img-fluid d-none d-md-block rounded mb-2 shadow ">
-                                                        </div>
-                                                        <div class="col-md-9 text-left mt-sm-2">
-                                                            <h5>Xe Đạp Touring LIV Alight 3 DD</h5>
-                                                            <p class="font-weight-light">Tronix</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td data-th="Price">1.300.000</td>
-                                                <td data-th="Quantity">
-                                                    <input type="number"
-                                                        class="form-control form-quantity  form-control-lg text-center"
-                                                        value="1" readonly>
-                                                </td>
-                                                <td class="actions" data-th="Total">
-                                                    1.300.000
-                                                </td>
-                                                <td class="actions" data-th="">
-                                                    <div class="text-right">
-                                                        Đã giao
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-th="Product">
-                                                    <div class="row">
-                                                        <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
-                                                                alt=""
-                                                                class="img-fluid d-none d-md-block rounded mb-2 shadow ">
-                                                        </div>
-                                                        <div class="col-md-9 text-left mt-sm-2">
-                                                            <h5>Xe Đạp Touring LIV Alight 3 DD</h5>
-                                                            <p class="font-weight-light">Tronix</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td data-th="Price">1.300.000</td>
-                                                <td data-th="Quantity">
-                                                    <input type="number"
-                                                        class="form-control form-quantity  form-control-lg text-center"
-                                                        value="1" readonly>
-                                                </td>
-                                                <td class="actions" data-th="Total">
-                                                    1.300.000
-                                                </td>
-                                                <td class="actions" data-th="">
-                                                    <div class="text-right">
-                                                        Đã giao
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-th="Product">
-                                                    <div class="row">
-                                                        <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
-                                                                alt=""
-                                                                class="img-fluid d-none d-md-block rounded mb-2 shadow ">
-                                                        </div>
-                                                        <div class="col-md-9 text-left mt-sm-2">
-                                                            <h5>Xe Đạp Touring LIV Alight 3 DD</h5>
-                                                            <p class="font-weight-light">Tronix</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td data-th="Price">1.300.000</td>
-                                                <td data-th="Quantity">
-                                                    <input type="number"
-                                                        class="form-control form-quantity  form-control-lg text-center"
-                                                        value="1" readonly>
-                                                </td>
-                                                <td class="actions" data-th="Total">
-                                                    1.300.000
-                                                </td>
-                                                <td class="actions" data-th="">
-                                                    <div class="text-right">
-                                                        Đã giao
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-
-                                    <div class="sum-total d-flex align-items-center">
-                                        <h4 class="text-dark">Tổng tiền:</h4>
-                                        <h4 class="text-dark">3.900.000 đ</h4>
-
-                                        <h4 class="text-dark">Phí vận chuyển:</h4>
-                                        <h4 class="text-dark">0 đ</h4>
-
-                                        <h4 class="text-dark">Tổng thanh toán:</h4>
-                                        <h4 class="text-dark">3.900.000 đ</h4>
-                                    </div>
-                                    <div class="box-account">
-                                        <ul class="pagination">
-                                            <li><a href="#"><i class="bx bxs-chevron-left"></i></a></li>
-                                            <li><a href="#" class="active">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">4</a></li>
-                                            <li><a href="#">5</a></li>
-                                            <li><a href="#"><i class="bx bxs-chevron-right"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                              
                                 <div id="order-history" class="order-tab-content">
                                     <!-- Nội dung của tab "Lịch sử mua" -->
                                     <div class="addr-user d-flex mt-2">
@@ -642,56 +509,55 @@
         </div>
     </div>
     <%- include('../Client/layout/footer.ejs') %>
-    <script>
-        $(document).ready(function() {
-            // Ẩn tất cả các tab trừ tab "Đơn đã đặt"
-            $(".order-tab-content").hide();
-            $("#pending-orders").show(); // Hiển thị tab "Đơn đã đặt" mặc định
-            
-            // Xử lý sự kiện khi click vào các button tab
-            $(".order-tab-btn").click(function() {
-                // Ẩn tất cả các tab
+        <script>
+            $(document).ready(function () {
+                // Ẩn tất cả các tab trừ tab "Đơn đã đặt"
                 $(".order-tab-content").hide();
-                
-                // Lấy data-tab của button được click để hiển thị tab tương ứng
-                var tabId = $(this).attr("data-tab");
-                $("#" + tabId).show();
+                $("#pending-orders").show(); // Hiển thị tab "Đơn đã đặt" mặc định
+
+                // Xử lý sự kiện khi click vào các button tab
+                $(".order-tab-btn").click(function () {
+                    // Ẩn tất cả các tab
+                    $(".order-tab-content").hide();
+
+                    // Lấy data-tab của button được click để hiển thị tab tương ứng
+                    var tabId = $(this).attr("data-tab");
+                    $("#" + tabId).show();
+                });
             });
-        });
 
-        const pendingOrder = document.querySelector('.pending-orders-btn');
-        const processingOrder = document.querySelector('.processing-orders-btn');
-        const deliveredOrder = document.querySelector('.delivered-orders-btn');
-        const oderHistoryOrder = document.querySelector('.order-history-btn');
+            const pendingOrder = document.querySelector('.pending-orders-btn');
+            const processingOrder = document.querySelector('.processing-orders-btn');
+            const deliveredOrder = document.querySelector('.delivered-orders-btn');
+            const oderHistoryOrder = document.querySelector('.order-history-btn');
 
 
-        pendingOrder.addEventListener('click', function() {
-            processingOrder.classList.remove('active');
-            deliveredOrder.classList.remove('active');
-            oderHistoryOrder.classList.remove('active');
-            pendingOrder.classList.add('active');
-        });
+            pendingOrder.addEventListener('click', function () {
+                processingOrder.classList.remove('active');
+                deliveredOrder.classList.remove('active');
+                oderHistoryOrder.classList.remove('active');
+                pendingOrder.classList.add('active');
+            });
 
-        processingOrder.addEventListener('click', function() {
-            pendingOrder.classList.remove('active');
-            deliveredOrder.classList.remove('active');
-            oderHistoryOrder.classList.remove('active');
-            processingOrder.classList.add('active');
-        });
+            processingOrder.addEventListener('click', function () {
+                pendingOrder.classList.remove('active');
+                deliveredOrder.classList.remove('active');
+                oderHistoryOrder.classList.remove('active');
+                processingOrder.classList.add('active');
+            });
 
-        oderHistoryOrder.addEventListener('click', function() {
-            pendingOrder.classList.remove('active');
-            deliveredOrder.classList.remove('active');
-            processingOrder.classList.remove('active');
-            oderHistoryOrder.classList.add('active');
-        });
+            oderHistoryOrder.addEventListener('click', function () {
+                pendingOrder.classList.remove('active');
+                deliveredOrder.classList.remove('active');
+                processingOrder.classList.remove('active');
+                oderHistoryOrder.classList.add('active');
+            });
 
-        deliveredOrder.addEventListener('click', function() {
-            pendingOrder.classList.remove('active');
-            processingOrder.classList.remove('active');
-            oderHistoryOrder.classList.remove('active');
-            deliveredOrder.classList.add('active');
-        });
-    </script>
+            deliveredOrder.addEventListener('click', function () {
+                pendingOrder.classList.remove('active');
+                processingOrder.classList.remove('active');
+                oderHistoryOrder.classList.remove('active');
+                deliveredOrder.classList.add('active');
+            });
 
-  
+        </script>
