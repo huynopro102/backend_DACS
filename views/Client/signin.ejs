@@ -64,9 +64,9 @@
             <div class="col-12 col-lg-5 d-flex align-items-center">
               <div class="d-flex gap-3 flex-column w-100 ">
                 <a href="#" class="text-center"><img
-                    src="http://localhost:8082/congkhai/pageClient/fe/images/Satelite Bike.png" alt="" width="200px"
+                    src="/congkhai/pageClient/fe/images/Satelite Bike.png" alt="" width="200px"
                     height="100%"></a>
-                <a href="http://localhost:8082/api/auth/google" class="btn btn-lg btn-danger">
+                <a href="/api/auth/google" class="btn btn-lg btn-danger">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-google" viewBox="0 0 16 16">
                     <path
@@ -107,7 +107,7 @@
         };
 
         try {
-          const response = await fetch('http://localhost:8082/signin', {
+          const response = await fetch('/signin', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -135,7 +135,7 @@
       // Thêm hàm handleAuthGoogle để gửi yêu cầu khi click vào thẻ span
       async function handleAuthGoogle() {
         try {
-          const response = await fetch('http://localhost:8082/api/auth/google', {
+          const response = await fetch('/api/auth/google', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'

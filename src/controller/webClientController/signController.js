@@ -18,7 +18,10 @@ const postSign = async (req, res) => {
 
   try {
     const [user, userFields] = await pool.execute(
-      "SELECT * FROM user WHERE Email = " + [result.data.email]  );
+      "SELECT * FROM user WHERE Email = ?",
+      [result.data.email]
+    );
+    
     if (user.length === 0) {
       return res.status(404).json({ message: "Không tìm thấy tài khoản" });
     }
@@ -39,6 +42,8 @@ const postSign = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
+
+
 module.exports = {
   getSign,
   postSign,
