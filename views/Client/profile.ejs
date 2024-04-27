@@ -16,9 +16,10 @@
                             href="#account-change-password">Đổi mật khẩu</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Đơn
                             mua</a>
-                        <a class="list-group-item list-group-item-action"
+                        <a id="logoutButton" class="list-group-item list-group-item-action"
                             style="display: flex; align-items:center; gap:5px" data-toggle="list" href="#">Đăng xuất <i
-                                class='bx bx-log-out'></i></a>
+                                class='bx bx-log-out'></i>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -84,7 +85,7 @@
                                     đặt</button>
                                 <button class="order-tab-btn processing-orders-btn" data-tab="processing-orders">Đơn
                                     đang giao</button>
-                               
+
                                 <button class="order-tab-btn order-history-btn" data-tab="order-history">Lịch sử
                                     mua</button>
                             </div>
@@ -366,7 +367,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                              
+
                                 <div id="order-history" class="order-tab-content">
                                     <!-- Nội dung của tab "Lịch sử mua" -->
                                     <div class="addr-user d-flex mt-2">
@@ -510,6 +511,22 @@
     </div>
     <%- include('../Client/layout/footer.ejs') %>
         <script>
+
+
+
+            // logout
+            document.addEventListener('DOMContentLoaded', function () {
+                const logoutButton = document.getElementById('logoutButton');
+                logoutButton.addEventListener('click', function () {
+                    // Xóa cookie
+                    document.cookie = "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "Username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    // Reload trang
+                    window.location.reload("/home");
+                });
+            });
+
+
             $(document).ready(function () {
                 // Ẩn tất cả các tab trừ tab "Đơn đã đặt"
                 $(".order-tab-content").hide();
@@ -559,5 +576,9 @@
                 oderHistoryOrder.classList.remove('active');
                 deliveredOrder.classList.add('active');
             });
+
+
+
+
 
         </script>

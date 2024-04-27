@@ -15,7 +15,7 @@ const {verifyAccessToken ,verifyAccessTokenCheckout} = require("../utils/jwt_ser
 
 // get sign 
 router.get("/signin" , controllerSgin.getSign)
-router.post("/signin" , controllerSgin.postSign)
+router.post("/signin"  ,controllerSgin.postSign)
 
 // get home 
 router.get("/home" ,controllerHome.getHome)
@@ -47,7 +47,7 @@ router.post("/checkout" , verifyAccessTokenCheckout ,controllerCheckout.postChec
 router.get("/guild" ,controllerGuild.getGuild)
 
 // get profile
-router.get("/profile" ,controllerProfile.getProfile)
+router.get("/profile" , verifyAccessToken , controllerProfile.getProfile)
 
 
 module.exports = router;

@@ -35,6 +35,8 @@ const verifyAccessToken = (req, res, next) => {
 };
 
 
+
+
 const verifyAccessTokenCheckout = (req, res, next) => {
   if (!req.cookies.Token) res.status(409).json({message:"bạn phải đăng nhập trước khi đặt hàng"});
   jwt.verify( req.cookies.Token , process.env.ACCESS_TOKEN_SECRET , (err, payload) => {

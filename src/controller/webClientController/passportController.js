@@ -1,55 +1,91 @@
 const pool = require("../../models/connectDB");
-const { hashedPassword } = require("../../utils/helpers")
+const { hashPassword } = require("../../utils/helpers");
+const {generateAccessToken} = require("../../utils/jwt_services")
 const { promisify } = require("util");
 const getConnection = promisify(pool.getConnection).bind(pool);
+require("dotenv").config()
 
 let loginSuccess = async (req, res) => {
   let conn; // Biến để lưu trữ kết nối
 
   try {
+    console.log(req.user)
     const userEmail = req.user._json.email;
-    const [existingUser] = await pool.execute("SELECT * FROM user WHERE Email = ?",[userEmail]);
-    console.log("so 1")
+    const { id } = req.user;
+    const family_name = req.user._json.family_name;
+    const connection = await pool.getConnection(); // Lấy kết nối từ pool
+
+
+    const [existingUser] = await connection.query("SELECT * FROM user ");
+
+    existingUser.forEach(item =>{
+      if(item.Username === family_name.trim()){
+        return res.status(402).json({message:"tên người dùng đã tồn tại"})
+      }
+    })
+
     if (existingUser.length > 0) {
-      console.log("so 2")
+      const accessToken = await generateAccessToken(existingUser[0].Username , existingUser[0].Check);
+      res.cookie('Token', accessToken ); 
+      res.cookie('Username', existingUser[0].Username.toString() ); 
+      return res.redirect("/home");
+    }
 
-      // Đã tồn tại người dùng, thực hiện đăng nhập vào hệ thống
-      // Trả về thông tin người dùng hoặc token JWT
-      res.status(200).json({ message: "Đăng nhập thành công", user: existingUser });
-    } else {
-      // Nếu chưa tồn tại người dùng, tạo mới tài khoản và đăng nhập
-      conn = await getConnection(); // Lấy kết nối từ pool
-      await conn.beginTransaction(); // Bắt đầu transaction
-      
-      console.log("so 3")
-      try {
-        // Hash password
-        const hashedPassword1 = await hashedPassword(req.user.id);
-        // Thêm người dùng vào bảng user
-        await conn.query("INSERT INTO user (Username, Email, Password, `Check`) VALUES (?, ?, ?, ?)", [req.user.displayName, userEmail, hashedPassword1 , 1] );
-        // Thêm thông tin khách hàng vào bảng customer
-        await conn.query("INSERT INTO customer (Username,IdImages) VALUES (?,?)", [req.user.displayName,req.user.photos[0].value]);
+    try {
 
-        // Commit transaction nếu mọi thứ thành công
-        await conn.commit();
-        res.status(201).json({ message: "Tạo tài khoản và đăng nhập thành công" });
-      } catch (error) {
-        await conn.rollback();
-        console.error("Error inserting data:", error);
-        res.status(500).json({ message: "Internal Server Error - Transaction rollback" });
-      } finally {
-        // Luôn phải giải phóng kết nối sau khi sử dụng
-        if (conn) {
-          conn.release();
-        }
+      // Hash password
+      const hashedPassword1 = await hashPassword(id);
+   
+      // Thêm người dùng vào bảng user
+      await connection.query(
+        "INSERT INTO user (Username, Email, Password, `Check`, id) VALUES (?, ?, ?, ?, ?)",
+        [family_name, userEmail, hashedPassword1, 1, id]
+      );
+
+      // Thêm tạo bảng images
+      await connection.query(
+        "INSERT INTO images (NameImages, UrlImages) VALUES (?, ?)",
+        [family_name, req.user.photos[0].value]
+      );
+
+      // Lấy id của bản ghi vừa được thêm vào bảng images
+      const [imageResult] = await connection.query(
+        "SELECT LAST_INSERT_ID() as lastId"
+      );
+
+      // Lấy id của bản ghi images vừa thêm
+      const imageId = imageResult[0].lastId;
+
+      // Thêm thông tin khách hàng vào bảng customer và gán id của bản ghi images vào cột IdImages
+      await connection.query(
+        "INSERT INTO customer (Username, IdImages) VALUES (?, ?)",
+        [family_name, imageId]
+      );
+
+      // Commit transaction nếu mọi thứ thành công
+      await connection.commit();
+      res
+        .status(201)
+        .json({ message: "Tạo tài khoản và đăng nhập thành công" });
+    } catch (error) {
+      await connection.rollback();
+      console.error("Error inserting data:", error);
+      res
+        .status(500)
+        .json({ message: "Internal Server Error - Transaction rollback" });
+    } finally {
+      // Luôn phải giải phóng kết nối sau khi sử dụng
+      if (connection) {
+        connection.release();
       }
     }
   } catch (error) {
     console.error("Error connecting to database:", error);
-    res.status(500).json({ message: "Internal Server Error - Database connection" });
+    res
+      .status(500)
+      .json({ message: "Internal Server Error - Database connection" });
   }
 };
-
 
 module.exports = {
   loginSuccess,
