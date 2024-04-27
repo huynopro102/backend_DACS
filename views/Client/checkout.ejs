@@ -238,6 +238,7 @@
                         console.log(response)
                         if (response.status === 200) {
                             alert(responseData.message);
+                            window.location.href = "/shop"
                         } else if (response.status === 400) {
                             alert(responseData.message);
                         }else if(response.status === 410){
