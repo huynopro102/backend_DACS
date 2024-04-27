@@ -227,7 +227,7 @@
                             cartItems: cartItems
                         };
 
-                        const response = await fetch("http://localhost:8082/checkout", {
+                        const response = await fetch("/checkout", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -249,7 +249,7 @@
                             alert(responseData.message);
                         } else if (response.status === 409) {
                             alert(responseData.message);
-                            window.location.href = "http://localhost:8082/signin"
+                            window.location.href = "/signin"
                         } 
                         else if (response.status === 500) {
                             alert(responseData.message);
