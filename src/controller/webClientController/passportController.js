@@ -18,18 +18,14 @@ let loginSuccess = async (req, res) => {
 
     const [existingUser] = await connection.query("SELECT * FROM user ");
 
-    existingUser.forEach(item =>{
-      if(item.Username === family_name.trim()){
-        return res.status(402).json({message:"tên người dùng đã tồn tại"})
-      }
-    })
-
+    
     if (existingUser.length > 0) {
       const accessToken = await generateAccessToken(existingUser[0].Username , existingUser[0].Check);
       res.cookie('Token', accessToken ); 
       res.cookie('Username', existingUser[0].Username.toString() ); 
       return res.redirect("/home");
     }
+    
 
     try {
 
