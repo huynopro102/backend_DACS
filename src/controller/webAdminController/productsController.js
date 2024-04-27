@@ -353,10 +353,7 @@ let getAdminV1ProductsType = async (req, res) => {
       page: parseInt(_page),
     });
   } else {
-    const [rows, fields] = await pool.execute(
-      "SELECT * FROM `producttype` limit ? , ? ",
-      [start, limit]
-    );
+    const [rows, fields] = await pool.execute( "SELECT * FROM `producttype` limit " + start + "," + limit );
     res.render("./Admin/product/productType.ejs", {
       dataUser: rows ? rows : [],
       totalPage: totalPage,
@@ -367,7 +364,7 @@ let getAdminV1ProductsType = async (req, res) => {
 let getAdminV1Products = async (req, res) => {
   try {
     let _page = req.query.page ? req.query.page : 1;
-    let limit = 5;
+    let limit = 10;
     let start = (_page - 1) * limit;
     // let totalRow = 20;
     let name = req.query.name;
@@ -394,9 +391,7 @@ let getAdminV1Products = async (req, res) => {
       });
     } else {
       const [rows, fields] = await pool.execute(
-        "SELECT p.*, c.* FROM `product` p JOIN producttype c ON p.IDProductType = c.IDProductType LIMIT ? , ?",
-        [start, limit]
-      );
+        "SELECT p.*, c.* FROM `product` p JOIN producttype c ON p.IDProductType = c.IDProductType LIMIT "+start+ "," + limit);
       res.render("./Admin/product/product.ejs", {
         dataProduct: rows ? rows : [],
         totalPage: totalPage,

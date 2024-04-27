@@ -30,10 +30,7 @@ let getAdminV1Accounts = async (req, res) => {
             page: parseInt(_page),
           });
         } else {
-          const [rows, fields] = await pool.execute(
-            "SELECT * FROM `user` limit ? , ? ",
-            [start, limit]
-          );
+          const [rows, fields] = await pool.execute("SELECT * FROM `user` limit "+ start+"," +limit);
           res.render("./Admin/accounts/accounts.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   

@@ -1,17 +1,18 @@
+require('dotenv').config()
 const mysql = require("mysql2/promise");
-
 const pool = mysql.createPool({
     
     
-    host: 'localhost',
-    database: 'dacs',
-    user: 'root'
+    // host: 'localhost',
+    // database: 'dacs',
+    // user: 'root'
 
-    // port : 3306 ,
-    // host: '14.225.218.25',
-    // database: 'CSDLWeb',
-    // user:'huynguyen1',
-    // password:'123',
+    port : process.env.dbPort ,
+    host: process.env.dbHost ,
+    database: process.env.dbName ,
+    user: process.env.dbUser ,
+    password: process.env.dbPassword ,
+
 });
 
 

@@ -8,13 +8,13 @@ const getShop = async (req, res) => {
     const totalPage = Math.ceil(totalProduct[0].total/limit)
  
     try {
-      const [rows, fields] = await pool.execute("SELECT * FROM product LIMIT ?, ?",[start, limit] );
+      const [rows, fields] = await pool.execute("SELECT * FROM product LIMIT " + start + ", " + limit);
       await Promise.all( rows.map(async ( element,index ) =>{
-        const [detailiImage, detailImageFields] = await pool.execute('select * from productimagesdetails where IDProduct = ? limit 1 ', [element.IDProduct]);
+        const [detailiImage, detailImageFields] = await pool.execute('select * from productimagesdetails where IDProduct = ' +[element.IDProduct] + ' limit 1 ');
     
-        const [image, imageFields] = await pool.execute("select * from images where IDImages = ? limit 1 ", [detailiImage[0].IDImages]);
+        const [image, imageFields] = await pool.execute("select * from images where IDImages = " + [detailiImage[0].IDImages]+ " limit 1 ");
         
-        const [nameSupplier , nameSupplierFields] = await pool.execute("select * from supplier where IDSupplier = ?",[element.IDSupplier])
+        const [nameSupplier , nameSupplierFields] = await pool.execute("select * from supplier where IDSupplier = " +[element.IDSupplier])
 
         rows[index].url = image[0].UrlImages
         rows[index].SupplierName = nameSupplier[0].SupplierName

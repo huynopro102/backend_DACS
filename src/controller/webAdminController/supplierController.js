@@ -10,9 +10,7 @@ let getAdminV1Supplier = async (req,res) =>{
         let name = req.query.name;
       
         // total tổng các item trong database
-        const [total, fields] = await pool.execute(
-          "select count(*) as total from supplier"
-        );
+        const [total, fields] = await pool.execute("select count(*) as total from supplier");
         let totalRow = total[0].total;
       
         // tong so trang
@@ -31,9 +29,7 @@ let getAdminV1Supplier = async (req,res) =>{
           });
         } else {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `supplier` limit ? , ? ",
-            [start, limit]
-          );
+            "SELECT * FROM `supplier` limit " + start +" , " + limit );
           res.render("./Admin/supplier/supplier.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
