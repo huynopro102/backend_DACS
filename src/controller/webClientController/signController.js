@@ -18,9 +18,7 @@ const postSign = async (req, res) => {
 
   try {
     const [user, userFields] = await pool.execute(
-      "SELECT * FROM user WHERE Email = ? ",
-      [result.data.email]
-    );
+      "SELECT * FROM user WHERE Email = " + [result.data.email]  );
     if (user.length === 0) {
       return res.status(404).json({ message: "Không tìm thấy tài khoản" });
     }
