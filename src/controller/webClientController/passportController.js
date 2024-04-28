@@ -1,6 +1,6 @@
 const pool = require("../../models/connectDB");
-const { hashPassword } = require("../../utils/helpers");
-const {generateAccessToken} = require("../../utils/jwt_services")
+const { hashPassword , comparePassword } = require("../../utils/helpers");
+const {generateAccessToken } = require("../../utils/jwt_services")
 const { promisify } = require("util");
 const getConnection = promisify(pool.getConnection).bind(pool);
 require("dotenv").config()
@@ -10,20 +10,20 @@ let loginSuccess = async (req, res) => {
 
   try {
     console.log(req.user)
-    const userEmail = req.user._json.email;
+    const {userEmai , family_name} = req.user._json
     const { id } = req.user;
-    const family_name = req.user._json.family_name;
     const connection = await pool.getConnection(); // Lấy kết nối từ pool
 
-
-    const [existingUser] = await connection.query("SELECT * FROM user ");
-
+    const [existingUser] = await connection.query("SELECT * FROM user where Username = ? && id = ? "
+    ,[family_name,id]);
     
-    if (existingUser.length > 0) {
+    const verify = await comparePassword(id , existingUser[0].Password)
+    
+    if (existingUser.length > 0 && verify === true) {
       const accessToken = await generateAccessToken(existingUser[0].Username , existingUser[0].Check);
       res.cookie('Token', accessToken ); 
       res.cookie('Username', existingUser[0].Username.toString() ); 
-      return res.redirect("/home");
+      return res.redirect("https://dungchinh.onrender.com/profile");
     }
     
 
@@ -40,14 +40,10 @@ let loginSuccess = async (req, res) => {
 
       // Thêm tạo bảng images
       await connection.query(
-        "INSERT INTO images (NameImages, UrlImages) VALUES (?, ?)",
-        [family_name, req.user.photos[0].value]
-      );
+        "INSERT INTO images (NameImages, UrlImages) VALUES (?, ?)", [family_name, req.user.photos[0].value] );
 
       // Lấy id của bản ghi vừa được thêm vào bảng images
-      const [imageResult] = await connection.query(
-        "SELECT LAST_INSERT_ID() as lastId"
-      );
+      const [imageResult] = await connection.query( "SELECT LAST_INSERT_ID() as lastId" );
 
       // Lấy id của bản ghi images vừa thêm
       const imageId = imageResult[0].lastId;
