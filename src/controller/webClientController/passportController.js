@@ -23,7 +23,7 @@ let loginSuccess = async (req, res) => {
       const accessToken = await generateAccessToken(existingUser[0].Username , existingUser[0].Check);
       res.cookie('Token', accessToken ); 
       res.cookie('Username', existingUser[0].Username.toString() ); 
-      return res.redirect("https://dungchinh.onrender.com/home");
+      return res.redirect("/home");
     }
     
 
