@@ -132,7 +132,7 @@
           if (response.ok) {
             alert(responseData.message)
             localStorage.setItem("Username", responseData.Username)
-            window.location.href = "http://localhost:8082/shop";
+            window.location.href = "/shop";
           } else if (response.status === 404) {
             alert(responseData.message)
           } else if (response.status === 401) {
