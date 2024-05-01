@@ -40,8 +40,15 @@ const postSign = async (req, res) => {
         user[0].Username,
         user[0].Check
       );
-      res.cookie("Token", accessToken);
-      res.cookie("Username", user[0].Username.toString());
+      res.cookie("Token", accessToken , {
+        maxAge: 3600000, 
+
+      } );
+      res.cookie("Username", user[0].Username.toString() ,{
+        maxAge: 3600000, 
+
+      });
+  
       return res
         .status(201)
         .json({

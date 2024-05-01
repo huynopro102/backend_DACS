@@ -11,6 +11,7 @@ const controllerCart = require("../controller/webClientController/cartController
 const controllerCheckout = require("../controller/webClientController/checkoutController")
 const controllerGuild = require("../controller/webClientController/guildController")
 const controllerProfile = require("../controller/webClientController/profileController")
+const detailforgotpassword = require("../controller/webClientController/detailforgotpassword")
 const {verifyAccessToken ,verifyAccessTokenCheckout} = require("../utils/jwt_services")
 
 // get sign 
@@ -26,6 +27,13 @@ router.post("/register",controllerRegister.postRegister)
 
 // get forgotpassword
 router.get("/forgotpassword" , controllerForgotPassword.getForgotPassword)
+router.post("/forgotpassword" , controllerForgotPassword.postForgotPassword);
+  
+
+// detail forgot password
+router.get("/detaiforgotpassword" , detailforgotpassword.getdetailforgotpassword)
+router.post("/detaiforgotpassword" , detailforgotpassword.postdetailforgotpassword)
+
 
 // get blog
 router.get("/blog" , controllerBlog.getBlog)

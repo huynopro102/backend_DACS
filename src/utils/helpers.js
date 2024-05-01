@@ -1,7 +1,19 @@
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const crypto = require("crypto")
 require("dotenv").config();
+
+
+
+
+function generateRandomString(length) {
+    return crypto.randomBytes(Math.ceil(length / 2))
+        .toString('hex') // convert to hexadecimal format
+        .slice(0, length); // return required number of characters
+}
+
+
 
 async function verifyCaptchaToken(token) {
     const fetch = await import('node-fetch'); // Sử dụng import() động
@@ -86,4 +98,4 @@ const hashPassword = async (password) => {
 
 
 
-module.exports = { validateRegistration , validateSignin , hashPassword , comparePassword , verifyCaptchaToken} ;
+module.exports = { validateRegistration , validateSignin , hashPassword , comparePassword , verifyCaptchaToken , generateRandomString} ;

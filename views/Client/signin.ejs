@@ -105,10 +105,8 @@
 
         e.preventDefault();
 
-
         // Lấy token reCAPTCHA
         const recaptchaToken = grecaptcha.getResponse();
-
         console.log(recaptchaToken)
         // Kiểm tra xem token có tồn tại không
         if (!recaptchaToken) {
@@ -122,8 +120,6 @@
           recaptchaToken: recaptchaToken,
         };
 
-
-
         try {
           const response = await fetch('/signin', {
             method: 'POST',
@@ -136,7 +132,7 @@
           if (response.ok) {
             alert(responseData.message)
             localStorage.setItem("Username", responseData.Username)
-            window.location.reload()
+            window.location.href = "http://localhost:8082/shop";
           } else if (response.status === 404) {
             alert(responseData.message)
           } else if (response.status === 401) {
@@ -152,6 +148,7 @@
         }
 
       });
+
 
       // Thêm hàm handleAuthGoogle để gửi yêu cầu khi click vào thẻ span
       async function handleAuthGoogle() {

@@ -1,6 +1,45 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const generateforgotpasswordToken = async (userID, role , secret) => {
+  try {
+    return new Promise((resolve, reject) => {
+      const payload = {
+        userID,
+        role,
+      };
+      const options = {
+        expiresIn: "2m",
+      };
+      jwt.sign(payload, secret, options, (err, token) => {
+        if (err) reject(err);
+        resolve(token);
+      });
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+const verifyforgotpasswordToken = async (secret, token) => {
+  try {
+    const result = await new Promise((resolve, reject) => {
+      jwt.verify(token, secret, (err, payload) => {
+        if (err && err.name === 'TokenExpiredError') resolve("token hết hạn bạn phải đăng nhập");
+        if (err && err.name === 'JsonWebTokenError') resolve("invalid signature token ko hợp lệ");
+        payload.status = true
+        resolve(payload);
+      });
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+
 const generateAccessToken = async (userID, role) => {
   try {
     return new Promise((resolve, reject) => {
@@ -53,6 +92,8 @@ const verifyAccessTokenCheckout = (req, res, next) => {
 module.exports = {
   generateAccessToken,
   verifyAccessToken, 
-  verifyAccessTokenCheckout
+  verifyAccessTokenCheckout,
+  generateforgotpasswordToken ,
+  verifyforgotpasswordToken
   
 };
