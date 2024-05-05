@@ -49,7 +49,11 @@ router.get("/cart", controllerCart.getCart)
 
 // get checkout 
 router.get("/checkout" ,controllerCheckout.getCheckout ) 
-router.post("/checkout" , verifyAccessTokenCheckout , controllerCheckout.postCheckout , controllerCheckout.postCheckout2) 
+router.post("/checkout" , verifyAccessTokenCheckout , controllerCheckout.postCheckout ,
+ controllerCheckout.postCheckout2 ,
+ controllerCheckout.thanhtoanonline ) 
+
+
 
 
 // get guild
