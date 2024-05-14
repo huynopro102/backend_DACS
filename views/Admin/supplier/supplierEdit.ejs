@@ -22,45 +22,36 @@
         <div class="box-body">
 
 
-          <form action="http://localhost:8082/admin/v1/supplier/edit/" method="post">
-           
-           
+          <form action="http://localhost:8082/admin/v1/supplier/edit/<%= row[0].IDSupplier%>" method="post">
             <!-- username -->
             <div class="form-group">
-              <label for="exampleInputPassword1">Username</label>
-              <input name="UserName" type="text" class="form-control" id="exampleInputUsername1" value="<%= row[0].SupplierName%>">
+              <label for="exampleInputName">Username</label>
+              <input name="UserName" type="text" class="form-control" id="exampleInputName" value="<%= row[0].SupplierName%>">
             </div>
-
-
-             <!-- phone -->
-             <div class="form-group">
-                <label for="exampleInputPassword1">Phone</label>
-                <input name="Phone" type="text" class="form-control" id="exampleInputUsername1" value="<%= row[0].PhoneSupplier%>">
-              </div>
-
-
-               <!-- address -->
+            <input type="text" class="cachCuChuoi" value="<%= row[0].IDSupplier %>" hidden>
+          
+            <!-- phone -->
             <div class="form-group">
-                <label for="exampleInputPassword1">Address</label>
-                <input name="Address" type="text" class="form-control" id="exampleInputUsername1" value="<%= row[0].SupplierAddress%>">
-              </div>
-
-
+              <label for="exampleInputPhone">Phone</label>
+              <input name="Phone" type="text" class="form-control" id="exampleInputPhone" value="<%= row[0].PhoneSupplier%>">
+            </div>
+          
+            <!-- address -->
+            <div class="form-group">
+              <label for="exampleInputAddress">Address</label>
+              <input name="Address" type="text" class="form-control" id="exampleInputAddress" value="<%= row[0].SupplierAddress%>">
+            </div>
+          
             <!-- email -->
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input name="Email" type="email" class="form-control" id="exampleInputEmail1"
-                aria-describedby="emailHelp" value="<%= row[0].EmailSupplier%>">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+              <label for="exampleInputEmail">Email address</label>
+              <input name="Email" type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" value="<%= row[0].EmailSupplier%>">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
-
-
-
+          
             <!-- button submit -->
             <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i> Submit</button>
             <a href="http://localhost:8082/admin/v1/supplier" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
-
           </form>
 
         </div>
@@ -73,125 +64,56 @@
 
   </div>
 <script>
-
-    // check confirm password
-    function checkPasswordMatch() {
-      let password = document.querySelector("#exampleInputPassword1").value;
-      let confirmPassword = document.querySelector("#exampleInputConfirmPassword1").value;
-      if(password === confirmPassword){
-        return true
-      }
-      return false
-    }
-
-
-    // check empty
-    const checkEmpty = () => {
-      let email = document.querySelector("#exampleInputEmail1")
-      let username = document.querySelector("#exampleInputUsername1")
-      let confirmpassword = document.querySelector("#exampleInputConfirmPassword1")
-      let password = document.querySelector("#exampleInputPassword1")
-      if (email.value == "" || username.value == "" || password.value == "" || confirmpassword.value == "") {
-        return false
-      }
-      return true
-    }
-
-    // check email
-    function checkEmail() {
-      let email = document.querySelector("#exampleInputEmail1");
-      const regexEmail =
-        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-      let isEmailError = !regexEmail.test(email.value);
-      if (isEmailError) {
-        // Nếu có lỗi, bạn có thể thông báo lỗi hoặc thực hiện các hành động khác ở đây
-        isEmailError = true
-        return isEmailError;
-      }
-      return isEmailError = false
-    }
-
-    // check length
-    // đúng 123@g.c
-    // phải có 123 , @ , g , c
-    function checkLength() {
-      let confirmpassword = document.querySelector("#exampleInputConfirmPassword1")
-      let password = document.querySelector("#exampleInputPassword1")
-      console.log(password)
-      if (password.value.length <= 5 && confirmpassword.value.length <= 5) {
-        return false
-      }
-      return true
-    }
-
-    // check kỹ tự hoa , kỹ tự thường , và số
-
-    // function send requird
-    const postRequired = async (requestBody) => {
-      // Send POST request using Fetch API
-      try {
-        const response = await fetch('http://localhost:8082/admin/v1/supplier/edit/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody),
-        });
-
-        // Check if the request was successful (status code 2xx)
-        if (response.ok) {
-          console.log('User created successfully!');
-
-        } else {
-          console.error('Failed to create user:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error during fetch:', error);
-      }
-    }
-
-
-    // btn click
-    let btn_submit = document.querySelector(".btnSubmit");
-    btn_submit.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (checkEmpty() == false) {
-        alert("Không để trống thông tin");
+  const checkEmpty = () => {
+    const username = document.querySelector("#exampleInputName");
+    const phoneNumber = document.querySelector("#exampleInputPhone");
+    const address = document.querySelector("#exampleInputAddress");
+    const emailAddress = document.querySelector("#exampleInputEmail");
+  
+    return username.value.trim() !== "" && phoneNumber.value.trim() !== "" && address.value.trim() !== "" && emailAddress.value.trim() !== "";
+  };
+  
+  const postRequired = async (requestBody) => {
+    try {
+      const response = await fetch(`http://localhost:8082/admin/v1/supplier/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      const responseData = await response.json();
+      if (response.ok) {
+        alert(responseData.message);
+        window.location.href = 'http://localhost:8082/admin/v1/supplier';
       } else {
-        // Additional checks can be added here
-        if (checkLength() == false) {
-          alert("Độ dài mật khẩu quá ngắn");
-        } else if (checkEmail() == true) {
-          alert("Email không hợp lệ");
-        } else if (checkPasswordMatch()==false) {
-          alert("Password và Confirm Password không trùng khớp");
-        }
-        else {
-          // Example data
-          const exampleData = {
-            UserName: document.querySelector("#exampleInputUsername1").value,
-            PassWord: document.querySelector("#exampleInputPassword1").value,
-            ConfirmPassWord: document.querySelector("#exampleInputConfirmPassword1").value,
-            Email: document.querySelector("#exampleInputEmail1").value,
-
-          };
-
-          // Call the postRequired function to send data
-          await postRequired(exampleData);
-
-          // Inform the user about the success (or you can do something else)
-          alert("User created successfully!");
-          document.querySelector("#exampleInputUsername1").value = ""
-          document.querySelector("#exampleInputPassword1").value = ""
-          document.querySelector("#exampleInputConfirmPassword1").value = ""
-          document.querySelector("#exampleInputEmail1").value = ""
-
-        }
+        alert(responseData.message);
       }
-    });
-
-    // 
-
+    } catch (error) {
+      console.error('Error during fetch:', error);
+    }
+  };
+  
+  const btn_submit = document.querySelector(".btnSubmit");
+  btn_submit.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (checkEmpty()) {
+      const exampleData = {
+        UserName: document.querySelector("#exampleInputName").value.trim(),
+        Phone: document.querySelector("#exampleInputPhone").value.trim(),
+        Address: document.querySelector("#exampleInputAddress").value.trim(),
+        Email: document.querySelector("#exampleInputEmail").value.trim(),
+      };
+      await postRequired(exampleData);
+      document.querySelector("#exampleInputName").value = "";
+      document.querySelector("#exampleInputPhone").value = "";
+      document.querySelector("#exampleInputAddress").value = "";
+      document.querySelector("#exampleInputEmail").value = "";
+    } else {
+      alert("Không để trống thông tin");
+    }
+  });
 
   </script>
 <%- include('../layout/footer.ejs')%>

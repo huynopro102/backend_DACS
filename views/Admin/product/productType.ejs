@@ -14,7 +14,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" style="min-height: 1000px !important;">
 
       <!-- Default box -->
       <div class="box">
@@ -24,10 +24,10 @@
           <table class="table">
 
             <form class="form-inline" method="get">
-              <div class="form-group mb-2">
+              <div class="form-group mb-2" style="display: flex; gap:10px;">
                 <label for="staticEmail2" class="sr-only">Email</label>
                 <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
-                  placeholder="input field">
+                  placeholder="input field" style="width: 450px !important; height:34px !important;">
                 <button type="submit" class="btn btn-primary mb-5"><i class="fa fa-search"></i></button>
                 <a href="http://localhost:8082/admin/v1/producttype/create" class="btn btn-success mb-5"><i class="fa fa-plus"></i> Create</a>
               </div>
@@ -56,7 +56,7 @@
                 <td>
                   <a href="http://localhost:8082/admin/v1/producttype/edit/<%=item.IDProductType%>" class="btn btn-sm btn-primary btn-sua" 
                     data-id="<%=item.IDProductType%>"><i class="fa fa-edit"></i>sua</a>
-                  <a href="#" class="btn btn-sm btn-danger btn-xoa "><i class="fa fa-trash"></i> xoa</a>
+                    <button class="btn btn-sm btn-danger btn-xoa" data-id="<%=item.IDProductType%>"><i class="fa fa-trash"></i> Xóa</button>
                 </td>
                 </tr>
                 <% }) %>
@@ -90,3 +90,34 @@
 
   </div>
   <%- include('../layout/footer.ejs')%>
+
+
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    // Xử lý sự kiện click trên nút xóa
+    $(".btn-xoa").on("click", function() {
+      // Lấy ID loại sản phẩm từ thuộc tính data-id của nút xóa
+      var productTypeId = $(this).data("id");
+      
+      // Hiển thị cảnh báo để xác nhận việc xóa
+      if (confirm("Bạn có chắc chắn muốn xóa loại sản phẩm này không?")) {
+        // Gửi yêu cầu xóa loại sản phẩm đến máy chủ
+        $.ajax({
+          method: "POST",
+          url: "http://localhost:8082/admin/v1/producttype/delete/" + productTypeId,
+          success: function(response) {
+            // Nếu xóa thành công, reload trang để cập nhật dữ liệu mới
+            location.reload();
+          },
+          error: function(xhr, status, error) {
+            // Xử lý lỗi nếu có
+            console.error("Error:", error);
+            alert("Đã xảy ra lỗi khi xóa loại sản phẩm.");
+          }
+        });
+      }
+    });
+  });
+</script>

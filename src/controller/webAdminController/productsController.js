@@ -504,7 +504,109 @@ let handleDeleteFileCould = async (req, res) => {
   }
 };
 
+const deleteAdminV1Product = async (req, res) => {
+  const productId = req.params.id;
 
+  try {
+    const connection = await pool.getConnection();
+    await connection.beginTransaction();
+
+    try {
+      // Kiểm tra xem sản phẩm có tồn tại không
+      const [existingRows, existingFields] = await connection.execute(
+        "SELECT * FROM `product` WHERE IDProduct = ?",
+        [productId]
+      );
+
+      if (!existingRows || existingRows.length === 0) {
+        console.log("Sản phẩm không tồn tại.");
+        await connection.rollback();
+        return res.status(404).json({ message: "Sản phẩm không tồn tại." });
+      }
+
+      // Thực hiện xóa sản phẩm
+      const [deleteRows, deleteFields] = await connection.execute(
+        "DELETE FROM `product` WHERE IDProduct = ?",
+        [productId]
+      );
+
+      if (deleteRows.affectedRows > 0) {
+        console.log("Sản phẩm đã được xóa thành công.");
+        await connection.commit();
+        return res
+          .status(200)
+          .json({ message: "Sản phẩm đã được xóa thành công." });
+      } else {
+        console.log("Không có bản ghi nào được xóa.");
+        await connection.rollback();
+        return res
+          .status(500)
+          .json({ message: "Không có bản ghi nào được xóa." });
+      }
+    } catch (error) {
+      console.error("Lỗi xử lý yêu cầu DELETE:", error);
+      await connection.rollback();
+      res.status(500).json({ message: "Đã xảy ra lỗi server." });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Lỗi kết nối cơ sở dữ liệu:", error);
+    res.status(500).json({ message: "Internal Server Error - Database connection" });
+  }
+};
+
+const deleteAdminV1ProductsType = async (req, res) => {
+  const itemId = req.params.id;
+
+  try {
+    const connection = await pool.getConnection();
+    await connection.beginTransaction();
+
+    try {
+      // Kiểm tra xem loại sản phẩm có tồn tại không
+      const [existingRows, existingFields] = await connection.execute(
+        "SELECT * FROM `producttype` WHERE IDProductType = ?",
+        [itemId]
+      );
+
+      if (!existingRows || existingRows.length === 0) {
+        console.log("Loại sản phẩm không tồn tại.");
+        await connection.rollback();
+        return res.status(404).json({ message: "Loại sản phẩm không tồn tại." });
+      }
+
+      // Thực hiện xóa loại sản phẩm
+      const [deleteRows, deleteFields] = await connection.execute(
+        "DELETE FROM `producttype` WHERE IDProductType = ?",
+        [itemId]
+      );
+
+      if (deleteRows.affectedRows > 0) {
+        console.log("Loại sản phẩm đã được xóa thành công.");
+        await connection.commit();
+        return res
+          .status(200)
+          .json({ message: "Loại sản phẩm đã được xóa thành công." });
+      } else {
+        console.log("Không có bản ghi nào được xóa.");
+        await connection.rollback();
+        return res
+          .status(500)
+          .json({ message: "Không có bản ghi nào được xóa." });
+      }
+    } catch (error) {
+      console.error("Lỗi xử lý yêu cầu DELETE:", error);
+      await connection.rollback();
+      res.status(500).json({ message: "Đã xảy ra lỗi server." });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Lỗi kết nối cơ sở dữ liệu:", error);
+    res.status(500).json({ message: "Internal Server Error - Database connection" });
+  }
+};
 
 
 
@@ -521,7 +623,8 @@ module.exports = {
 
   postAdminV1ProductEdit,
   postAdminV1ProductsCreate,
-
+  deleteAdminV1Product,
+  deleteAdminV1ProductsType,
   handleUploadFileCould,
   handleDeleteFileCould
   

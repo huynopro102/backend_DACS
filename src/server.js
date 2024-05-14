@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser');
 const app = express()
 const path = require("path")
 const webAdmin = require("./router/webAdmin")
@@ -18,6 +19,8 @@ configeFileStatic(app,path,__dirname)
 // configure dotenv
 require('dotenv').config()
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 const port = process.env.PORT || 3000
 
 app.use('/api/auth',authGoogle)

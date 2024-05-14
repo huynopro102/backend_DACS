@@ -24,10 +24,10 @@
                         <table class="table">
 
                             <form class="form-inline" method="get">
-                                <div class="form-group mb-2">
+                                <div class="form-group mb-2" style="display: flex; gap:10px;">
                                     <label for="staticEmail2" class="sr-only">Email</label>
                                     <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
-                                        placeholder="input field">
+                                        placeholder="input field" style="width: 450px !important; height:34px !important;">
                                     <button type="submit" class="btn btn-primary mb-5"><i
                                             class="fa fa-search"></i></button>
                                     <a href="http://localhost:8082/admin/v1/product/create"
@@ -76,8 +76,9 @@
                                     <td>
                                         <a href="http://localhost:8082/admin/v1/product/edit/<%= item.IDProduct%>"
                                             class="btn btn-sm btn-primary "><i class="fa fa-edit"></i> sua</a>
-                                        <a href="https://thoitrangdarkt-com.onrender.com/admin/v1/productsdelete/<%= item.IDProduct%>"
-                                            class="btn btn-sm btn-danger  "><i class="fa fa-trash"></i> xoa</a>
+                                            <button class="btn btn-sm btn-danger delete-product" data-product-id="<%= item.IDProduct %>">
+                                                <i class="fa fa-trash"></i> Xóa
+                                            </button>
                                     </td>
 
 
@@ -112,3 +113,45 @@
             </section>
         </div>
         <%- include('../layout/footer.ejs')%>
+
+        <script>
+            // Hàm để xử lý sự kiện click khi trang được tải hoàn chỉnh
+        // Hàm để xử lý sự kiện click khi trang được tải hoàn chỉnh
+    function handleDeleteProduct() {
+        // Lấy danh sách tất cả các nút xóa sản phẩm
+        var deleteButtons = document.querySelectorAll('.delete-product');
+
+        // Lặp qua từng nút và thêm lắng nghe sự kiện click
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Lấy ID của sản phẩm cần xóa từ thuộc tính data-product-id
+                var productId = this.getAttribute('data-product-id');
+
+                // Xác nhận trước khi xóa
+                if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
+                    // Tạo một yêu cầu AJAX
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/admin/v1/product/delete/' + productId);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            // Xử lý khi xóa thành công, ví dụ: reload trang
+                            window.location.reload();
+                        } else {
+                            // Xử lý khi có lỗi xảy ra
+                            console.error('Error:', xhr.statusText);
+                        }
+                    };
+                    xhr.onerror = function() {
+                        // Xử lý khi có lỗi xảy ra
+                        console.error('Request failed');
+                    };
+                    xhr.send();
+                }
+            });
+        });
+    }
+
+    // Gọi hàm handleDeleteProduct khi trang được tải hoàn chỉnh
+    handleDeleteProduct();
+        </script>

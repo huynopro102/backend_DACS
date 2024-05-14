@@ -5,7 +5,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Quản lý nhà cung cấp
+      Quản lý kho
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -30,18 +30,17 @@
               <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
                 placeholder="input field" style="width: 450px !important; height:34px !important;">
               <button type="submit" class="btn btn-primary mb-5"><i class="fa fa-search"></i></button>
-              <a href="http://localhost:8082/admin/v1/supplier/create" class="btn btn-success mb-5"><i
+              <a href="http://localhost:8082/admin/v1/warehouse/create" class="btn btn-success mb-5"><i
                   class="fa fa-plus"></i> Create</a>
             </div>
           </form>
 
           <thead>
             <tr>
-              <th scope="col">ID Supplier</th>
-              <th scope="col">SupplierName</th>
-              <th scope="col">PhoneSupplier</th>
-              <th scope="col">SupplierAddress</th>
-              <th scope="col">EmailSupplier</th>
+              <th scope="col">IDWarehouse</th>
+              <th scope="col">WarehouseName</th>
+              <th scope="col">WarehouseAddress</th>
+              <th scope="col">DateCreated</th>
             </tr>
           </thead>
           <tbody>
@@ -49,30 +48,25 @@
 
             <% dataUser.map((item,index)=>{ %>
               <th scope="row">
-                <%= item.IDSupplier%>
+                <%= item.IDWarehouse%>
               </th>
 
               <td>
-                <%= item.SupplierName%>
+                <%= item.WarehouseName%>
               </td>
 
               <td>
-                <%= item.PhoneSupplier%>
+                <%= item.WarehouseAddress%>
               </td>
 
-              <td>
-                <%= item.SupplierAddress%>
-              </td>
+              <td><%= item.DateCreated%></td>
 
+            
               <td>
-                <%= item.EmailSupplier%>
-              </td>
-
-              <td>
-                <a href="http://localhost:8082/admin/v1/supplier/edit/<%= item.IDSupplier%>"
-                  class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> sua</a>
+                <a href="http://localhost:8082/admin/v1/warehouse/edit/<%= item.IDWarehouse%>"
+                  class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> Edit</a>
                  
-                  <a href="#" data-id="<%= item.IDSupplier%>" class="btn btn-sm btn-danger btn-xoa"><i class="fa fa-trash"></i> Xóa</a>
+                  <a href="#" data-id="<%= item.IDWarehouse%>" class="btn btn-sm btn-danger btn-xoa"><i class="fa fa-trash"></i> Delete</a>
               </td>
               </tr>
               <% }) %>
@@ -109,18 +103,19 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+  
   $(document).ready(function() {
     // Xử lý sự kiện click trên nút xóa
     $(".btn-xoa").on("click", function() {
       // Lấy ID loại sản phẩm từ thuộc tính data-id của nút xóa
-      var productTypeId = $(this).data("id");
+      var warehouseId = $(this).data("id");
       
       // Hiển thị cảnh báo để xác nhận việc xóa
-      if (confirm("Bạn có chắc chắn muốn xóa nhà cung cấp này không?")) {
+      if (confirm("Bạn có chắc chắn muốn xóa kho này không?")) {
         // Gửi yêu cầu xóa loại sản phẩm đến máy chủ
         $.ajax({
           method: "POST",
-          url: "http://localhost:8082/admin/v1/supplier/delete/" + productTypeId,
+          url: "http://localhost:8082/admin/v1/warehouse/delete/" + warehouseId,
           success: function(response) {
             // Nếu xóa thành công, reload trang để cập nhật dữ liệu mới
             location.reload();
@@ -128,7 +123,7 @@
           error: function(xhr, status, error) {
             // Xử lý lỗi nếu có
             console.error("Error:", error);
-            alert("Đã xảy ra lỗi khi xóa nhà cung cấp.");
+            alert("Đã xảy ra lỗi khi xóa kho.");
           }
         });
       }

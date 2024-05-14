@@ -5,7 +5,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Quản lý tài khoản
+          Quản lý hóa đơn
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -30,17 +30,21 @@
                   <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
                     placeholder="input field" style="width: 450px !important; height:34px !important;">
                   <button type="submit" class="btn btn-primary mb-5"><i class="fa fa-search"></i></button>
-                  <a href="http://localhost:8082/admin/v1/accounts/create" class="btn btn-success mb-5"><i
-                      class="fa fa-plus"></i> Create</a>
+                  <a href="#" class="btn btn-sm btn-success btn-xuat" onclick="exportExcel()">
+                    <i class="fas fa-file-excel"></i> Xuất Excel
+                </a>
                 </div>
+                
               </form>
 
               <thead>
                 <tr>
-                  <th scope="col">Username</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Password</th>
-                  <th scope="col">Check</th>
+                  <th scope="col">IDInvoice</th>
+                  <th scope="col">IDCustomer</th>
+                  <th scope="col">IDStaff</th>
+                  <th scope="col">DateCreated</th>
+                  <th scope="col">Status</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -48,28 +52,34 @@
 
                 <% dataUser.map((item,index)=>{ %>
                   <th scope="row">
-                    <%= item.Username%>
+                    <%= item.IDInvoice%>
                   </th>
 
                   <td>
-                    <%= item.Email%>
+                    <%= item.IDCustomer%>
                   </td>
 
                   <td>
-                    <%= item.Password%>
+                    <%= item.IDStaff%>
                   </td>
 
                   <td>
-                    <%= item.Check%>
+                    <%= item.DateCreated%>
                   </td>
 
                   <td>
-                    <a href="http://localhost:8082/admin/v1/accounts/edit/<%= item.Username%>"
-                      class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> sua</a>
+                    <%= item.Status%>
+                  </td>
+
+
+                  <td>
+                    <a href="#" class="btn btn-sm btn-warning btn-xem" aboriginal="<%= item.Username %>">
+                        <i class="fa-solid fa-check" style="margin: 5px;"></i> Xác Nhận
+                    </a>
                      
-                    <a href="#" aboriginal="<%= item.Username%>" class="btn btn-sm btn-danger btn-xoa "><i
-                          class="fa fa-trash"></i>
-                      xoa</a>
+                    <a href="#" class="btn btn-sm btn-primary btn-xem" aboriginal="<%= item.Username %>">
+                        <i class="fa fa-eye" style="margin: 5px;"></i> Chi tiết hóa đơn
+                    </a>
                   </td>
                   </tr>
                   <% }) %>
@@ -102,40 +112,31 @@
 
       </section>
 
-    </div>
+     </div>
 
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
     <script>
-      $(document).ready(function () {
-
-        function confirmDelete(username) {
-          const response = confirm("Bạn có chắc chắn muốn xóa?");
-          if (response) {
-            $.ajax({
-              url: 'http://localhost:8082/admin/v1/accounts',
-              type: 'POST',
-              contentType: 'application/json',
-              data: JSON.stringify({ Username: username }),
-              success: function (response) {
-                location.reload();
-              },
-              error: function (xhr, status, error) {
+      $('.btn-xem').click(function () {
+        var username = $(this).attr('aboriginal');
+        $.ajax({
+            url: 'http://localhost:8082/admin/v1/customer/' + username,
+            type: 'GET',
+            success: function (data) {
+                $('#customerDetails').html(data);
+                $('#customerModal').modal('show');
+            },
+            error: function (xhr, status, error) {
                 console.error('Lỗi:', error);
-              }
-            });
-          }
-        }
-
-        $('a.btn-xoa').click(function (e) {
-          e.preventDefault();
-          const username = $(this).attr('aboriginal');;
-          console.log("day la username ",username)
-          confirmDelete(username);
+            }
         });
+    });
 
-      })
+    function exportExcel() {
+      window.location.href = 'http://localhost:8082/admin/v1/exportToExcel/';
+  }
     </script>
 
 <%- include('../layout/footer.ejs')%>

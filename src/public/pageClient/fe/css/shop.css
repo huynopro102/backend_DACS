@@ -183,7 +183,7 @@ li {
 .pagination {
     margin-top: 25px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end !important;
     align-items: center;
     margin-bottom: 50px;
 }

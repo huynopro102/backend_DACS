@@ -66,25 +66,27 @@
                                 <p>Nếu bạn có thắc mắc gì, có thể gửi yêu cầu cho chúng tôi, và chúng tôi sẽ liên lạc lại với bạn sớm nhất có thể .</p>
                                 <div class="contact-FormWrapper">
                                     <div class="contact-form">
+                                        <form method="post" action="/sendmail">
                                         <div class="row">
+                                            
                                             <div class="col-sm-12 col-xs-12">
                                                 <div class="input-group">
-                                                    <input required="" type="text" name="contact[name]" class="form-control" placeholder="Tên của bạn" aria-describedby="basic-addon1">
+                                                    <input required="" type="text" name="name" class="form-control" placeholder="Tên của bạn" aria-describedby="basic-addon1">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="input-group">
-                                                    <input required="" type="text" name="contact[email]" class="form-control" placeholder="Email của bạn" aria-describedby="basic-addon1">
+                                                    <input required="" type="email" name="email" class="form-control" placeholder="Email của bạn" aria-describedby="basic-addon1">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="input-group">
-                                                    <input pattern="[0-9]{10,12}" required="" type="text" name="contact[phone]" class="form-control" placeholder="Số điện thoại của bạn" aria-describedby="basic-addon1">
+                                                    <input pattern="[0-9]{10,12}" required="" type="text" name="phone" class="form-control" placeholder="Số điện thoại của bạn" aria-describedby="basic-addon1">
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 col-xs-12">
                                                 <div class="input-group">
-                                                    <textarea required="" name="contact[body]" placeholder="Nội dung"></textarea>
+                                                    <textarea required="" name="body" placeholder="Nội dung"></textarea>
                                                     <div class="sitebox-recaptcha ">
                                                         This site is protected by reCAPTCHA and the Google
                                                         <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Privacy Policy</a> 
@@ -93,9 +95,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 col-xs-12">
-                                                <button class="button dark cta-submitform">Gửi cho chúng tôi</button>
+                                                <button type="submit" class="button dark cta-submitform">Gửi cho chúng tôi</button>
                                             </div>
+                                        
                                         </div>
+                                    </form>
                                     </div>
                                 </div>
                             </div>

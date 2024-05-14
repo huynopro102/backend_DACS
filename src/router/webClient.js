@@ -32,7 +32,7 @@ router.get("/blog" , controllerBlog.getBlog)
 
 // get contact
 router.get("/contact" , controllerContact.getContact)
-
+router.post("/sendmail", controllerContact.sendEmail);
 // get shop
 router.get("/shop" , controllerShop.getShop)
 
@@ -48,6 +48,6 @@ router.get("/guild" ,controllerGuild.getGuild)
 
 // get profile
 router.get("/profile" , verifyAccessToken , controllerProfile.getProfile)
-
-
+router.post("/editprofile" , verifyAccessToken , controllerProfile.updateAccountInfo)
+router.post("/changepassword" , verifyAccessToken , controllerProfile.changePassword)
 module.exports = router;

@@ -24,11 +24,10 @@
         <div class="d-flex filter-log">
             <p class="filter-log-title"><span>Sắp xếp theo: </span></p>
             <form class="woocommerce-ordering" method="get">
-                <select name="orderby" class="orderby" aria-label="Shop order">
-                    <option value="popularity">Thứ tự theo mức độ phổ biến</option>
-                    <option value="date">Mới nhất</option>
-                    <option value="price">Thứ tự theo giá: Thấp đến cao</option>
-                    <option value="price-desc" selected="selected">Thứ tự theo giá: Cao đến thấp</option>
+                <select name="orderby" class="orderby" aria-label="Shop order" onchange="this.form.submit()">
+                    <option value="date" <% if (orderby === 'date') { %>selected<% } %>>Mới nhất</option>
+                    <option value="price" <% if (orderby === 'price') { %>selected<% } %>>Thứ tự theo giá: Thấp đến cao</option>
+                    <option value="price-desc" <% if (orderby === 'price-desc') { %>selected<% } %>>Thứ tự theo giá: Cao đến thấp</option>
                 </select>
                 <input type="hidden" name="paged" value="1">
             </form>
@@ -44,7 +43,7 @@
                         <div class="box-shop">
                             <div class="form form-search">
                                 <i class="bx bx-search"></i>
-                                <input type="text" class="form-control form-input" placeholder="Tìm kiếm...">
+                                <input type="text" id="searchInput" class="form-control form-input" placeholder="Tìm kiếm..." onkeypress="handleKeyPress(event)">
                             </div>
                             <span class="filter-header">
                                 Sản phẩm
@@ -240,7 +239,16 @@
 
     <%- include('../Client/layout/footer.ejs') %>
         <script>
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    searchProduct();
+                }
+            }
 
+            function searchProduct() {
+                const searchTerm = document.getElementById('searchInput').value;
+                window.location.href = "/shop?search=" + encodeURIComponent(searchTerm);
+            }
 
             function updateProduct(element) {
                 const productInfo = {
