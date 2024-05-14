@@ -45,7 +45,6 @@ router.post('/create_payment_url', function (req, res, next) {
     }
 
     vnp_Params = sortObject(vnp_Params);
-    console.log(vnp_Params)
     let querystring = require('qs');
     let signData = querystring.stringify(vnp_Params, { encode: false });
     let crypto = require("crypto");     
