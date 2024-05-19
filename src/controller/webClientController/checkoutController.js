@@ -1,6 +1,5 @@
 const pool = require("../../models/connectDB");
 const moment = require('moment');
-const axios = require("axios");
 let postCheckout = async (req, res, next) => {
   try {
     const {
