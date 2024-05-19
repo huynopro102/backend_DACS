@@ -6,6 +6,7 @@ const getConnection = promisify(pool.getConnection).bind(pool);
 require("dotenv").config()
 
 let loginSuccess = async (req, res) => {
+
   let conn; // Biến để lưu trữ kết nối
 
   try {
@@ -77,6 +78,7 @@ let loginSuccess = async (req, res) => {
       .status(500)
       .json({ message: "Internal Server Error - Database connection" });
   }
+
 };
 
 module.exports = {

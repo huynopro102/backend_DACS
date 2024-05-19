@@ -18,7 +18,8 @@ let getAdminV1Invoices = async (req, res) => {
         // tong so trang
         let totalPage = Math.ceil(totalRow / limit);
       
-        
+        // tong so luong nhan vien
+        const [staff , fieldsStaff] = await pool.execute("select * from staff")
         
         //
         if (name) {
@@ -30,6 +31,7 @@ let getAdminV1Invoices = async (req, res) => {
             dataUser: rows ? rows : [],
             totalPage: totalPage,
             page: parseInt(_page),
+            totalStaff : staff
           });
         } else {
           const [rows, fields] = await pool.execute("SELECT * FROM `invoice` limit "+ start+"," +limit);
@@ -37,6 +39,7 @@ let getAdminV1Invoices = async (req, res) => {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
             page: parseInt(_page),
+            totalStaff : staff
           });
         }
     } catch (err) {

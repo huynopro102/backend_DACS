@@ -22,7 +22,7 @@
         <div class="box-body">
 
 
-          <form action="http://localhost:8082/admin/v1/warehouse/edit/<%= row[0].IDWarehouse%>" method="post">
+          <form action="https://dungchinh.onrender.com/admin/v1/warehouse/edit/<%= row[0].IDWarehouse%>" method="post">
             <!-- username -->
             <div class="form-group">
               <label for="exampleInputName">WarehouseName</label>
@@ -46,7 +46,7 @@
           
             <!-- button submit -->
             <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i> Submit</button>
-            <a href="http://localhost:8082/admin/v1/warehouse" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
+            <a href="https://dungchinh.onrender.com/admin/v1/warehouse" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
           </form>
 
         </div>
@@ -80,7 +80,7 @@ const formattedDate = `${day}/${month}/${year}`;
   
   const postRequired = async (requestBody) => {
     try {
-      const response = await fetch(`http://localhost:8082/admin/v1/warehouse/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
+      const response = await fetch(`https://dungchinh.onrender.com/admin/v1/warehouse/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,8 +91,15 @@ const formattedDate = `${day}/${month}/${year}`;
       const responseData = await response.json();
       if (response.ok) {
         alert(responseData.message);
-        window.location.href = 'http://localhost:8082/admin/v1/warehouse';
-      } else {
+        window.location.href = 'https://dungchinh.onrender.com/admin/v1/warehouse';
+      }else if(response.status === 400) {
+        alert(responseData.message)
+      }else if(response.status === 401){
+        alert(responseData.message)
+      }else if(responseData.status === 500){
+        alert(response.message)
+      }
+      else {
         alert(responseData.message);
       }
     } catch (error) {

@@ -22,7 +22,7 @@
 
           <div class="box-body">
 
-            <form action="http://localhost:8082/admin/v1/warehouse/create" method="post">
+            <form action="https://dungchinh.onrender.com/admin/v1/warehouse/create" method="post">
 
               <!-- SupplierName -->
               <div class="form-group">
@@ -90,7 +90,7 @@
 
         const postRequired = async (requestBody) => {
           try {
-            const response = await fetch('http://localhost:8082/admin/v1/warehouse/create', {
+            const response = await fetch('https://dungchinh.onrender.com/admin/v1/warehouse/create', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

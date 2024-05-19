@@ -30,7 +30,7 @@
               <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
                 placeholder="input field" style="width: 450px !important; height:34px !important;">
               <button type="submit" class="btn btn-primary mb-5"><i class="fa fa-search"></i></button>
-              <a href="http://localhost:8082/admin/v1/supplier/create" class="btn btn-success mb-5"><i
+              <a href="https://dungchinh.onrender.com/admin/v1/supplier/create" class="btn btn-success mb-5"><i
                   class="fa fa-plus"></i> Create</a>
             </div>
           </form>
@@ -69,7 +69,7 @@
               </td>
 
               <td>
-                <a href="http://localhost:8082/admin/v1/supplier/edit/<%= item.IDSupplier%>"
+                <a href="https://dungchinh.onrender.com/admin/v1/supplier/edit/<%= item.IDSupplier%>"
                   class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> sua</a>
                  
                   <a href="#" data-id="<%= item.IDSupplier%>" class="btn btn-sm btn-danger btn-xoa"><i class="fa fa-trash"></i> Xóa</a>
@@ -120,7 +120,7 @@
         // Gửi yêu cầu xóa loại sản phẩm đến máy chủ
         $.ajax({
           method: "POST",
-          url: "http://localhost:8082/admin/v1/supplier/delete/" + productTypeId,
+          url: "https://dungchinh.onrender.com/admin/v1/supplier/delete/" + productTypeId,
           success: function(response) {
             // Nếu xóa thành công, reload trang để cập nhật dữ liệu mới
             location.reload();

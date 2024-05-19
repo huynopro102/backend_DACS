@@ -116,7 +116,7 @@
 
         if (existingRows && existingRows.length > 0 && existingRows[0].IDWarehouse !== itemId) {
         console.log("Tên kho đã tồn tại.");
-        return res.status(400).json({ message: "Tên kho đã tồn tại." });
+        return res.status(401).json({ message: "Tên kho đã tồn tại." });
         }
 
         const [updateRows, updateFields] = await pool.execute(

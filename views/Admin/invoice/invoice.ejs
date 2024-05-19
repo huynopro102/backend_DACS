@@ -60,7 +60,24 @@
                   </td>
 
                   <td>
-                    <%= item.IDStaff%>
+
+                    <% if(item.IDStaff !== null) { %>
+
+                      <%= item.IDStaff%>
+
+                   <% } %>
+
+                   <% if(item.IDStaff == null) { %>
+
+                    <select name="" id="">
+                      <%totalStaff.map( (item,index) => { %>
+                              <option value="1">  <%= item.StaffName%> </option>                            
+                      <% }) %>
+                    </select>
+
+                 <% } %>
+
+
                   </td>
 
                   <td>
@@ -73,9 +90,19 @@
 
 
                   <td>
-                    <a href="#" class="btn btn-sm btn-warning btn-xem" aboriginal="<%= item.Username %>">
-                        <i class="fa-solid fa-check" style="margin: 5px;"></i> Xác Nhận
-                    </a>
+                    
+                    <%  if(item.Status === 1){ %>
+                        <a href="#" class="btn btn-sm btn-warning btn-xem" aboriginal="<%= item.Username %>">
+                            <i class="fa-solid fa-check" style="margin: 5px;"></i> Xác Nhận
+                        </a>
+                    <%  } %>
+
+                    <%  if(item.Status === 2){ %>
+                      <a href="#" class="btn btn-sm btn-info btn-xem" aboriginal="<%= item.Username %>">
+                          <i class="fa-solid fa-check" style="margin: 5px;"></i> Đã Xác Nhận
+                      </a>
+                  <%  } %>
+                  
                      
                     <a href="#" class="btn btn-sm btn-primary btn-xem" aboriginal="<%= item.Username %>">
                         <i class="fa fa-eye" style="margin: 5px;"></i> Chi tiết hóa đơn
@@ -122,7 +149,7 @@
       $('.btn-xem').click(function () {
         var username = $(this).attr('aboriginal');
         $.ajax({
-            url: 'http://localhost:8082/admin/v1/customer/' + username,
+            url: 'https://dungchinh.onrender.com/admin/v1/customer/' + username,
             type: 'GET',
             success: function (data) {
                 $('#customerDetails').html(data);
@@ -135,7 +162,7 @@
     });
 
     function exportExcel() {
-      window.location.href = 'http://localhost:8082/admin/v1/exportToExcel/';
+      window.location.href = 'https://dungchinh.onrender.com/admin/v1/exportToExcel/';
   }
     </script>
 

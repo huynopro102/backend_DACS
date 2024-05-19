@@ -8,7 +8,7 @@ const getShop = async (req, res) => {
   const totalPage = Math.ceil(totalProduct[0].total / limit);
 
   // Tìm kiếm
-  let searchQuery = "";
+  let searchQuery = "ao";
   let searchParams = [];
   if (req.query.search) {
       searchQuery = " WHERE ProductName LIKE ?";
@@ -30,7 +30,7 @@ const getShop = async (req, res) => {
   }
 
   try {
-      let query = `SELECT * FROM product ${searchQuery} ${priceOrder} ${idOrder} LIMIT ?, ?`;
+      let query = `SELECT * FROM product ${searchQuery} ${priceOrder} ${idOrder} LIMIT `;
       if (searchQuery && totalProduct[0].total === 1) {
           query = `SELECT * FROM product ${searchQuery}`;
           const [rows, fields] = await pool.execute(query, searchParams);
@@ -40,8 +40,11 @@ const getShop = async (req, res) => {
               page: _page,
               orderby: req.query.orderby 
           });
-      } else {
-          const [rows, fields] = await pool.execute(query, [...searchParams, start, limit]);
+        } else {
+       
+          result =  ` ${start} ` + `,` + ` ${limit}`   ;
+          console.log(query , result)
+          const [rows, fields] = await pool.execute(query + result);
           await Promise.all(rows.map(async (element, index) => {
               const [detailiImage, detailImageFields] = await pool.execute('select * from productimagesdetails where IDProduct = ' + [element.IDProduct] + ' limit 1 ');
               const [image, imageFields] = await pool.execute("select * from images where IDImages = " + [detailiImage[0].IDImages] + " limit 1 ");

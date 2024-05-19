@@ -140,7 +140,7 @@
                             <!-- button submit -->
                             <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i>
                                 Submit</button>
-                            <a href="http://localhost:8082/admin/v1/product" class="btn btn-default"><i
+                            <a href="https://dungchinh.onrender.com/admin/v1/product" class="btn btn-default"><i
                                     class="fa fa-arrow-left"></i> Trở lại</a>
 
                         </form>
@@ -160,7 +160,7 @@
                 // btnSumbit
                 const postRequired = async (formData) => {
                     try {
-                        const response = await fetch(`http://localhost:8082/admin/v1/product/create`, {
+                        const response = await fetch(`https://dungchinh.onrender.com/admin/v1/product/create`, {
                             method: 'POST',
                             body: formData,
                         });
@@ -169,7 +169,7 @@
                         if (response.status == 200) {
                             const responseData = await response.json();
                             alert(responseData.message);
-                            window.location.href = 'http://localhost:8082/admin/v1/product';
+                            window.location.href = 'https://dungchinh.onrender.com/admin/v1/product';
                         } else if (response.status === 404) {
                             const responseData = await response.json();
                             alert(responseData.message);
@@ -206,7 +206,7 @@
                     if (name.value == "" || radio1.checked == false && radio2.checked == false
                         || sale_price.value == "" || price.value == "" || categorySelect.value == "chọn danh mục"
                         || supplierSelect.value == "chọn nhà cung cấp" || description.trim() === ""
-                        || image.src == "http://localhost:8082/admin/v1/product/123") {
+                        || image.src == "https://dungchinh.onrender.com/admin/v1/product/123") {
                         return false;
                     }
                     return true;

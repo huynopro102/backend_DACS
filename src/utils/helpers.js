@@ -23,7 +23,7 @@ const validateRegistration = (firstName, lastName, email, password) => {
 const validateSignin = (email, password) => {
     const schema = Joi.object({
         email: Joi.string().email().required(),
-        password: Joi.string().min(6).required(),
+        password: Joi.string().min(3).required(),
     }).options({ allowUnknown: false }); // Không cho phép các trường không mong muốn
 
     const { error, value } = schema.validate({ email, password });

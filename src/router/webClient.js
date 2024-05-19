@@ -33,6 +33,7 @@ router.get("/blog" , controllerBlog.getBlog)
 // get contact
 router.get("/contact" , controllerContact.getContact)
 router.post("/sendmail", controllerContact.sendEmail);
+
 // get shop
 router.get("/shop" , controllerShop.getShop)
 
