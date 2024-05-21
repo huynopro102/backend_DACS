@@ -189,7 +189,7 @@ let getAdminV1ProductsEdit = async (req, res) => {
       image: list_img,
     });
   } else {
-    // Handle case when product is not found
+  
     res.redirect("/admin/v1/product");
   }
 };

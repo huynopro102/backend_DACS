@@ -5,7 +5,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Quản lý tài khoản
+          Quản lý knhân viên
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -30,58 +30,80 @@
                   <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
                     placeholder="input field" style="width: 450px !important; height:34px !important;">
                   <button type="submit" class="btn btn-primary mb-5"><i class="fa fa-search"></i></button>
-                  <a href="http://localhost:8082/admin/v1/accounts/create" class="btn btn-success mb-5"><i
-                      class="fa fa-plus"></i> Create</a>
+                  
                 </div>
               </form>
 
               <thead>
                 <tr>
-                  <!-- <th scope="col">IDCustomer</th> -->
+                  <th scope="col">IDStaff</th>
+                  <th scope="col">StaffName</th>
                   <th scope="col">Username</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Password</th>
-                  <th scope="col">Check</th>
+                  <th scope="col">StaffAddress</th>
+                  <th scope="col">PhoneStaff</th>
+                  <th scope="col">CitizenIdentificationCode</th>
+                  <th scope="col">IDStaffType</th>
+                  <th scope="col">DateOfBirth</th>
+                  <th scope="col">Sex</th>
+                  <th scope="col">IdImages</th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
 
 
                 <% dataUser.map((item,index)=>{ %>
-
-                  <!-- <th scope="row">
-                    <% totalCustomer.map((item1,index1) =>{ %>
-                      
-                    <% if(index1 === index ){ %>
-                      <%= item1.IDCustomer%>
-                    <%}%>
-
-                   <%})%>
-                  </th> -->
-
                   <th scope="row">
-                    <%= item.Username%>
+                    <%= item.IDStaff%>
                   </th>
 
                   <td>
-                    <%= item.Email%>
+                    <%= item.StaffName%>
                   </td>
 
                   <td>
-                    <%= item.Password%>
+                    <%= item.Username%>
                   </td>
 
                   <td>
-                    <%= item.Check%>
+                    <%= item.StaffAddress%>
+                  </td>
+
+                  <td>
+                    <%= item.PhoneStaff%>
+                  </td>
+
+                  <td>
+                    <%= item.CitizenIdentificationCode%>
+                  </td>
+
+                  <td>
+                    <%= item.IDStaffType%>
+                  </td>
+
+                  <td>
+                    <%= item.DateOfBirth%>
+                  </td>
+
+                  <td>
+                    <%= item.Sex%>
+                  </td>
+
+                  <td>
+                    <%= item.IdImages%>
+                  </td>
+
+                  <td>
+                    Mở
                   </td>
 
                   <td>
                     <a href="http://localhost:8082/admin/v1/accounts/edit/<%= item.Username%>"
-                      class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> sua</a>
+                      class="btn btn-sm btn-success btn-sua"><i class="fa fa-edit"></i> Khóa</a>
                      
                     <a href="#" aboriginal="<%= item.Username%>" class="btn btn-sm btn-danger btn-xoa "><i
                           class="fa fa-trash"></i>
-                      xoa</a>
+                      Hủy Khóa</a>
                   </td>
                   </tr>
                   <% }) %>

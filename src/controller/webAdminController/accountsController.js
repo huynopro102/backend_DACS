@@ -18,6 +18,8 @@ let getAdminV1Accounts = async (req, res) => {
         // tong so trang
         let totalPage = Math.ceil(totalRow / limit);
       
+        const [customer,CustomerField] = await pool.execute("select * from customer")
+
         //
         if (name) {
           const [rows, fields] = await pool.execute(
@@ -28,6 +30,7 @@ let getAdminV1Accounts = async (req, res) => {
             dataUser: rows ? rows : [],
             totalPage: totalPage,
             page: parseInt(_page),
+            totalCustomer : customer
           });
         } else {
           const [rows, fields] = await pool.execute("SELECT * FROM `user` limit "+ start+"," +limit);
@@ -35,6 +38,8 @@ let getAdminV1Accounts = async (req, res) => {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
             page: parseInt(_page),
+            totalCustomer : customer
+
           });
         }
     } catch (err) {
