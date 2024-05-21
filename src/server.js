@@ -19,7 +19,7 @@ const {errorHandlerNotFound , errorHandler} = require("./utils/errorHandler")
   configeBodyParser(app)
   
 app.use(cors({
-  origin : "http://localhost:8082"
+  origin : ""
 }));
 // Handle preflight requests
 app.options('*', (req, res) => {

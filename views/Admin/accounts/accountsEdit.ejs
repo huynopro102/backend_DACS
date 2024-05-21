@@ -22,7 +22,7 @@
         <div class="box-body">
 
 
-          <form action="http://localhost:8082/admin/v1/accounts/edit/" method="post">
+          <form action="/admin/v1/accounts/edit/" method="post">
             <!-- username -->
             <div class="form-group">
               <label for="exampleInputPassword1">Username</label>
@@ -60,7 +60,7 @@
 
             <!-- button submit -->
             <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i> Submit</button>
-            <a href="http://localhost:8082/admin/v1/accounts" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
+            <a href="/admin/v1/accounts" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
 
           </form>
 
@@ -131,7 +131,7 @@
     const postRequired = async (requestBody) => {
       // Send POST request using Fetch API
       try {
-        const response = await fetch('http://localhost:8082/admin/v1/accounts/edit/', {
+        const response = await fetch('/admin/v1/accounts/edit/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

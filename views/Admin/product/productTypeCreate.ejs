@@ -22,7 +22,7 @@
 
           <div class="box-body">
 
-            <form action="http://localhost:8082/admin/v1/producttype/create" method="post">
+            <form action="/admin/v1/producttype/create" method="post">
 
               <!-- username -->
               <div class="form-group">
@@ -54,7 +54,7 @@
                     <!-- button submit -->
                     <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i> Submit</button>
 
-                    <a href="http://localhost:8082/admin/v1/producttype" class="btn btn-default">
+                    <a href="/admin/v1/producttype" class="btn btn-default">
                         <i class="fa fa-arrow-left"> </i> Trở lại
                     </a>
 
@@ -87,7 +87,7 @@
         // function send requird
         const postRequired = async (requestBody) => {
           try {
-            const response = await fetch(`http://localhost:8082/admin/v1/producttype/create`, {
+            const response = await fetch(`/admin/v1/producttype/create`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

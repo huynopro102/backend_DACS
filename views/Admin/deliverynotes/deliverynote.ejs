@@ -90,7 +90,7 @@
         const result = confirm("xác nhận đơn hàng giao thành công?");
         if (result) {
             $.ajax({
-                url: 'http://localhost:8082/admin/v1/deliverynotes/edit/'+idDeliveryNotes,
+                url: '/admin/v1/deliverynotes/edit/'+idDeliveryNotes,
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ 

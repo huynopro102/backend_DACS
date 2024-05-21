@@ -17,7 +17,7 @@ router.get("/google/callback" ,(req,res,next) => {
  }) (req, res, next) 
 } 
 // , (req,res,next)=>{
-//   res.redirect(`http://localhost:8082/login-success/${req.user.id}`)
+//   res.redirect(`/login-success/${req.user.id}`)
 //   next()
 // } 
 ,

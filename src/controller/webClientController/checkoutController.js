@@ -202,7 +202,7 @@ let thanhtoanonline = async (req, res) => {
     vnp_Params['vnp_SecureHash'] = signed;
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
     console.log("123")
-    res.redirect("http://localhost:8082/home")
+    res.redirect("/home")
     
   } catch (error) {
     console.error("Error during transaction:", error);

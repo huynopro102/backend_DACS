@@ -164,7 +164,7 @@
       $('.btn-xem').click(function () {
         var username = $(this).attr('aboriginal');
         $.ajax({
-            url: 'http://localhost:8082/admin/v1/customer/' + username,
+            url: '/admin/v1/customer/' + username,
             type: 'GET',
             success: function (data) {
                 $('#customerDetails').html(data);
@@ -177,7 +177,7 @@
     });
 
     function exportExcel() {
-      window.location.href = 'http://localhost:8082/admin/v1/exportToExcel/';
+      window.location.href = '/admin/v1/exportToExcel/';
   }
     </script>
 

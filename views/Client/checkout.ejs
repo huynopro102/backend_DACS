@@ -77,12 +77,12 @@
             </div>
         </div>
     </section>
-    <form action="http://localhost:8082/api/vnpay/create_payment_url" method="post">
+    <form action="/api/vnpay/create_payment_url" method="post">
       
         <input type="submit" fdfdafdafda>
     </form>
   
-<a href="http://localhost:8082/api/vnpay/create_payment_url">ckikkkkkkkkkkkkkkkkkkkkkkkkkk</a>
+<a href="/api/vnpay/create_payment_url">ckikkkkkkkkkkkkkkkkkkkkkkkkkk</a>
     <%- include('../Client/layout/footer.ejs') %>
 
         <script>
@@ -236,7 +236,7 @@
                             paymentMethod : paymentMethod
                         };
 
-                        const response = await fetch("http://localhost:8082/checkout", {
+                        const response = await fetch("/checkout", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

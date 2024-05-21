@@ -22,7 +22,7 @@
 
           <div class="box-body">
 
-            <form action="http://localhost:8082/admin/v1/producttype/edit/<%= row[0].IDProductType%>" method="post">
+            <form action="/admin/v1/producttype/edit/<%= row[0].IDProductType%>" method="post">
 
               <!-- username -->
               <div class="form-group">
@@ -73,7 +73,7 @@
 
                     <!-- button submit -->
                     <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i> Submit</button>
-                    <a href="http://localhost:8082/admin/v1/producttype" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
+                    <a href="/admin/v1/producttype" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
 
             </form>
 
@@ -103,7 +103,7 @@
 
         const postRequired = async (requestBody) => {
           try {
-            const response = await fetch(`http://localhost:8082/admin/v1/producttype/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
+            const response = await fetch(`/admin/v1/producttype/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -115,7 +115,7 @@
             if (response.ok) {
               const responseData = await response.json(); 
               alert(responseData.message); 
-              window.location.href = 'http://localhost:8082/admin/v1/producttype';
+              window.location.href = '/admin/v1/producttype';
             } else if (response.status === 404) {
               const responseData = await response.json(); 
               alert(responseData.message); 

@@ -98,7 +98,7 @@
                   </td>
 
                   <td>
-                    <a href="http://localhost:8082/admin/v1/accounts/edit/<%= item.Username%>"
+                    <a href="/admin/v1/accounts/edit/<%= item.Username%>"
                       class="btn btn-sm btn-success btn-sua"><i class="fa fa-edit"></i> Khóa</a>
                      
                     <a href="#" aboriginal="<%= item.Username%>" class="btn btn-sm btn-danger btn-xoa "><i
@@ -148,7 +148,7 @@
           const response = confirm("Bạn có chắc chắn muốn xóa?");
           if (response) {
             $.ajax({
-              url: 'http://localhost:8082/admin/v1/accounts',
+              url: '/admin/v1/accounts',
               type: 'POST',
               contentType: 'application/json',
               data: JSON.stringify({ Username: username }),
