@@ -16,10 +16,6 @@ router.get("/google/callback" ,(req,res,next) => {
    next()
  }) (req, res, next) 
 } 
-// , (req,res,next)=>{
-//   res.redirect(`/login-success/${req.user.id}`)
-//   next()
-// } 
 ,
 loginSuccess );
 

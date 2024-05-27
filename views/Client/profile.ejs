@@ -515,14 +515,28 @@
 
 
             // logout
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', async function () {
                 const logoutButton = document.getElementById('logoutButton');
                 logoutButton.addEventListener('click', function () {
-                    // Xóa cookie
-                    document.cookie = "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "Username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    // Reload trang
-                    window.location.reload("/home");
+                    const token = document.cookie.split('Token=')[1]
+                    console.log(token)
+                    if(token){
+                        $.ajax({
+                            url: "http://localhost:8082/logout" , 
+                            type : "POST" ,
+                            dataType : "json" ,
+                            data : {token : token} ,
+                            success : function(data) {
+                                alert("đăng xuất thành công")
+                                location.reload("/home")
+                            } , 
+                            error : function(err){
+                                console.log("err ",err)
+                            }
+                        })
+                    }else{
+                        alert("lỗi server")
+                    }
                 });
             });
 
