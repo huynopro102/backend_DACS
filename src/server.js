@@ -28,9 +28,6 @@ app.options('*', (req, res) => {
   res.status(200).send();
 });
 
-  
-
-
 // configure dotenv
 require('dotenv').config()
 

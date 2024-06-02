@@ -24,59 +24,84 @@
                 </div>
                 <div class="col-md-9">
                     <div class="tab-content">
-                        <div class="tab-pane fade active show" id="account-general">
+                        
 
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Họ tên</label>
-                                    <input type="text" class="form-control mb-1" value="Họ tên">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Tên đăng nhập</label>
-                                    <input type="text" class="form-control" value="Tên đăng nhập">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Email</label>
-                                    <input type="text" class="form-control mb-1" value="Email">
-                                    <div class="alert alert-warning mt-3">
-                                        Bạn cần xác thực tài khoản qua email. Vui lòng kiểm tra<br>
-                                        <a href="javascript:void(0)">Xác thực email</a>
+                          <div class="tab-pane fade active show" id="account-general">
+                            <form id="updateAccountForm" action="/editprofile" method="POST">
+
+                                <div class="card-body media align-items-center d-flex" style="gap: 15px">
+                                    <img src="/congkhai/pageClient/fe/images/avatar-trang-4.jpg" alt="" class="d-block ui-w-80">
+                                    <div class="media-body ml-4">
+                                      <label class="btn btn-outline-primary">
+                                        Chỉnh sửa ảnh
+                                        <input type="file" class="account-settings-fileinput">
+                                      </label> &nbsp;
+                                    </div>
+                                  </div>
+
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="form-label">Tên đăng nhập</label>
+                                        <input type="text" class="form-account form-control mb-1" name="username" value="<%= currentUser.username %>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Họ và tên</label>
+                                        <input type="text" class="form-account form-control mb-1" name="customerName" value="<%= currentUser.customerName %>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Số điện thoại</label>
+                                        <input type="text" class="form-account form-control mb-1" name="phoneNumber" value="<%= currentUser.phoneNumber %>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Địa chỉ</label>
+                                        <input type="text" class="form-account form-control" name="address" value="<%= currentUser.address %>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Căn cước công dân</label>
+                                        <input type="text" class="form-account form-control" name="citizenID" value="<%= currentUser.citizenID %>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Ngày sinh</label>
+                                        <input type="text" class="form-account form-control" name="dob" value="<%= currentUser.dob %>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Giới tính</label>
+                                        <select class="form-account form-control mb-2" name="gender">
+                                            <option value="1" <% if (currentUser.gender === 1) { %> selected <% } %>>Nam</option>
+                                            <option value="0" <% if (currentUser.gender === 0) { %> selected <% } %>>Nữ</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-btn">
+                                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                        <button type="button" class="btn btn-danger">Hủy</button>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Số diện thoại</label>
-                                    <input type="text" class="form-control" value="Số diện thoại">
-                                </div>
-                                <div class="form-btn">
-                                    <div class="btn btn-primary">Lưu thay đổi</div>
-                                    <div class="btn btn-danger">Hủy</div>
-                                </div>
-                            </div>
-
+                            </form>
                         </div>
                         <div class="tab-pane fade" id="account-change-password">
                             <div class="card-body pb-2">
+                                <form id="changePasswordForm" action="/changepassword" method="POST"> <!-- Đặt id cho form -->
+                                    <div class="form-group">
+                                        <label class="form-label">Mật khẩu hiện tại</label>
+                                        <input type="password" class="form-control form-account" name="currentPassword"> <!-- Đặt name cho input -->
+                                    </div>
+                        
+                                    <div class="form-group">
+                                        <label class="form-label">Mật khẩu mới</label>
+                                        <input type="password" class="form-control form-account" name="newPassword"> <!-- Đặt name cho input -->
+                                    </div>
+                        
+                                    <div class="form-group">
+                                        <label class="form-label">Xác nhận mật khẩu mới</label>
+                                        <input type="password" class="form-control form-account" name="confirmPassword"> <!-- Đặt name cho input -->
+                                    </div>
+                        
+                                    <div class="form-btn">
+                                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button> <!-- Sử dụng button type="submit" để gửi yêu cầu -->
+                                        <button type="button" class="btn btn-danger">Hủy</button>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="form-label">Mật khẩu</label>
-                                    <input type="password" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Mật khẩu mới</label>
-                                    <input type="password" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Xác thực mật khẩu mới</label>
-                                    <input type="password" class="form-control">
-                                </div>
-
-                                <div class="form-btn">
-                                    <div class="btn btn-primary">Lưu thay đổi</div>
-                                    <div class="btn btn-danger">Hủy</div>
-                                </div>
-
+                                </form>
                             </div>
                         </div>
                         <div class="tab-pane fade mt-3" id="account-info">
@@ -116,7 +141,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -148,7 +173,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -180,7 +205,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -258,7 +283,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -287,7 +312,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -316,7 +341,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -392,7 +417,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -421,7 +446,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -450,7 +475,7 @@
                                                 <td data-th="Product">
                                                     <div class="row">
                                                         <div class="col-md-3 text-left">
-                                                            <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png"
+                                                            <img src="localhost:8888/congkhai/pageClient/fe/images/pro2.png"
                                                                 alt=""
                                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                         </div>
@@ -512,31 +537,17 @@
     <%- include('../Client/layout/footer.ejs') %>
         <script>
 
-
+        
 
             // logout
-            document.addEventListener('DOMContentLoaded', async function () {
+            document.addEventListener('DOMContentLoaded', function () {
                 const logoutButton = document.getElementById('logoutButton');
                 logoutButton.addEventListener('click', function () {
-                    const token = document.cookie.split('Token=')[1]
-                    console.log(token)
-                    if(token){
-                        $.ajax({
-                            url: "http://localhost:8082/logout" , 
-                            type : "POST" ,
-                            dataType : "json" ,
-                            data : {token : token} ,
-                            success : function(data) {
-                                alert("đăng xuất thành công")
-                                location.reload("/home")
-                            } , 
-                            error : function(err){
-                                console.log("err ",err)
-                            }
-                        })
-                    }else{
-                        alert("lỗi server")
-                    }
+                    // Xóa cookie
+                    document.cookie = "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "Username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    // Reload trang
+                    window.location.reload("/home");
                 });
             });
 

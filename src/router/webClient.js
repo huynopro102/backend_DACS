@@ -12,6 +12,7 @@ const controllerCheckout = require("../controller/webClientController/checkoutCo
 const controllerGuild = require("../controller/webClientController/guildController")
 const controllerProfile = require("../controller/webClientController/profileController")
 const controllerLogout = require("../controller/webClientController/logoutController")
+const controllerDetailProduct = require("../controller/webClientController/detailproductController.ejs")
 const detailforgotpassword = require("../controller/webClientController/detailforgotpassword")
 
 const {verifyAccessToken ,verifyAccessTokenCheckout} = require("../utils/jwt_services")
@@ -61,6 +62,8 @@ router.get("/profile" , verifyAccessToken , controllerProfile.getProfile)
 // post logout
 router.post("/logout", verifyAccessToken , controllerLogout.postLogout  )
 
+// detailproduct
+router.get("/detailproduct/:productId" , controllerDetailProduct.getDetailProduct)
 
 
 module.exports = router;

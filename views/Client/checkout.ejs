@@ -20,7 +20,7 @@
                     <div class="infor-checkout d-flex justify-content-between">
                         <h3>Thông tin nhận hàng</h3>
 
-                        <form action="http://localhost:8082/api/vnpay/create_payment_url" method="post"
+                        <form action="http://localhost:8888/api/vnpay/create_payment_url" method="post"
                             class="form-infor">
                             <div class="infor-content mb-2">
                                 <label for="fname" class="form-label">Tên khách hàng</label>
@@ -280,7 +280,7 @@
                                 if (localStorage.clearLocalStorage) {
                                     localStorage.clear();
                                 }
-                                window.location.href = "https://dungchinh.onrender.com/shop"
+                                window.location.href = "/shop"
                             } else if (response.status === 400) {
                                 alert(responseData.message);
                             } else if (response.status === 410) {
@@ -300,7 +300,7 @@
                             }
                             else if (response.status === 409) {
                                 alert(responseData.message);
-                                window.location.href = "https://dungchinh.onrender.com/signin"
+                                window.location.href = "/signin"
                             }
                             else if (response.status === 500) {
                                 alert(responseData.message);

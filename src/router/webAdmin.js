@@ -7,6 +7,7 @@ const webAdminControllerWarehouses = require("../controller/webAdminController/w
 const webAdminControllerDashBoard = require("../controller/webAdminController/dashboardController")
 const webAdminControllerCustomer = require("../controller/webAdminController/customerController")
 const webAdminControllerInvoice = require("../controller/webAdminController/invoiceController")
+const webAdminControllerStaff = require("../controller/webAdminController/staffController")
 const webAdminControllerDeliveryNotes = require("../controller/webAdminController/deliverynoteController")
 
 
@@ -80,6 +81,22 @@ router.post('/admin/v1/invoice/upgrade_to_one_from_two/:id',webAdminControllerIn
 // deliveryNotes
 router.get("/admin/v1/deliverynotes",webAdminControllerDeliveryNotes.getDeliveryNote)
 router.post("/admin/v1/deliverynotes/edit/:id",webAdminControllerDeliveryNotes.postDeliveryNote)
+
+
+//staff
+router.get('/admin/v1/staff', webAdminControllerStaff.getAdminV1Staff);
+router.get('/admin/v1/exportToExcelStaff', webAdminControllerStaff.exportToExcel);
+
+
+//stafftype
+router.get('/admin/v1/stafftype',webAdminControllerStaff.getAdminV1StaffType)
+router.get('/admin/v1/stafftype/create',webAdminControllerStaff.getAdminV1StafftypeCreate)
+router.post('/admin/v1/stafftype/create',webAdminControllerStaff.postAdminV1StafftypeCreate)
+router.get('/admin/v1/stafftype/edit/:id',webAdminControllerStaff.getAdminV1StafftypeEdit)
+router.post('/admin/v1/stafftype/edit/:id',webAdminControllerStaff.postAdminV1StafftypeEdit)
+router.post('/admin/v1/stafftype/delete/:id',webAdminControllerStaff.postAdminV1StafftypeDelete)
+
+
 
 
 

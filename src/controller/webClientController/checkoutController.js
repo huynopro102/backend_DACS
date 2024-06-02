@@ -11,14 +11,12 @@ let postCheckout = async (req, res, next) => {
       cartItems,
       tongsoluong,
     } = req.body;
-    let arrayCartItems = JSON.parse(cartItems)
-
-
+    const arrayCartItems = cartItems
+    const { userID } = req.payload;
+  
+    
     let totalPriceDb = 0;
-    const [user, userFields] = await pool.execute(
-      "select * from user where Username = ? ",
-      [req.payload.userID.trim()]
-    );
+    const [user, userFields] = await pool.execute("select * from user where Username = ? ", [userID]);
 
     if (user.length > 0) {
       if (arrayCartItems) {
@@ -40,7 +38,11 @@ let postCheckout = async (req, res, next) => {
         )
           .then((list_product) => {
             if (parseFloat(totalPriceDb) === parseFloat(totalPrice)) {
-              req.user = user[0];
+              req.payload = {
+                info : req.body , 
+                infoUser : user[0]
+              }
+              
               next();
             } else {
               return res.status(403).json({
@@ -83,7 +85,9 @@ let postCheckout2 = async (req, res , next) => {
       paymentMethod,
     } = req.body;
 
-    const { Username, Email, Password, Check, id } = req.user;
+
+
+    const { Username, Email, Password, Check, id } = req.payload.infoUser;
 
     const [customer, customerFields] = await connection.execute(
       "SELECT * FROM customer WHERE Username = ?",
