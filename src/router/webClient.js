@@ -12,7 +12,7 @@ const controllerCheckout = require("../controller/webClientController/checkoutCo
 const controllerGuild = require("../controller/webClientController/guildController")
 const controllerProfile = require("../controller/webClientController/profileController")
 const controllerLogout = require("../controller/webClientController/logoutController")
-const controllerDetailProduct = require("../controller/webClientController/detailproductController.ejs")
+const controllerDetailProduct = require("../controller/webClientController/detailproductController")
 const detailforgotpassword = require("../controller/webClientController/detailforgotpassword")
 
 const {verifyAccessToken ,verifyAccessTokenCheckout} = require("../utils/jwt_services")

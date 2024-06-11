@@ -48,7 +48,7 @@ const getShop = async (req, res) => {
               const [nameSupplier, nameSupplierFields] = await pool.execute("select * from supplier where IDSupplier = " + [element.IDSupplier]);
               rows[index].url = image[0].UrlImages;
               rows[index].SupplierName = nameSupplier[0].SupplierName;
-              rows[index].PriceVND = (element.Price * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+              rows[index].PriceVND =  parseInt(element.Price).toLocaleString('vi-VN');
           }));
           res.render("./Client/shop.ejs", { 
               products: rows ? rows : [],

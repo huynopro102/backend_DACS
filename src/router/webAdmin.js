@@ -9,6 +9,7 @@ const webAdminControllerCustomer = require("../controller/webAdminController/cus
 const webAdminControllerInvoice = require("../controller/webAdminController/invoiceController")
 const webAdminControllerStaff = require("../controller/webAdminController/staffController")
 const webAdminControllerDeliveryNotes = require("../controller/webAdminController/deliverynoteController")
+const webAdminControllerInvoiceDetail = require("../controller/webAdminController/invoiceDetailController")
 
 
 
@@ -29,6 +30,10 @@ router.get('/admin/v1/accounts', webAdminControllerAccounts.getAdminV1Accounts);
 router.post('/admin/v1/accounts', webAdminControllerAccounts.postAdminV1Accounts);
 router.get('/admin/v1/accounts/edit/:id', webAdminControllerAccounts.getAdminV1AccountsEdit);
 router.get('/admin/v1/accounts/create',webAdminControllerAccounts.getAdminV1AccountsCreate)
+
+// post accounts
+router.post("/admin/v1/accounts/edit/:id", webAdminControllerAccounts.postAdminV1AccountsEdit )
+router.post("/admin/v1/accounts/delete" , webAdminControllerAccounts.postAdminV1AccountDelete )
 
 //customer
 router.get('/admin/v1/customer', webAdminControllerCustomer.getAdminV1Customers);
@@ -72,10 +77,15 @@ router.post('/admin/v1/warehouse/create',webAdminControllerWarehouses.postAdminV
 router.post('/admin/v1/warehouse/edit/:id',webAdminControllerWarehouses.postAdminV1WarehouseEdit)
 router.post('/admin/v1/warehouse/delete/:id',webAdminControllerWarehouses.postAdminV1WarehouseDelete)
 
+
 //invoice
 router.get('/admin/v1/invoice',webAdminControllerInvoice.getAdminV1Invoices)
 router.get('/admin/v1/exportToExcel',webAdminControllerInvoice.exportToExcel)
 router.post('/admin/v1/invoice/upgrade_to_one_from_two/:id',webAdminControllerInvoice.upgrade_to_one_from_two)
+
+
+// invoiceDetail
+router.get("/admin/v1/invoicedetail/:id", webAdminControllerInvoiceDetail.getAdminV1InvoiceDetailID)
 
 
 // deliveryNotes
@@ -95,8 +105,6 @@ router.post('/admin/v1/stafftype/create',webAdminControllerStaff.postAdminV1Staf
 router.get('/admin/v1/stafftype/edit/:id',webAdminControllerStaff.getAdminV1StafftypeEdit)
 router.post('/admin/v1/stafftype/edit/:id',webAdminControllerStaff.postAdminV1StafftypeEdit)
 router.post('/admin/v1/stafftype/delete/:id',webAdminControllerStaff.postAdminV1StafftypeDelete)
-
-
 
 
 

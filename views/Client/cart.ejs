@@ -41,13 +41,12 @@
     </section>
 
     <%- include('../Client/layout/footer.ejs') %>
-
         <script>
 
-
-
-
             document.addEventListener("DOMContentLoaded", function () {
+                // Tỷ giá hối đoái từ USD sang VND (ví dụ)
+                
+
 
                 const gioHangData = localStorage.getItem("giohang");
                 let gioHang = JSON.parse(gioHangData);
@@ -88,7 +87,7 @@
                     </div>
                 </div>
             `;
-                            tdPrice.textContent = item.Price + " USD";
+                            tdPrice.textContent = `${ parseInt(item.Price).toLocaleString("vi-VN") } VND`;
                             tdQuantity.innerHTML = `
                 <input type="number" id="${item.IDProduct}" min="1" class="form-control form-control-lg text-center quantityInput" value="${item.soluong}">
             `;
@@ -106,23 +105,17 @@
                 
                 </div>
             `;
-
                             tr.appendChild(tdProduct);
                             tr.appendChild(tdPrice);
                             tr.appendChild(tdQuantity);
                             tr.appendChild(tdActions);
                             cartItemsContainer.appendChild(tr);
-
                             numItems += parseInt(item.soluong);
                             totalPrice += item.Price * item.soluong;
                         });
                     }
-
                     document.getElementById("numItems").textContent = numItems;
-                    document.getElementById("totalPrice").textContent = `${totalPrice.toLocaleString()} USD`;
-
-
-
+                    document.getElementById("totalPrice").textContent = `${(totalPrice).toLocaleString()} VND`;
 
                     // Lắng nghe sự kiện khi số lượng sản phẩm thay đổi
                     const quantityInputs = document.querySelectorAll(".quantityInput");
@@ -176,23 +169,24 @@
                             const itemPrice = gioHang[index].Price;
                             newTotalPrice += quantity * itemPrice;
                         });
-                        document.getElementById("totalPrice").textContent = `${newTotalPrice.toLocaleString()} USD`;
+                        document.getElementById("totalPrice").textContent = `${newTotalPrice}.toLocaleString() USD`;
                         changeNumberCart()
                     }
 
                     function updateTotalPrice() {
                         let newTotalPrice = 0;
                         quantityInputs.forEach((input, index) => {
-                            console.log(input)
+                            console.log(input);
                             const quantity = parseInt(input.value);
                             const item = gioHang[index];
-                            if (item && item.Price) { // Kiểm tra xem item có tồn tại và có thuộc tính 'Price' hay không
+                            if (item && item.Price) {
                                 const itemPrice = item.Price;
                                 newTotalPrice += quantity * itemPrice;
                             }
                         });
-                        document.getElementById("totalPrice").textContent = `${newTotalPrice.toLocaleString()} USD`;
-                        changeNumberCart()
+                        // Thay đổi đơn vị hiển thị từ "USD2" thành "VND"
+                        document.getElementById("totalPrice").textContent = `${(newTotalPrice).toLocaleString("vi-VN")} VND`;
+                        changeNumberCart();
                     }
 
 
@@ -207,14 +201,29 @@
                     }
 
 
-
+                    // Hàm để cập nhật tổng giá tiền với đơn vị VND
+                    function updateTotalPriceInVND() {
+                        let newTotalPrice = 0;
+                        quantityInputs.forEach((input, index) => {
+                            const quantity = parseInt(input.value);
+                            const item = gioHang[index];
+                            if (item && item.Price) {
+                                const itemPriceInVND = item.Price;
+                                newTotalPrice += quantity * itemPriceInVND;
+                            }
+                            
+                        });
+                        // Hiển thị tổng giá tiền với đơn vị VND
+                        document.getElementById("totalPrice").textContent = `${newTotalPrice.toLocaleString('vi-VN')} VND`; // Cập nhật số lượng sản phẩm trong giỏ hàng
+                        changeNumberCart();
+                    }
                     function changeNumberCart() {
                         const gioHang = JSON.parse(localStorage.getItem("giohang")) || [];
                         let totalQuantity = 0;
                         gioHang.forEach(item => {
                             totalQuantity += item.soluong;
                         });
-                        document.querySelector(".cart_view").textContent = totalQuantity
+                        document.querySelector(".cart_view").textContent = totalQuantity;
                     }
 
 
@@ -256,15 +265,7 @@
                 </div>
             </div>
         </div>
-         
                     `
                 }
-
-
-
-
             });
-
-
-
         </script>

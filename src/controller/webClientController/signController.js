@@ -13,8 +13,10 @@ const postSign = async (req, res) => {
   const result = validateSignin(email, password);
 
   // Gửi recaptchaToken lên Google reCAPTCHA Service để xác minh tính hợp lệ
+  console.log(recaptchaToken)
   const isCaptchaValid = await verifyCaptchaToken(recaptchaToken);
-  console.log(isCaptchaValid)
+
+console.log(isCaptchaValid)
   if (!isCaptchaValid) {
     return res.status(402).json({ message: "Xác thực không hợp lệ" });
   }

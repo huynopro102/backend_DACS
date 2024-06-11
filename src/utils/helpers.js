@@ -18,7 +18,7 @@ function generateRandomString(length) {
 async function verifyCaptchaToken(token) {
     const fetch = await import('node-fetch'); // Sử dụng import() động
     const url = `https://www.google.com/recaptcha/api/siteverify`; // URL của Google reCAPTCHA API
-    const secretKey = process.env.SECRET_KEY; // Thay YOUR_RECAPTCHA_SECRET_KEY bằng secret key của bạn
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Thay YOUR_RECAPTCHA_SECRET_KEY bằng secret key của bạn
 
     try {
         const response = await fetch.default(url, { // Sử dụng fetch.default vì fetch là một object module

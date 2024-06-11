@@ -189,7 +189,7 @@
                                                         <%= element.ProductName %>
                                                     </h2>
                                                     <p class="product-price">
-                                                        <%= element.PriceVND %>
+                                                        <%= element.PriceVND %> vnđ
                                                     </p>
                                                     <div class="productbtn-box d-flex">
                                                         <a href="#" class="product-btn" onclick="redirectToDetailPage('<%= element.IDProduct %>')">Chi tiết</a>
@@ -251,6 +251,7 @@
             }
 
             function updateProduct(element) {
+                alert("thêm vô giỏ hàng thành công")
                 const productInfo = {
                     IDProduct: element.IDProduct,
                     Price: element.Price,

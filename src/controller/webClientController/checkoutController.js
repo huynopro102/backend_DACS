@@ -1,6 +1,6 @@
 const { isArray } = require("util");
 const pool = require("../../models/connectDB");
-const moment = require('moment');
+const moment = require("moment");
 let postCheckout = async (req, res, next) => {
   try {
     const {
@@ -11,12 +11,35 @@ let postCheckout = async (req, res, next) => {
       cartItems,
       tongsoluong,
     } = req.body;
-    const arrayCartItems = cartItems
-    const { userID } = req.payload;
+    console.log(req.body)
   
-    
+    let arrayCartItems; // CÁI NÀY HỌC JAVA SPRING BOOT SẼ KO XẢY RA TRƯỜNG HỢP NÀY LƯU Ý
+    if(totalPrice <=0){
+      return res.status(403).json({
+        message:
+          "vui lòng ko thay đổi thông tin giá sản phẩm khi thanh toán",
+      });
+    }
+    if (Array.isArray(cartItems)) {
+      console.log(1)
+      arrayCartItems = req.body.cartItems
+    } else {
+      console.log(2)
+      try {
+        arrayCartItems = JSON.parse(cartItems);
+      } catch (error) {
+        return res.status(400).json({ message: "Invalid cartItems format" });
+      }
+    }
+
+
+    const { userID } = req.payload;
+
     let totalPriceDb = 0;
-    const [user, userFields] = await pool.execute("select * from user where Username = ? ", [userID]);
+    const [user, userFields] = await pool.execute(
+      "select * from user where Username = ? ",
+      [userID]
+    );
 
     if (user.length > 0) {
       if (arrayCartItems) {
@@ -28,7 +51,7 @@ let postCheckout = async (req, res, next) => {
                   "select * from product where IDProduct = ?",
                   [item.IDProduct]
                 );
-                totalPriceDb += item.soluong * products[0].Price;
+                totalPriceDb += (   (item.soluong * products[0].Price ) - ( item.soluong * products[0].Sale)    );
                 resolve(products[0]);
               } catch (error) {
                 reject(error);
@@ -37,12 +60,13 @@ let postCheckout = async (req, res, next) => {
           })
         )
           .then((list_product) => {
+            console.log("gia trong db", totalPriceDb);
+            console.log("gia ơ client ", totalPrice);
             if (parseFloat(totalPriceDb) === parseFloat(totalPrice)) {
               req.payload = {
-                info : req.body , 
-                infoUser : user[0]
-              }
-              
+                info: req.body,
+                infoUser: user[0],
+              };
               next();
             } else {
               return res.status(403).json({
@@ -63,12 +87,11 @@ let postCheckout = async (req, res, next) => {
   }
 };
 
-
 let getCheckout = (req, res) => {
   res.render("./Client/checkout.ejs");
 };
 
-let postCheckout2 = async (req, res , next) => {
+let postCheckout2 = async (req, res, next) => {
   let connection;
   try {
     // Lấy kết nối từ pool
@@ -84,8 +107,6 @@ let postCheckout2 = async (req, res , next) => {
       tongsoluong,
       paymentMethod,
     } = req.body;
-
-
 
     const { Username, Email, Password, Check, id } = req.payload.infoUser;
 
@@ -134,7 +155,7 @@ let postCheckout2 = async (req, res , next) => {
       }
     } else {
       // thanh toan online
-      next()
+      next();
     }
   } catch (error) {
     // Nếu có lỗi xảy ra, rollback giao dịch
@@ -153,18 +174,18 @@ let postCheckout2 = async (req, res , next) => {
   }
 };
 
-
 let thanhtoanonline = async (req, res) => {
   try {
-    process.env.TZ = 'Asia/Ho_Chi_Minh';
+    process.env.TZ = "Asia/Ho_Chi_Minh";
 
     let date = new Date();
-    let createDate = moment(date).format('YYYYMMDDHHmmss');
+    let createDate = moment(date).format("YYYYMMDDHHmmss");
 
-    let ipAddr = req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
+    let ipAddr =
+      req.headers["x-forwarded-for"] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      req.connection.socket.remoteAddress;
 
     const config = require("../../../config/default.json");
     let tmnCode = config.vnp_TmnCode;
@@ -172,39 +193,39 @@ let thanhtoanonline = async (req, res) => {
     let vnpUrl = config.vnp_Url;
     let returnUrl = config.vnp_ReturnUrl;
 
-    let orderId = moment(date).format('DDHHmmss');
+    let orderId = moment(date).format("DDHHmmss");
     let amount = 1000; // Đảm bảo rằng đây là số tiền chính xác
     let bankCode = "VNPAYQR";
 
-    let locale = req.body.language || 'vn';
-    let currCode = 'VND';
+    let locale = req.body.language || "vn";
+    let currCode = "VND";
     let vnp_Params = {
-      'vnp_Version': '2.1.0',
-      'vnp_Command': 'pay',
-      'vnp_TmnCode': tmnCode,
-      'vnp_Locale': locale,
-      'vnp_CurrCode': currCode,
-      'vnp_TxnRef': orderId,
-      'vnp_OrderInfo': 'Thanh toan cho ma GD:' + orderId,
-      'vnp_OrderType': 'other',
-      'vnp_Amount': amount * 100, // VNPAY expects the amount in cents
-      'vnp_ReturnUrl': returnUrl,
-      'vnp_IpAddr': ipAddr,
-      'vnp_CreateDate': createDate
+      vnp_Version: "2.1.0",
+      vnp_Command: "pay",
+      vnp_TmnCode: tmnCode,
+      vnp_Locale: locale,
+      vnp_CurrCode: currCode,
+      vnp_TxnRef: orderId,
+      vnp_OrderInfo: "Thanh toan cho ma GD:" + orderId,
+      vnp_OrderType: "other",
+      vnp_Amount: amount * 100, // VNPAY expects the amount in cents
+      vnp_ReturnUrl: returnUrl,
+      vnp_IpAddr: ipAddr,
+      vnp_CreateDate: createDate,
     };
     if (bankCode) {
-      vnp_Params['vnp_BankCode'] = bankCode;
+      vnp_Params["vnp_BankCode"] = bankCode;
     }
 
     vnp_Params = sortObject(vnp_Params);
 
-    let querystring = require('qs');
+    let querystring = require("qs");
     let signData = querystring.stringify(vnp_Params, { encode: false });
     let crypto = require("crypto");
     let hmac = crypto.createHmac("sha512", secretKey);
-    let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
-    vnp_Params['vnp_SecureHash'] = signed;
-    vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
+    let signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
+    vnp_Params["vnp_SecureHash"] = signed;
+    vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
 
     // Log the URL to verify
     console.log(vnpUrl);
@@ -212,10 +233,11 @@ let thanhtoanonline = async (req, res) => {
     // Redirect to the VNPAY URL
     res.redirect(vnpUrl);
     return; // Đảm bảo rằng không có mã nào khác được thực thi sau khi chuyển hướng
-
   } catch (error) {
     console.error("Error during transaction:", error);
-    return res.status(500).json({ message: "Đã xảy ra lỗi trong quá trình thanh toán" });
+    return res
+      .status(500)
+      .json({ message: "Đã xảy ra lỗi trong quá trình thanh toán" });
   }
 };
 
@@ -227,10 +249,6 @@ function sortObject(obj) {
   }
   return sorted;
 }
-
-
-
-
 
 module.exports = {
   getCheckout,
