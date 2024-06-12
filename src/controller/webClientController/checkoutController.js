@@ -120,8 +120,8 @@ let postCheckout2 = async (req, res, next) => {
 
         // Thêm thông tin hóa đơn vào bảng invoice
         const [invoiceResult] = await connection.execute(
-          "INSERT INTO invoice (IDCustomer, IDStaff , DateCreated, Status) VALUES (?, ?, ?, ?)",
-          [customer[0].IDCustomer, null, currentDate, 1]
+          "INSERT INTO invoice (IDCustomer, IDStaff , DateCreated, Status,paymentMethods) VALUES (?, ?, ?, ?,?)",
+          [customer[0].IDCustomer, null, currentDate, 1,"PaymentOnDelivery"]
         );
         const invoiceId = invoiceResult.insertId;
 
@@ -132,16 +132,16 @@ let postCheckout2 = async (req, res, next) => {
             [
               invoiceId,
               item.IDProduct,
-              parseInt(item.soluong) * parseInt(item.Price),
-              item.Price,
+              parseInt(item.soluong),
+              (item.Price - item.Sale),
             ]
           );
         }
 
         // Thêm thông tin vận chuyển vào bảng deliveryNotes
         await connection.execute(
-          "INSERT INTO deliverynotes (IDInvoice,DateCreated,DeliveryAddress,RecipientPhone,Status,IDStaff) VALUES (?,?,?,?,?,?)",
-          [invoiceId, currentDate, diaChi, soDienThoai, 1, null]
+          "INSERT INTO deliverynotes (IDInvoice , DateCreated , DeliveryAddress , RecipientPhone , Name , Status , IDStaff ) VALUES (?,?,?,?,?,?,?)",
+          [invoiceId , currentDate , diaChi , soDienThoai , tenKhachHang , 1 , null]
         );
 
         // Commit giao dịch

@@ -30,8 +30,8 @@
                                         placeholder="input field">
                                     <button type="submit" class="btn btn-primary mb-5"><i
                                             class="fa fa-search"></i></button>
-                                    <a href="/admin/v1/product/create"
-                                        class="btn btn-success mb-5"><i class="fa fa-plus"></i> Create</a>
+                                    <a href="/admin/v1/product/create" class="btn btn-success mb-5"><i
+                                            class="fa fa-plus"></i> Create</a>
                                 </div>
                             </form>
 
@@ -42,48 +42,47 @@
                                     <th scope="col">ProductTypeName</th>
                                     <th scope="col">price/sale_price</th>
                                     <th scope="col">status</th>
-                                 
+
                                 </tr>
                             </thead>
                             <tbody>
 
 
                                 <% dataProduct.map(item=> { %>
-
-                                    <th scope="row">
-                                        <%= item.IDProduct%>
-                                    </th>
-                                    <td>
-                                        <%= item.ProductName%>
-                                    </td>
-                                    <td>
-                                        <%= item.ProductTypeName%>
-                                    </td>
-                                    <td>
-                                        <%= item.Price %>/<%= item.Sale%>
-                                    </td>
-                                    <td>
-                                        <%= item.status==0 ? "tạm ẩn" : "hiển thị" %>
-                                    </td>
-
-                                    <td>
-                                        <img width="70"
-                                            src="https://thoitrangdarkt-com.onrender.com/congkhai/img_product/<%= item.image %>"
-                                            alt="">
-                                        <input hidden type="text" value="<%= item.image%>">
-                                    </td>
-
-                                    <td>
-                                        <a href="/admin/v1/product/edit/<%= item.IDProduct%>"
-                                            class="btn btn-sm btn-primary "><i class="fa fa-edit"></i> sua</a>
-                                        <a href="https://thoitrangdarkt-com.onrender.com/admin/v1/productsdelete/<%= item.IDProduct%>"
-                                            class="btn btn-sm btn-danger  "><i class="fa fa-trash"></i> xoa</a>
-                                    </td>
-
-
+                                    <tr>
+                                        <th scope="row">
+                                            <%= item.IDProduct %>
+                                        </th>
+                                        <td>
+                                            <%= item.ProductName %>
+                                        </td>
+                                        <td>
+                                            <%= item.ProductTypeName %>
+                                        </td>
+                                        <td>
+                                            <%= item.Price %>/<%= item.Sale %>
+                                        </td>
+                                        <td>
+                                            <%= item.Status %>
+                                        </td>
+                                        <td>
+                                            <img width="70"
+                                                src="/congkhai/img_product/<%= item.image %>"
+                                                alt="">
+                                            <input hidden type="text" value="<%= item.image %>">
+                                        </td>
+                                        <td>
+                                            <a href="/admin/v1/product/edit/<%= item.IDProduct %>"
+                                                class="btn btn-sm btn-primary">
+                                                <i class="fa fa-edit"></i> Sửa
+                                            </a>
+                                            <a href="javascript:void(0)" onclick="confirmDelete(<%= item.IDProduct %>)" class="btn btn-sm btn-danger">
+                                                <i class="fa fa-trash"></i> Xóa
+                                            </a>
+                                            
+                                        </td>
                                     </tr>
-                                    <% }); %>
-
+                                    <% }) %>
                             </tbody>
                         </table>
                     </div>
@@ -112,3 +111,24 @@
             </section>
         </div>
         <%- include('../layout/footer.ejs')%>
+        <script>
+            function confirmDelete(productId) {
+                if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+                    fetch(`/admin/v1/product/delete/${productId}`)
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status ===200) {
+                            alert("Xóa sản phẩm thành công!");
+                            window.location.href="/admin/v1/product"
+                        }else if (response.status === 201) {
+                            alert("có thể trọn ẩn thay vì xóa");
+                        } else {
+                            throw new Error('Server response was not ok.');
+                        }
+                    })
+              
+                }
+            }
+        </script>
+        
+        

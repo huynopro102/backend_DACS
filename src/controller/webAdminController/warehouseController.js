@@ -144,6 +144,12 @@
 
     let postAdminV1WarehouseDelete = async (req, res) => {
     const itemId = req.params.id;
+    
+        if(!itemId){
+            return res
+            .status(500)
+            .json({ message: "Không truyển id sản phẩm" });
+        }
 
     try {
         const connection = await pool.getConnection();

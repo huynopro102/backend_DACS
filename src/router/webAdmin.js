@@ -55,9 +55,8 @@ router.get('/admin/v1/product/create',webAdminControllerProducts.getAdminV1Produ
 
 // post product
 router.post("/admin/v1/product/edit/:id",webAdminControllerProducts.postAdminV1ProductEdit)
-router.post("/admin/v1/product/create" , uploadCloud.single('image') ,  assignPathNameImage , 
-webAdminControllerProducts.postAdminV1ProductsCreate)
-// router.post("/admin/v1/product/delete/:id",webAdminControllerProducts.deleteAdminV1Product)
+router.post("/admin/v1/product/create" , uploadCloud.single('image') ,  assignPathNameImage , webAdminControllerProducts.postAdminV1ProductsCreate)
+router.get("/admin/v1/product/delete/:id",webAdminControllerProducts.deleteAdminV1Product)
 
 // get product type
 router.get('/admin/v1/producttype',webAdminControllerProducts.getAdminV1ProductsType)

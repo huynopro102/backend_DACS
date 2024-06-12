@@ -7,10 +7,16 @@ const postAdminV1ProductEdit = async (req, res) => {
   try {
     // Lấy các trường dữ liệu từ req.body
     const { productId, ProductName, Price, sale, radio, productType, Supplier, ProductDescription } = req.body;
+    console.log(radio.toString())
+    console.log("ban dang tron edit product")
     // Tiến hành cập nhật sản phẩm trong cơ sở dữ liệu
     const conn = await pool.getConnection();
     await conn.beginTransaction();
     try {
+
+      
+
+
       // Câu truy vấn SQL để cập nhật sản phẩm
       const updateProductQuery = `
         UPDATE product 
@@ -24,7 +30,7 @@ const postAdminV1ProductEdit = async (req, res) => {
           Status = ?
         WHERE IDProduct = ?
       `;
-      await conn.query(updateProductQuery, [ProductName,ProductDescription,productType,Supplier,Price,sale,radio,productId]);
+      await conn.query(updateProductQuery, [ProductName,ProductDescription,productType,Supplier,Price,sale,radio.toString(),productId]);
 
       // Commit transaction nếu mọi thứ thành công
       await conn.commit();
@@ -47,6 +53,7 @@ const postAdminV1ProductEdit = async (req, res) => {
 
 const postAdminV1ProductsCreate = async (req, res) => {
   console.log("This is the post create function.");
+
   try {
     const {
       ProductDescription,
@@ -228,6 +235,7 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
   try {
     const itemId = req.params.id;
     const { name, radio } = req.body;
+  
 
     if (!name || !radio == undefined || !itemId) {
       console.log("Thông tin không đủ hoặc không hợp lệ.");
@@ -250,11 +258,7 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
       [name]
     );
 
-    if (
-      existingRows &&
-      existingRows.length > 0 &&
-      existingRows[0].start == radio
-    ) {
+    if (existingRows && existingRows.length > 0 && existingRows[0].start == radio) {
       console.log("Tên loại sản phẩm đã tồn tại.");
       return res.status(400).json({ message: "Tên loại sản phẩm đã tồn tại." });
     }
@@ -277,6 +281,9 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
       "UPDATE `producttype` SET ProductTypeName = ?, Status = ? WHERE IDProductType = ?",
       [name, radio, itemId]
     );
+
+
+
 
     if (updateRows.affectedRows > 0) {
       console.log("Đã cập nhật tên loại sản phẩm thành công.");
@@ -379,19 +386,17 @@ let getAdminV1Products = async (req, res) => {
     let totalPage = Math.ceil(totalRow / limit);
 
     if (name) {
-      const [rows, fields] = await pool.execute(
-        "SELECT * FROM `product` p JOIN category c ON p.IDProductType = c.IDProductType WHERE p.`ProductTypeName` LIKE ? LIMIT ? , ?",
-        [`%${name}%`, start, limit]
-      );
-
-      res.render("ProductsAdmin.ejs", {
+      const [rows, fields] = await pool.execute("SELECT IDProduct,p.ProductName,ProductTypeName,Price,p.Status,Sale FROM `product` p JOIN producttype c ON p.IDProductType = c.IDProductType WHERE p.`ProductName` LIKE ? LIMIT ? , ?",[`%${name}%`, start, limit]);
+      console.log(rows[0])
+      res.render("./Admin/product/product.ejs", {
         dataProduct: rows ? rows : [],
         totalPage: totalPage,
         page: parseInt(_page),
       });
     } else {
       const [rows, fields] = await pool.execute(
-        "SELECT p.*, c.* FROM `product` p JOIN producttype c ON p.IDProductType = c.IDProductType LIMIT "+start+ "," + limit);
+        "SELECT IDProduct,p.ProductName,ProductTypeName,Price,p.Status,Sale FROM `product` p JOIN producttype c ON p.IDProductType = c.IDProductType LIMIT "+start+ "," + limit);
+        console.log(rows[0])
       res.render("./Admin/product/product.ejs", {
         dataProduct: rows ? rows : [],
         totalPage: totalPage,
@@ -504,6 +509,49 @@ let handleDeleteFileCould = async (req, res) => {
   }
 };
 
+let deleteAdminV1Product = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  let connection;
+  try {
+    connection = await pool.getConnection(); // Lấy kết nối từ pool
+    const [product, productField] = await connection.execute("SELECT * FROM product WHERE IDProduct = ?", [id]);
+    const [invoiceDetail,invoiceDetailField] = await connection.execute("select * from invoicedetails where IDProduct = ?",[product[0].IDProduct])
+    const [productimagesdetails,productimagesdetailsField] = await connection.execute("select * from productimagesdetails where IDProduct = ?",[id])
+    const [image,imageField] = await connection.execute("select * from images where IDImages = ?",[productimagesdetails[0].IDImages])
+
+    if(invoiceDetail.length <= 0 ){
+
+      const [productimagesdetails] = await connection.execute("SELECT * FROM productimagesdetails WHERE IDProduct = ?", [id]);
+
+      await connection.execute("DELETE FROM productimagesdetails WHERE IDProduct = ?", [id]);
+
+      for (const detail of productimagesdetails) {
+        await connection.execute("DELETE FROM images WHERE IDImages = ?", [detail.IDImages]);
+      }
+  
+    
+      await connection.execute("DELETE FROM product WHERE IDProduct = ?", [id]);
+
+      
+      
+      await connection.commit(); // Commit giao dịch
+      connection.release(); // Trả lại kết nối vào pool
+      res.status(200).json({ message: "Xóa sản phẩm thành công!" });
+    }else{
+      await connection.commit(); // Commit giao dịch
+      connection.release(); // Trả lại kết nối vào pool
+      return res.status(201).json({message:"có thể trọn ẩn thay vì xóa"})
+    }
+  } catch (error) {
+    console.error("Error in deleteAdminV1Product:", error);
+    if (connection) {
+      connection.rollback(); // Rollback giao dịch nếu có lỗi
+      connection.release(); // Trả lại kết nối vào pool
+    }
+    return res.status(500).json("server invalid");
+  }
+};
 
 
 
@@ -521,6 +569,7 @@ module.exports = {
 
   postAdminV1ProductEdit,
   postAdminV1ProductsCreate,
+  deleteAdminV1Product,
 
   handleUploadFileCould,
   handleDeleteFileCould

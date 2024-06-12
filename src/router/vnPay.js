@@ -32,7 +32,7 @@ router.post(
     let returnUrl = config.vnp_ReturnUrl;
 
     let orderId = moment(date).format("DDHHmmss");
-    let amount = 10000;
+    let amount = parseFloat(req.payload.info.totalPrice)*100;
     let bankCode = "";
 
     let locale = "vn";
@@ -50,7 +50,7 @@ router.post(
     vnp_Params["vnp_TxnRef"] = orderId;
     vnp_Params["vnp_OrderInfo"] = "Thanh toan cho ma GD:" + orderId;
     vnp_Params["vnp_OrderType"] = "other";
-    vnp_Params["vnp_Amount"] = req.payload.info.totalPrice;
+    vnp_Params["vnp_Amount"] = amount ;
     vnp_Params["vnp_ReturnUrl"] = returnUrl;
     vnp_Params["vnp_IpAddr"] = ipAddr;
     vnp_Params["vnp_CreateDate"] = createDate;
@@ -182,8 +182,8 @@ router.get("/vnpay_return", async function (req, res, next) {
           //invoice
           const currentDate = new Date().toISOString().slice(0, 10);
           const [invoiceResult] = await connection.execute(
-            "INSERT INTO invoice (IDCustomer, IDStaff, DateCreated, Status) VALUES (?, ?, ?, ?)",
-            [customerExists[0].IDCustomer, null, currentDate, 1]
+            "INSERT INTO invoice (IDCustomer, IDStaff, DateCreated, Status,paymentMethods	) VALUES (?, ?, ?, ?,?)",
+            [customerExists[0].IDCustomer, null, currentDate, 1,"onlinePayment"]
           );
           const idInvoiced = invoiceResult.insertId;
           // invoice detail
@@ -191,7 +191,7 @@ router.get("/vnpay_return", async function (req, res, next) {
             for (const item of value) {
               const [invoiceDetailExists] = await connection.execute(
                 "INSERT INTO invoicedetails (IDInvoice, IDProduct, TotalQuantity, Price) VALUES (?, ?, ?, ?)",
-                [idInvoiced, item.IDProduct, item.soluong, item.Price]
+                [idInvoiced, item.IDProduct, item.soluong, (item.Price - item.Sale)]
               );
             }
           } else {
@@ -203,7 +203,7 @@ router.get("/vnpay_return", async function (req, res, next) {
           const invoiceId = invoiceResult.insertId;
           // deliveryNotes
           const [deliverynoteExists] = await connection.execute(
-            "insert into deliverynotes (IDInvoice,DateCreated,DeliveryAddress,RecipientPhone,Status,IDStaff) values (?, ?, ?, ?, ?, ?)",
+            "insert into deliverynotes (IDInvoice,DateCreated,DeliveryAddress,RecipientPhone,Status,IDStaff,Name) values (?, ?, ?, ?, ?, ?,?)",
             [
               invoiceId,
               currentDate,
@@ -211,6 +211,7 @@ router.get("/vnpay_return", async function (req, res, next) {
               rows[0].soDienThoai,
               1,
               null,
+              rows[0].idUser
             ]
           );
           await connection.commit();
