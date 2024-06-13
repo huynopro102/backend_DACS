@@ -53,6 +53,50 @@
         }
     }
 
+    let getAdminV1WarehouseDetail = async (req, res) => {
+        try {
+            let _page = req.query.page ? req.query.page : 1;
+            let limit = 5;
+            let start = (_page - 1) * limit;
+            // let totalRow = 20;
+            let name = req.query.name;
+          
+            // total tổng các item trong database
+            const [total, fields] = await pool.execute(
+              "select count(*) as total from warehousedetails"
+            );
+            let totalRow = total[0].total;
+          
+            // tong so trang
+            let totalPage = Math.ceil(totalRow / limit);
+          
+            
+            
+            //
+            if (name) {
+              const [rows, fields] = await pool.execute(
+                "SELECT * FROM `warehousedetails` where `IDWarehouse` like ? limit ? , ? ",
+                [`%${name}%`, start, limit]
+              );
+              res.render("staff.ejs", {
+                dataUser: rows ? rows : [],
+                totalPage: totalPage,
+                page: parseInt(_page),
+              });
+            } else {
+              const [rows, fields] = await pool.execute("SELECT * FROM `warehousedetails` limit "+ start+"," +limit);
+              res.render("./Admin/warehouse/warehousedetail.ejs", {
+                dataUser: rows ? rows : [],
+                totalPage: totalPage,   
+                page: parseInt(_page),
+              });
+            }
+        } catch (err) {
+            console.error('Error executing query', err);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+
     let getAdminV1WarehouseCreate = async (req,res) =>{
         res.render("./Admin/warehouse/warehouseCreate.ejs")
     }
@@ -144,12 +188,6 @@
 
     let postAdminV1WarehouseDelete = async (req, res) => {
     const itemId = req.params.id;
-    
-        if(!itemId){
-            return res
-            .status(500)
-            .json({ message: "Không truyển id sản phẩm" });
-        }
 
     try {
         const connection = await pool.getConnection();
@@ -209,6 +247,7 @@
         getAdminV1WarehouseEdit ,
         postAdminV1WarehouseCreate,
         postAdminV1WarehouseEdit,
-        postAdminV1WarehouseDelete
+        postAdminV1WarehouseDelete,
+        getAdminV1WarehouseDetail
         
     }

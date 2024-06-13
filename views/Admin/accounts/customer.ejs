@@ -79,9 +79,7 @@
                     <%= item.CitizenIdentificationCode%>
                   </td>
 
-                  <td>
-                    <%= item.DateOfBirth%>
-                  </td>
+                  <td><%= new Date(item.DateOfBirth).toLocaleDateString('vi-VN') %></td>
 
                   <td>
                     <%= item.Sex%>
@@ -164,7 +162,7 @@
       $('.btn-xem').click(function () {
         var username = $(this).attr('aboriginal');
         $.ajax({
-            url: 'http://localhost:8888/admin/v1/customer/' + username,
+            url: 'http://localhost:8082/admin/v1/customer/' + username,
             type: 'GET',
             success: function (data) {
                 $('#customerDetails').html(data);
@@ -177,7 +175,7 @@
     });
 
     function exportExcel() {
-      window.location.href = 'http://localhost:8888/admin/v1/exportToExcelCustomer/';
+      window.location.href = 'http://localhost:8082/admin/v1/exportToExcelCustomer/';
   }
     </script>
 

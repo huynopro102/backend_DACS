@@ -13,9 +13,12 @@ let getProfile = async  (req, res) => {
       [username]
     );
 
+
+
+    
     // Xử lý kết quả truy vấn để trích xuất thông tin khách hàng
     const currentUser = {
-      username: customerRows[0].Username,
+      username: customerRows[0].Username? "NAN":customerRows[0].Username,
       customerName: customerRows[0].CustomerName,
       phoneNumber: customerRows[0].PhoneCustomer,
       address: customerRows[0].CustomerAddress,

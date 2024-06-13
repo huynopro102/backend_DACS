@@ -373,30 +373,34 @@ let getAdminV1Products = async (req, res) => {
     let _page = req.query.page ? req.query.page : 1;
     let limit = 10;
     let start = (_page - 1) * limit;
-    // let totalRow = 20;
     let name = req.query.name;
 
-    // total tổng các item trong database
+    // Tính tổng số sản phẩm trong database
     const [total, fields] = await pool.execute(
-      "select count(*) as total from product"
+      "SELECT count(*) as total from product"
     );
     let totalRow = total[0].total;
 
-    // tong so trang
+    // Tính tổng số trang
     let totalPage = Math.ceil(totalRow / limit);
 
     if (name) {
-      const [rows, fields] = await pool.execute("SELECT IDProduct,p.ProductName,ProductTypeName,Price,p.Status,Sale FROM `product` p JOIN producttype c ON p.IDProductType = c.IDProductType WHERE p.`ProductName` LIKE ? LIMIT ? , ?",[`%${name}%`, start, limit]);
-      console.log(rows[0])
-      res.render("./Admin/product/product.ejs", {
+      const [rows, fields] = await pool.execute(
+        "SELECT p.*, c.*, s.SupplierName, i.UrlImages FROM product p JOIN category c ON p.IDProductType = c.IDProductType JOIN supplier s ON p.IDSupplier = s.IDSupplier LEFT JOIN productimagesdetails pid ON p.IDProduct = pid.IDProduct LEFT JOIN images i ON pid.IDImages = i.IDImages WHERE p.ProductTypeName LIKE ? LIMIT ?, ?",
+        [`%${name}%`, start, limit]
+      );
+
+      res.render("ProductsAdmin.ejs", {
         dataProduct: rows ? rows : [],
         totalPage: totalPage,
         page: parseInt(_page),
       });
     } else {
       const [rows, fields] = await pool.execute(
-        "SELECT IDProduct,p.ProductName,ProductTypeName,Price,p.Status,Sale FROM `product` p JOIN producttype c ON p.IDProductType = c.IDProductType LIMIT "+start+ "," + limit);
-        console.log(rows[0])
+        "SELECT p.*, c.*, s.SupplierName, i.UrlImages FROM product p JOIN producttype c ON p.IDProductType = c.IDProductType JOIN supplier s ON p.IDSupplier = s.IDSupplier LEFT JOIN productimagesdetails pid ON p.IDProduct = pid.IDProduct LEFT JOIN images i ON pid.IDImages = i.IDImages LIMIT ?, ?",
+        [start, limit]
+      );
+
       res.render("./Admin/product/product.ejs", {
         dataProduct: rows ? rows : [],
         totalPage: totalPage,
@@ -407,6 +411,7 @@ let getAdminV1Products = async (req, res) => {
     console.error("Error in gethomeControllerProduct:", error);
   }
 };
+
 
 let handleUploadFileCould = async (req, res) => {
   try {

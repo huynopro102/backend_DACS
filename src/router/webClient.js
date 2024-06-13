@@ -15,7 +15,7 @@ const controllerLogout = require("../controller/webClientController/logoutContro
 const controllerDetailProduct = require("../controller/webClientController/detailproductController")
 const detailforgotpassword = require("../controller/webClientController/detailforgotpassword")
 
-const {verifyAccessToken ,verifyAccessTokenCheckout} = require("../utils/jwt_services")
+const {verifyAccessToken ,verifyAccessTokenCheckout  } = require("../utils/jwt_services")
 
 // get sign 
 router.get("/signin" , controllerSgin.getSign)

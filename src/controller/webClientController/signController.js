@@ -44,7 +44,6 @@ console.log(isCaptchaValid)
       );
       res.cookie("Token", accessToken , {
         maxAge: 3600000, 
-
       } );
       res.cookie("Username", user[0].Username.toString() ,{
         maxAge: 3600000, 
