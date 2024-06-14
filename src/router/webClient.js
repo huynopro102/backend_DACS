@@ -41,7 +41,7 @@ router.get("/blog" , controllerBlog.getBlog)
 
 // get contact
 router.get("/contact" , controllerContact.getContact)
-
+router.post("/sendmail", controllerContact.sendEmail);
 // get shop
 router.get("/shop" , controllerShop.getShop)
 
@@ -56,14 +56,24 @@ router.post("/checkout" , verifyAccessTokenCheckout , controllerCheckout.postChe
 // get guild
 router.get("/guild" ,controllerGuild.getGuild)
 
+
 // get profile
 router.get("/profile" , verifyAccessToken , controllerProfile.getProfile)
+router.post("/editprofile" , verifyAccessToken , controllerProfile.updateAccountInfo)
+router.post("/changepassword" , verifyAccessToken , controllerProfile.changePassword)
+
+
 
 // post logout
 router.post("/logout", verifyAccessToken , controllerLogout.postLogout  )
 
 // detailproduct
 router.get("/detailproduct/:productId" , controllerDetailProduct.getDetailProduct)
+
+
+
+// đơn hàng đã đặt
+router.get("/dondadat", verifyAccessToken ,controllerProfile.getOrders )
 
 
 module.exports = router;

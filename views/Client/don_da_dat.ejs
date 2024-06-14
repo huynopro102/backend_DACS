@@ -1,0 +1,215 @@
+<%- include('../Client/layout/header.ejs') %>
+
+    <div class="container-fluid container-account light-style flex-grow-1 container-p-y">
+
+        <h4 class="font-weight-bold py-3 mb-4">
+            Quản lý Tài Khoản
+        </h4>
+
+        <div class="card overflow-hidden">
+            <div class="row-account row row-border-light">
+                <div class="col-md-3 pt-0">
+                    <div class="list-group list-group-flush account-settings-links">
+                        <a class="list-group-item list-group-item-action active" data-toggle="list"
+                            href="#account-general">Thông tin tài khoản</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-change-password">Đổi mật khẩu</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Đơn
+                            mua</a>
+                        <a href="#" id="logoutButton1" class="list-group-item list-group-item-action"
+                            style="display: flex; align-items:center; gap:5px" >Đăng xuất <i
+                                class='bx bx-log-out'></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        
+
+                
+                        <div class="tab-pane fade mt-3" id="account-info">
+                            <div id="orders-tab" class="order-tab">
+                                <div id="pending-orders" class="order-tab-content">
+                                    <% orders.forEach((order,index) => { %>
+                                        <div class="invoice-block">
+                                            <div>ID Invoice: <%= order.IDInvoice %></div>
+                                            <div class="addr-user d-flex mt-2">
+                                                <h4 class="text-dark">Địa chỉ nhận hàng</h4>
+                                                <p class="text-dark"><%= order.RecipientName %></p>
+                                                <p class="text-dark"><%= order.RecipientPhone %></p>
+                                                <p class="text-dark"><%= order.DeliveryAddress %></p>
+                                            </div>
+                                            <table id="pending-orders-table" class="table table-condensed table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:50%">Sản Phẩm</th>
+                                                        <th style="width:12%">Giá</th>
+                                                        <th style="width:10%">Số lượng</th>
+                                                        <th style="width:15%">Thành tiền</th>
+                                                        <th style="width:15%"></th>
+                                                    </tr>
+                                                </thead>
+                                               
+                                                <tbody>
+                                                    <tr>
+                                                        <td data-th="Product">
+                                                            <div class="row">
+                                                                <div class="col-md-3 text-left">
+                                                                    <img src="localhost:8082/congkhai/pageClient/fe/images/pro2.png" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                                                </div>
+                                                                <div class="col-md-9 text-left mt-sm-2">
+                                                                    <h5><%= order.ProductName %></h5>
+                                                                    <p class="font-weight-light"><%= order.Brand %></p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td data-th="Price"><%= order.Price %></td>
+                                                        <td data-th="Quantity">
+                                                            <input type="number" class="form-control form-quantity form-control-lg text-center" value="<%= order.TotalQuantity %>" readonly>
+                                                        </td>
+                                                        <td class="actions" data-th="Total">
+                                                            <%= order.Price * order.TotalQuantity %>
+                                                        </td>
+                                                        <td class="actions" data-th="">
+                                                            <div class="text-right">
+                                                                <button class="btn btn-danger" style="border-radius: 0 !important;">
+                                                                    Hủy đơn
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                
+                                                </tbody>
+                                            </table>
+                                            <div class="sum-total d-flex align-items-center">
+                                                <h4 class="text-dark">Tổng tiền:</h4>
+                                                <h4 class="text-dark"><%= order.totalAmount %> đ</h4>
+                                                <h4 class="text-dark">Phí vận chuyển:</h4>
+                                                <h4 class="text-dark">0 đ</h4>
+                                                <h4 class="text-dark">Tổng thanh toán:</h4>
+                                                <h4 class="text-dark"><%= order.totalAmount %> đ</h4>
+                                            </div>
+
+                                            <br></br>
+                                            <br></br>
+                                            <br></br>
+                                            <br></br>
+                                        </div>
+                                    <% }); %>
+
+
+
+                                    <div class="box-account">
+                                        <ul class="pagination">
+                                            <li><a href="#"><i class="bx bxs-chevron-left"></i></a></li>
+                                            <% for (let i = 1; i <= totalPages; i++) { %>
+                                                <li><a href="?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a></li>
+                                            <% } %>
+                                            <li><a href="#"><i class="bx bxs-chevron-right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                                
+                                
+                                <div id="processing-orders" class="order-tab-content">
+                            
+
+                                  
+                                </div>
+
+                            
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../Client/layout/footer.ejs') %>
+        <script>
+
+        
+            document.addEventListener('DOMContentLoaded', function () {
+                const logoutButton = document.getElementById('logoutButton1');
+                logoutButton.addEventListener('click', async function () {
+                    try {
+                        const response = await fetch('/logout', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                            },
+                        });
+                        if (response.ok) {
+                            // Xóa token khỏi local storage
+                            localStorage.removeItem('accessToken');
+                            // Chuyển hướng người dùng về trang đăng nhập
+                            window.location.href = "/signin";
+                        } else {
+                            console.error('Error logging out');
+                        }
+                    } catch (error) {
+                        console.error('Error logging out:', error);
+                    }
+                });
+            });
+
+            $(document).ready(function () {
+                // Ẩn tất cả các tab trừ tab "Đơn đã đặt"
+                $(".order-tab-content").hide();
+                $("#pending-orders").show(); // Hiển thị tab "Đơn đã đặt" mặc định
+
+                // Xử lý sự kiện khi click vào các button tab
+                $(".order-tab-btn").click(function () {
+                    // Ẩn tất cả các tab
+                    $(".order-tab-content").hide();
+
+                    // Lấy data-tab của button được click để hiển thị tab tương ứng
+                    var tabId = $(this).attr("data-tab");
+                    $("#" + tabId).show();
+                });
+            });
+
+            const pendingOrder = document.querySelector('.pending-orders-btn');
+            const processingOrder = document.querySelector('.processing-orders-btn');
+            const deliveredOrder = document.querySelector('.delivered-orders-btn');
+            const oderHistoryOrder = document.querySelector('.order-history-btn');
+
+
+            pendingOrder.addEventListener('click', function () {
+                processingOrder.classList.remove('active');
+                deliveredOrder.classList.remove('active');
+                oderHistoryOrder.classList.remove('active');
+                pendingOrder.classList.add('active');
+            });
+
+            processingOrder.addEventListener('click', function () {
+                pendingOrder.classList.remove('active');
+                deliveredOrder.classList.remove('active');
+                oderHistoryOrder.classList.remove('active');
+                processingOrder.classList.add('active');
+            });
+
+            oderHistoryOrder.addEventListener('click', function () {
+                pendingOrder.classList.remove('active');
+                deliveredOrder.classList.remove('active');
+                processingOrder.classList.remove('active');
+                oderHistoryOrder.classList.add('active');
+            });
+
+            deliveredOrder.addEventListener('click', function () {
+                pendingOrder.classList.remove('active');
+                processingOrder.classList.remove('active');
+                oderHistoryOrder.classList.remove('active');
+                deliveredOrder.classList.add('active');
+            });
+
+
+
+
+
+        </script>

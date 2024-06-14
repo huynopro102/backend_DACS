@@ -12,13 +12,15 @@ let loginSuccess = async (req, res) => {
     console.log(req.user)
     const {email , family_name} = req.user._json
     const { id } = req.user;
-    console.log(email , family_name , id )
+    
     const connection = await pool.getConnection(); // Lấy kết nối từ pool
 
     const [existingUser] = await connection.query("SELECT * FROM user where Username = ? && id = ? ",[family_name,id]);
     
+    console.log("user ton tai 2")
     
     if (existingUser.length > 0 ) {
+      console.log("user ton tai")
       const accessToken = await generateAccessToken(existingUser[0].Username , existingUser[0].Check);
       res.cookie('Token', accessToken ); 
       res.cookie('Username', existingUser[0].Username.toString() ); 

@@ -7,16 +7,10 @@ const postAdminV1ProductEdit = async (req, res) => {
   try {
     // Lấy các trường dữ liệu từ req.body
     const { productId, ProductName, Price, sale, radio, productType, Supplier, ProductDescription } = req.body;
-    console.log(radio.toString())
-    console.log("ban dang tron edit product")
     // Tiến hành cập nhật sản phẩm trong cơ sở dữ liệu
     const conn = await pool.getConnection();
     await conn.beginTransaction();
     try {
-
-      
-
-
       // Câu truy vấn SQL để cập nhật sản phẩm
       const updateProductQuery = `
         UPDATE product 
@@ -30,7 +24,7 @@ const postAdminV1ProductEdit = async (req, res) => {
           Status = ?
         WHERE IDProduct = ?
       `;
-      await conn.query(updateProductQuery, [ProductName,ProductDescription,productType,Supplier,Price,sale,radio.toString(),productId]);
+      await conn.query(updateProductQuery, [ProductName,ProductDescription,productType,Supplier,Price,sale,radio,productId]);
 
       // Commit transaction nếu mọi thứ thành công
       await conn.commit();
@@ -53,7 +47,6 @@ const postAdminV1ProductEdit = async (req, res) => {
 
 const postAdminV1ProductsCreate = async (req, res) => {
   console.log("This is the post create function.");
-
   try {
     const {
       ProductDescription,
@@ -196,7 +189,7 @@ let getAdminV1ProductsEdit = async (req, res) => {
       image: list_img,
     });
   } else {
-  
+    // Handle case when product is not found
     res.redirect("/admin/v1/product");
   }
 };
@@ -235,7 +228,6 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
   try {
     const itemId = req.params.id;
     const { name, radio } = req.body;
-  
 
     if (!name || !radio == undefined || !itemId) {
       console.log("Thông tin không đủ hoặc không hợp lệ.");
@@ -258,7 +250,11 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
       [name]
     );
 
-    if (existingRows && existingRows.length > 0 && existingRows[0].start == radio) {
+    if (
+      existingRows &&
+      existingRows.length > 0 &&
+      existingRows[0].start == radio
+    ) {
       console.log("Tên loại sản phẩm đã tồn tại.");
       return res.status(400).json({ message: "Tên loại sản phẩm đã tồn tại." });
     }
@@ -281,9 +277,6 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
       "UPDATE `producttype` SET ProductTypeName = ?, Status = ? WHERE IDProductType = ?",
       [name, radio, itemId]
     );
-
-
-
 
     if (updateRows.affectedRows > 0) {
       console.log("Đã cập nhật tên loại sản phẩm thành công.");
@@ -412,7 +405,6 @@ let getAdminV1Products = async (req, res) => {
   }
 };
 
-
 let handleUploadFileCould = async (req, res) => {
   try {
   const { filename, NameReal, path } = req.files[0];
@@ -514,50 +506,109 @@ let handleDeleteFileCould = async (req, res) => {
   }
 };
 
-let deleteAdminV1Product = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
-  let connection;
+const deleteAdminV1Product = async (req, res) => {
+  const productId = req.params.id;
+
   try {
-    connection = await pool.getConnection(); // Lấy kết nối từ pool
-    const [product, productField] = await connection.execute("SELECT * FROM product WHERE IDProduct = ?", [id]);
-    const [invoiceDetail,invoiceDetailField] = await connection.execute("select * from invoicedetails where IDProduct = ?",[product[0].IDProduct])
-    const [productimagesdetails,productimagesdetailsField] = await connection.execute("select * from productimagesdetails where IDProduct = ?",[id])
-    const [image,imageField] = await connection.execute("select * from images where IDImages = ?",[productimagesdetails[0].IDImages])
+    const connection = await pool.getConnection();
+    await connection.beginTransaction();
 
-    if(invoiceDetail.length <= 0 ){
+    try {
+      // Kiểm tra xem sản phẩm có tồn tại không
+      const [existingRows, existingFields] = await connection.execute(
+        "SELECT * FROM `product` WHERE IDProduct = ?",
+        [productId]
+      );
 
-      const [productimagesdetails] = await connection.execute("SELECT * FROM productimagesdetails WHERE IDProduct = ?", [id]);
-
-      await connection.execute("DELETE FROM productimagesdetails WHERE IDProduct = ?", [id]);
-
-      for (const detail of productimagesdetails) {
-        await connection.execute("DELETE FROM images WHERE IDImages = ?", [detail.IDImages]);
+      if (!existingRows || existingRows.length === 0) {
+        console.log("Sản phẩm không tồn tại.");
+        await connection.rollback();
+        return res.status(404).json({ message: "Sản phẩm không tồn tại." });
       }
-  
-    
-      await connection.execute("DELETE FROM product WHERE IDProduct = ?", [id]);
 
-      
-      
-      await connection.commit(); // Commit giao dịch
-      connection.release(); // Trả lại kết nối vào pool
-      res.status(200).json({ message: "Xóa sản phẩm thành công!" });
-    }else{
-      await connection.commit(); // Commit giao dịch
-      connection.release(); // Trả lại kết nối vào pool
-      return res.status(201).json({message:"có thể trọn ẩn thay vì xóa"})
+      // Thực hiện xóa sản phẩm
+      const [deleteRows, deleteFields] = await connection.execute(
+        "DELETE FROM `product` WHERE IDProduct = ?",
+        [productId]
+      );
+
+      if (deleteRows.affectedRows > 0) {
+        console.log("Sản phẩm đã được xóa thành công.");
+        await connection.commit();
+        return res
+          .status(200)
+          .json({ message: "Sản phẩm đã được xóa thành công." });
+      } else {
+        console.log("Không có bản ghi nào được xóa.");
+        await connection.rollback();
+        return res
+          .status(500)
+          .json({ message: "Không có bản ghi nào được xóa." });
+      }
+    } catch (error) {
+      console.error("Lỗi xử lý yêu cầu DELETE:", error);
+      await connection.rollback();
+      res.status(500).json({ message: "Đã xảy ra lỗi server." });
+    } finally {
+      connection.release();
     }
   } catch (error) {
-    console.error("Error in deleteAdminV1Product:", error);
-    if (connection) {
-      connection.rollback(); // Rollback giao dịch nếu có lỗi
-      connection.release(); // Trả lại kết nối vào pool
-    }
-    return res.status(500).json("server invalid");
+    console.error("Lỗi kết nối cơ sở dữ liệu:", error);
+    res.status(500).json({ message: "Internal Server Error - Database connection" });
   }
 };
 
+const deleteAdminV1ProductsType = async (req, res) => {
+  const itemId = req.params.id;
+
+  try {
+    const connection = await pool.getConnection();
+    await connection.beginTransaction();
+
+    try {
+      // Kiểm tra xem loại sản phẩm có tồn tại không
+      const [existingRows, existingFields] = await connection.execute(
+        "SELECT * FROM `producttype` WHERE IDProductType = ?",
+        [itemId]
+      );
+
+      if (!existingRows || existingRows.length === 0) {
+        console.log("Loại sản phẩm không tồn tại.");
+        await connection.rollback();
+        return res.status(404).json({ message: "Loại sản phẩm không tồn tại." });
+      }
+
+      // Thực hiện xóa loại sản phẩm
+      const [deleteRows, deleteFields] = await connection.execute(
+        "DELETE FROM `producttype` WHERE IDProductType = ?",
+        [itemId]
+      );
+
+      if (deleteRows.affectedRows > 0) {
+        console.log("Loại sản phẩm đã được xóa thành công.");
+        await connection.commit();
+        return res
+          .status(200)
+          .json({ message: "Loại sản phẩm đã được xóa thành công." });
+      } else {
+        console.log("Không có bản ghi nào được xóa.");
+        await connection.rollback();
+        return res
+          .status(500)
+          .json({ message: "Không có bản ghi nào được xóa." });
+      }
+    } catch (error) {
+      console.error("Lỗi xử lý yêu cầu DELETE:", error);
+      await connection.rollback();
+      res.status(500).json({ message: "Đã xảy ra lỗi server." });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Lỗi kết nối cơ sở dữ liệu:", error);
+    res.status(500).json({ message: "Internal Server Error - Database connection" });
+  }
+};
 
 
 
@@ -575,7 +626,7 @@ module.exports = {
   postAdminV1ProductEdit,
   postAdminV1ProductsCreate,
   deleteAdminV1Product,
-
+  deleteAdminV1ProductsType,
   handleUploadFileCould,
   handleDeleteFileCould
   

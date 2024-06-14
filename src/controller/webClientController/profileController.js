@@ -13,17 +13,14 @@ let getProfile = async  (req, res) => {
       [username]
     );
 
-
-
-    
     // Xử lý kết quả truy vấn để trích xuất thông tin khách hàng
     const currentUser = {
-      username: customerRows[0].Username? "NAN":customerRows[0].Username,
+      username: customerRows[0].Username,
       customerName: customerRows[0].CustomerName,
       phoneNumber: customerRows[0].PhoneCustomer,
       address: customerRows[0].CustomerAddress,
       citizenID: customerRows[0].CitizenIdentificationCode,
-      dob: moment(customerRows[0].DateOfBirth).format('YYYY-MM-DD'),
+      dob: moment(customerRows[0].DateOfBirth).format('DD-MM-YYYY'),
       gender: customerRows[0].Sex
     };
 
@@ -44,20 +41,31 @@ const updateAccountInfo = async (req, res) => {
     const username = req.cookies.Username;
 
     // Kiểm tra xem có thông tin cập nhật nào được cung cấp không
-    if (!username && !phoneNumber && !address && !citizenID && !dob && !gender) {
-      return res.status(400).json({ message: "No update information provided" });
+    if (!username || (!customerName && !phoneNumber && !address && !citizenID && !gender)) {
+      return res.status(400).json({ message: "Không có thông tin cập nhật hoặc tên đăng nhập không hợp lệ" });
+    }
+
+    // Xử lý ngày tháng nếu được cung cấp và hợp lệ
+    let formattedDOB = null;
+    if (dob) {
+      if (moment(dob, 'YYYY-MM-DD', true).isValid()) {
+        formattedDOB = moment(dob).format('YYYY-MM-DD');
+      } else {
+        formattedDOB = null; // hoặc có thể gán giá trị mặc định khác nếu cần thiết
+      }
     }
 
     // Thực hiện cập nhật thông tin tài khoản trong bảng customer
     const updateQuery = "UPDATE customer SET CustomerName = ?, PhoneCustomer = ?, CustomerAddress = ?, CitizenIdentificationCode = ?, DateOfBirth = ?, Sex = ? WHERE Username = ?";
-    await pool.query(updateQuery, [customerName, phoneNumber, address, citizenID, dob, gender, username]);
+    await pool.query(updateQuery, [customerName, phoneNumber, address, citizenID, formattedDOB, gender, username]);
 
-    return res.status(200).json({ message: "Account information updated successfully" });
+    return res.status(200).json({ message: "Thông tin tài khoản đã được cập nhật thành công" });
   } catch (error) {
-    console.error("Error updating account information:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.error("Lỗi khi cập nhật thông tin tài khoản:", error);
+    return res.status(500).json({ message: "Lỗi máy chủ nội bộ" });
   }
 };
+
 
 const changePassword = async (req, res) => {
   try {
@@ -68,7 +76,6 @@ const changePassword = async (req, res) => {
     if (!username || !currentPassword || !newPassword || !confirmPassword) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-
     // Kiểm tra xác nhận mật khẩu mới
     if (newPassword !== confirmPassword) {
       return res.status(400).json({ message: "New password and confirm password do not match" });
@@ -100,8 +107,86 @@ const changePassword = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+const getOrders = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+  const token = req.cookies.Token;
+  
+  let customerID;
+  
+
+  const connection = await pool.getConnection(); // Lấy connection từ pool
+
+  try {
+      await connection.beginTransaction(); // Bắt đầu transaction
+      
+
+      const Username = req.cookies.Username
+      const [customer] = await connection.execute("SELECT * FROM customer WHERE Username = ?", [Username]);
+      console.log(customer)
+      if (customer.length === 0) {
+          await connection.rollback();
+          return res.status(404).json({ message: "Customer not found" });
+      }
+
+      const [rows] = await connection.execute(`
+          SELECT 
+              i.IDInvoice,
+              i.IDCustomer,
+              i.IDStaff,
+              i.DateCreated,
+              i.Status as InvoiceStatus,
+              id.IDProduct,
+              id.TotalQuantity,
+              id.Price,
+              d.DateCreated as DeliveryDate,
+              d.DeliveryAddress,
+              d.RecipientPhone,
+              d.Name as RecipientName,
+              d.Status as DeliveryStatus,
+              d.IDStaff as DeliveryStaff
+          FROM 
+              invoice i
+          JOIN 
+              invoicedetails id ON i.IDInvoice = id.IDInvoice
+          JOIN 
+              deliverynotes d ON i.IDInvoice = d.IDInvoice
+          WHERE 
+              i.IDCustomer = ?
+          ORDER BY 
+              i.DateCreated DESC
+          LIMIT ?, ?;
+      `, [customer[0].IDCustomer, offset, limit]);
+
+      const [countRows] = await connection.execute(`
+SELECT COUNT(*) as total FROM invoice  WHERE IDCustomer = ? `, [customer[0].IDCustomer]);
+      const total = countRows[0].total;
+      const totalPages = Math.ceil(total / limit);
+
+      await connection.commit(); // Commit transaction
+
+      res.render('./Client/don_da_dat.ejs', { 
+          orders: rows,
+          currentPage: page,
+          totalPages: totalPages 
+      });
+
+  } catch (error) {
+      await connection.rollback(); // Hủy bỏ transaction nếu có lỗi
+      console.error('Error fetching orders:', error);
+      res.status(500).json({ message: "Internal Server Error" });
+  } finally {
+      connection.release(); // Trả lại connection cho pool
+  }
+};
+
+
 module.exports = {
   getProfile,
   updateAccountInfo,
   changePassword,
+  getOrders
 };

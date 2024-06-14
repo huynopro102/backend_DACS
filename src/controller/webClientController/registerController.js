@@ -19,22 +19,23 @@ let postRegister = async (req, res) => {
       await conn.beginTransaction();
 
       try {
+        // Kiểm tra trùng lặp dựa trên cả username và email
         const [doubleCheck, doubleCheckFields] = await pool.execute(
-          "select * from user where Username = ? ",
-          [(firstName + " " + lastName).trim()]
+          "SELECT * FROM user WHERE Username = ? OR Email = ?",
+          [(firstName + " " + lastName).trim(), email]
         );
         if (doubleCheck.length > 0) {
           console.log(doubleCheck[0]);
-          return res.status(409).json({ message: "đã có người dùng họ tên này" });
+          return res.status(409).json({ message: "Tên người dùng hoặc email đã được sử dụng" });
         } else {
-            let hash = null
-            await hashPassword(password)
-            .then(data =>{
-                hash = data
+          let hash = null;
+          await hashPassword(password)
+            .then(data => {
+              hash = data;
             })
-            .catch(err =>{
-              throw err
-            })
+            .catch(err => {
+              throw err;
+            });
         
           // Thêm người dùng vào bảng user
           const userQuery =

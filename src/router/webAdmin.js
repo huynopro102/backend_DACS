@@ -30,20 +30,19 @@ router.delete("/admin/v1/cloudinary-upload" , checkAdmin , deleteImage , webAdmi
 // dashboard
 router.get("/admin/v1" , checkAdmin ,webAdminControllerDashBoard.getAdminV1Dashboard)
 
-// get accounts
-router.get('/admin/v1/accounts',checkAdmin , checkStaff , webAdminControllerAccounts.getAdminV1Accounts);
-router.get('/admin/v1/accounts/edit/:id', checkAdmin , checkStaff ,webAdminControllerAccounts.getAdminV1AccountsEdit);
-router.get('/admin/v1/accounts/create',checkAdmin , checkStaff , webAdminControllerAccounts.getAdminV1AccountsCreate)
-
-// post accounts
-router.post("/admin/v1/accounts/edit/:id", checkAdmin , checkStaff ,webAdminControllerAccounts.postAdminV1AccountsEdit )
-router.post("/admin/v1/accounts/delete" ,checkAdmin , checkStaff , webAdminControllerAccounts.postAdminV1AccountDelete )
-router.post('/admin/v1/accounts/edit/:id',checkAdmin , checkStaff ,webAdminControllerAccounts.postAdminV1AccountsEdit)
+// accounts
+router.get('/admin/v1/accounts', webAdminControllerAccounts.getAdminV1Accounts);
+router.get('/admin/v1/accounts/edit/:id', webAdminControllerAccounts.getAdminV1AccountsEdit);
+router.get('/admin/v1/accounts/create',webAdminControllerAccounts.getAdminV1AccountsCreate)
+router.post('/admin/v1/accounts/edit/:id',webAdminControllerAccounts.postAdminV1AccountsEdit)
+router.post('/admin/v1/accounts/delete/:id',webAdminControllerAccounts.postAdminV1AccountsDelete)
+router.post('/admin/v1/accounts/create',webAdminControllerAccounts.postAdminV1AccountsCreate)
 
 
 //customer
-router.get('/admin/v1/customer', checkAdmin , checkStaff ,webAdminControllerCustomer.getAdminV1Customers);
-router.get('/admin/v1/exportToExcelCustomer', checkAdmin ,checkStaff ,webAdminControllerCustomer.exportToExcel);
+router.get('/admin/v1/customer', webAdminControllerCustomer.getAdminV1Customers);
+router.get('/admin/v1/customer/view/:id', webAdminControllerCustomer.getAdminV1CustomersView);
+router.get('/admin/v1/exportToExcelCustomer', webAdminControllerCustomer.exportToExcel);
 
 
 
@@ -58,14 +57,14 @@ router.post("/admin/v1/product/create" ,checkAdmin , uploadCloud.single('image')
 router.get("/admin/v1/product/delete/:id",checkAdmin ,checkStaff ,webAdminControllerProducts.deleteAdminV1Product)
 
 // get product type
-router.get('/admin/v1/producttype',checkAdmin ,checkStaff ,webAdminControllerProducts.getAdminV1ProductsType)
-router.get('/admin/v1/producttype/edit/:id',checkAdmin ,checkStaff ,webAdminControllerProducts.getAdminV1ProductsTypeEdit)
-router.get('/admin/v1/producttype/create',checkAdmin ,checkStaff ,webAdminControllerProducts.getAdminV1ProductsTypeCreate)
+router.get('/admin/v1/producttype',webAdminControllerProducts.getAdminV1ProductsType)
+router.get('/admin/v1/producttype/edit/:id',webAdminControllerProducts.getAdminV1ProductsTypeEdit)
+router.get('/admin/v1/producttype/create',webAdminControllerProducts.getAdminV1ProductsTypeCreate)
 
 // post product type 
-router.post('/admin/v1/producttype/create',checkAdmin ,checkStaff ,webAdminControllerProducts.postAdminV1ProductsTypeCreate)
-router.post('/admin/v1/producttype/edit/:id',checkAdmin ,checkStaff ,webAdminControllerProducts.postAdminV1ProductsTypeEdit)
-// router.post('/admin/v1/producttype/delete/:id',webAdminControllerProducts.deleteAdminV1)
+router.post('/admin/v1/producttype/create',webAdminControllerProducts.postAdminV1ProductsTypeCreate)
+router.post('/admin/v1/producttype/edit/:id',webAdminControllerProducts.postAdminV1ProductsTypeEdit)
+router.post('/admin/v1/producttype/delete/:id',webAdminControllerProducts.deleteAdminV1ProductsType)
 
 
 
@@ -73,12 +72,16 @@ router.post('/admin/v1/producttype/edit/:id',checkAdmin ,checkStaff ,webAdminCon
 
 
 //imported
-router.get("/admin/v1/imported",checkAdmin  ,checkStaff ,webAdminControllerImported.getAdminV1Imported)
-router.get('/admin/v1/imported/create',checkAdmin ,checkStaff ,webAdminControllerImported.getAdminV1ImportedCreate)
-router.post('/admin/v1/imported/create',checkAdmin ,checkStaff ,webAdminControllerImported.postAdminV1ImportedCreate)
-router.get('/admin/v1/imported/edit/:id',checkAdmin ,checkStaff ,webAdminControllerImported.getAdminV1ImportedEdit)
-router.post('/admin/v1/imported/edit/:id',checkAdmin ,checkStaff ,webAdminControllerImported.postAdminV1ImportedEdit)
-router.post('/admin/v1/imported/delete/:id',checkAdmin ,checkStaff ,webAdminControllerImported.postAdminV1ImportedDelete)
+router.get("/admin/v1/imported",webAdminControllerImported.getAdminV1Imported)
+router.get('/admin/v1/imported/create',webAdminControllerImported.getAdminV1ImportedCreate)
+router.post('/admin/v1/imported/create',webAdminControllerImported.postAdminV1ImportedCreate)
+router.get('/admin/v1/imported/edit/:id',webAdminControllerImported.getAdminV1ImportedEdit)
+router.post('/admin/v1/imported/edit/:id',webAdminControllerImported.postAdminV1ImportedEdit)
+router.post('/admin/v1/imported/delete/:id',webAdminControllerImported.postAdminV1ImportedDelete)
+router.post('/admin/v1/imported/import/:id',webAdminControllerImported.postAdminV1ImportedImport)
+router.get('/admin/v1/imported/import/:id',webAdminControllerImported.getAdminV1ImportedImport)
+router.get('/admin/v1/importeddetail',webAdminControllerImported.getAdminV1ImportedDetails)
+router.get('/admin/v1/importeddetail/view/:id',webAdminControllerImported.getImportedProductDetailsView)
 
 
 
@@ -110,28 +113,28 @@ router.post("/admin/v1/deliverynotes/edit/:id",checkAdmin ,webAdminControllerDel
 
 
 //staff
-router.get('/admin/v1/staff', checkAdmin ,webAdminControllerStaff.getAdminV1Staff);
-router.get('/admin/v1/exportToExcelStaff', checkAdmin ,webAdminControllerStaff.exportToExcel);
-// router.get('/admin/v1/staff/edit/:id', checkAdmin ,webAdminControllerStaff.getAdminV1StaffEdit);
-// router.post('/admin/v1/staff/edit/:id', checkAdmin ,webAdminControllerStaff.postAdminV1StaffEdit);
+router.get('/admin/v1/staff', webAdminControllerStaff.getAdminV1Staff);
+router.get('/admin/v1/exportToExcelStaff', webAdminControllerStaff.exportToExcel);
+router.get('/admin/v1/staff/edit/:id', webAdminControllerStaff.getAdminV1StaffEdit);
+router.post('/admin/v1/staff/edit/:id', webAdminControllerStaff.postAdminV1StaffEdit);
 
  
 //stafftype
-router.get('/admin/v1/stafftype',checkAdmin ,checkStaff ,webAdminControllerStaff.getAdminV1StaffType)
-// router.get('/admin/v1/stafftypes',checkAdmin ,checkStaff ,webAdminControllerStaff.getAdminV1StaffTypes)
-router.get('/admin/v1/stafftype/create',checkAdmin ,checkStaff ,webAdminControllerStaff.getAdminV1StafftypeCreate)
-router.post('/admin/v1/stafftype/create',checkAdmin ,checkStaff ,webAdminControllerStaff.postAdminV1StafftypeCreate)
-router.get('/admin/v1/stafftype/edit/:id',checkAdmin ,checkStaff ,webAdminControllerStaff.getAdminV1StafftypeEdit)
-router.post('/admin/v1/stafftype/edit/:id',checkAdmin ,checkStaff ,webAdminControllerStaff.postAdminV1StafftypeEdit)
-router.post('/admin/v1/stafftype/delete/:id',checkAdmin ,checkStaff ,webAdminControllerStaff.postAdminV1StafftypeDelete)
+router.get('/admin/v1/stafftype',webAdminControllerStaff.getAdminV1StaffType)
+router.get('/admin/v1/stafftypes',webAdminControllerStaff.getAdminV1StaffTypes)
+router.get('/admin/v1/stafftype/create',webAdminControllerStaff.getAdminV1StafftypeCreate)
+router.post('/admin/v1/stafftype/create',webAdminControllerStaff.postAdminV1StafftypeCreate)
+router.get('/admin/v1/stafftype/edit/:id',webAdminControllerStaff.getAdminV1StafftypeEdit)
+router.post('/admin/v1/stafftype/edit/:id',webAdminControllerStaff.postAdminV1StafftypeEdit)
+router.post('/admin/v1/stafftype/delete/:id',webAdminControllerStaff.postAdminV1StafftypeDelete)
 
 // supplier
-router.get('/admin/v1/supplier',checkAdmin ,checkStaff ,webAdminControllerSupplier.getAdminV1Supplier)
-router.get('/admin/v1/supplier/create',checkAdmin ,checkStaff ,webAdminControllerSupplier.getAdminV1SupplierCreate)
-router.post('/admin/v1/supplier/create',checkAdmin ,checkStaff ,webAdminControllerSupplier.postAdminV1SupplierCreate)
-router.get('/admin/v1/supplier/edit/:id',checkAdmin ,checkStaff ,webAdminControllerSupplier.getAdminV1SupplierEdit)
-// router.post('/admin/v1/supplier/edit/:id',checkAdmin ,webAdminControllerSupplier.postAdminV1SupplierEdit)
-// router.post('/admin/v1/supplier/delete/:id',checkAdmin ,webAdminControllerSupplier.postAdminV1SupplierDelete)
+router.get('/admin/v1/supplier',webAdminControllerSupplier.getAdminV1Supplier)
+router.get('/admin/v1/supplier/create',webAdminControllerSupplier.getAdminV1SupplierCreate)
+router.post('/admin/v1/supplier/create',webAdminControllerSupplier.postAdminV1SupplierCreate)
+router.get('/admin/v1/supplier/edit/:id',webAdminControllerSupplier.getAdminV1SupplierEdit)
+router.post('/admin/v1/supplier/edit/:id',webAdminControllerSupplier.postAdminV1SupplierEdit)
+router.post('/admin/v1/supplier/delete/:id',webAdminControllerSupplier.postAdminV1SupplierDelete)
 
 //document
 router.get("/admin/v1/document",checkAdmin ,webAdminControllerDocument.getAdminV1Documents)
