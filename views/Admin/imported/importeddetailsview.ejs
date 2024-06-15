@@ -27,9 +27,8 @@
                 <p><strong>IDProduct:</strong> <%= item.IDProduct %></p>
                 <p><strong>ProductName:</strong> <%= item.ProductName %></p>
                 <p><strong>SupplierName:</strong> <%= item.SupplierName %></p>
-                <p><strong>Price:</strong> <%= (item.Price * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) %></p>
                 <p><strong>Quantity:</strong> <%= item.Quantity %></p>
-                <p><strong>InputPrice:</strong> <%= item.InputPrice %></p>
+                <p><strong>InputPrice:</strong> <%= (item.InputPrice * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) %></p>
                 <p><strong>Total Input:</strong> <%= ((item.Quantity * item.InputPrice) * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) %></p>
               </div>
             </div>
