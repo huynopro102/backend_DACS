@@ -22,7 +22,7 @@
         <div class="box-body">
 
 
-          <form action="http://localhost:8082/admin/v1/stafftype/edit/<%= row[0].IDStaffType%>" method="post">
+          <form action="/admin/v1/stafftype/edit/<%= row[0].IDStaffType%>" method="post">
             <!-- username -->
             <div class="form-group">
               <label for="exampleInputName">StaffTypeName</label>
@@ -34,7 +34,7 @@
           
             <!-- button submit -->
             <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i> Submit</button>
-            <a href="http://localhost:8082/admin/v1/stafftype" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
+            <a href="/admin/v1/stafftype" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
           </form>
 
         </div>
@@ -56,7 +56,7 @@
   
   const postRequired = async (requestBody) => {
     try {
-      const response = await fetch(`http://localhost:8082/admin/v1/stafftype/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
+      const response = await fetch(`/admin/v1/stafftype/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@
       const responseData = await response.json();
       if (response.ok) {
         alert(responseData.message);
-        window.location.href = 'http://localhost:8082/admin/v1/stafftype';
+        window.location.href = '/admin/v1/stafftype';
       } else {
         alert(responseData.message);
       }

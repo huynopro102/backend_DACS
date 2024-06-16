@@ -19,7 +19,7 @@
     <!-- Default box -->
     <div class="box">
       <div class="box-body">
-        <form action="http://localhost:8082/admin/v1/imported/edit/<%= data[0].IDImportedProducts%>" method="post">
+        <form action="/admin/v1/imported/edit/<%= data[0].IDImportedProducts%>" method="post">
           <div class="form-group mb-3">
             <label for="exampleInputIDStaff">IDStaff</label>
             <select name="IDStaff" class="form-control" id="exampleInputIDStaff">
@@ -73,7 +73,7 @@
 
   const postRequired = async (requestBody) => {
     try {
-      const response = await fetch('http://localhost:8082/admin/v1/imported/edit/<%= data[0].IDImportedProducts%>', {
+      const response = await fetch('/admin/v1/imported/edit/<%= data[0].IDImportedProducts%>', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@
         alert("Imported update successfully!");
         document.querySelector("#exampleInputIDStaff").value = "";
         document.querySelector("#exampleInputIDWarehouse").value = "";
-        window.location.href = 'http://localhost:8082/admin/v1/imported';
+        window.location.href = '/admin/v1/imported';
       } else if (response.status === 409) {
         alert("Failed to update imported: Duplicate data found");
       } else {

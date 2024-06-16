@@ -100,7 +100,7 @@
                   </td>
 
                   <td>
-                    <a href="http://localhost:8082/admin/v1/staff/edit/<%= item.IDStaff%>" class="btn btn-sm btn-primary btn-phan" >
+                    <a href="/admin/v1/staff/edit/<%= item.IDStaff%>" class="btn btn-sm btn-primary btn-phan" >
                       <i class="fa fa-user"></i> Cấp quyền
                     </a>
                   </td>
@@ -145,7 +145,7 @@
       $('.btn-xem').click(function () {
         var username = $(this).attr('aboriginal');
         $.ajax({
-            url: 'http://localhost:8082/admin/v1/staff/' + username,
+            url: '/admin/v1/staff/' + username,
             type: 'GET',
             success: function (data) {
                 $('#staffDetails').html(data);
@@ -158,7 +158,7 @@
     });
 
     function exportExcel() {
-      window.location.href = 'http://localhost:8082/admin/v1/exportToExcelStaff/';
+      window.location.href = '/admin/v1/exportToExcelStaff/';
   }
     </script>
 

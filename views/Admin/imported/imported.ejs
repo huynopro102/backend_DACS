@@ -30,7 +30,7 @@
               <input type="text" name="name" class="form-control-plaintext" id="staticEmail2"
                 placeholder="input field" style="width: 450px !important; height:34px !important;">
               <button type="submit" class="btn btn-primary mb-5"><i class="fa fa-search"></i></button>
-              <a href="http://localhost:8082/admin/v1/imported/create" class="btn btn-success mb-5"><i class="fa fa-plus"></i> Create</a>
+              <a href="/admin/v1/imported/create" class="btn btn-success mb-5"><i class="fa fa-plus"></i> Create</a>
             </div>
           </form>
 
@@ -64,11 +64,11 @@
               <td>
                 <% if (item.Status === 'Completed') { %>
                   <span class="btn btn-warning mb-5 disabled">Đã nhập hàng</span>
-                  <a href="http://localhost:8082/admin/v1/imported/edit/<%= item.IDImportedProducts%>"
+                  <a href="/admin/v1/imported/edit/<%= item.IDImportedProducts%>"
                     class="btn btn-sm btn-primary btn-sua disabled"><i class="fa fa-edit"></i> Edit</a>
               <% } else { %>
-                  <a href="http://localhost:8082/admin/v1/imported/import/<%= item.IDImportedProducts %>" class="btn btn-success mb-5"><i class="fa-solid fa-truck-fast"></i> Nhập hàng</a>
-                  <a href="http://localhost:8082/admin/v1/imported/edit/<%= item.IDImportedProducts%>"
+                  <a href="/admin/v1/imported/import/<%= item.IDImportedProducts %>" class="btn btn-success mb-5"><i class="fa-solid fa-truck-fast"></i> Nhập hàng</a>
+                  <a href="/admin/v1/imported/edit/<%= item.IDImportedProducts%>"
                     class="btn btn-sm btn-primary btn-sua"><i class="fa fa-edit"></i> Edit</a>
               <% } %>
                  
@@ -121,7 +121,7 @@
         // Gửi yêu cầu xóa loại sản phẩm đến máy chủ
         $.ajax({
           method: "POST",
-          url: "http://localhost:8082/admin/v1/imported/delete/" + importedID,
+          url: "/admin/v1/imported/delete/" + importedID,
           success: function(response) {
             // Nếu xóa thành công, reload trang để cập nhật dữ liệu mới
             location.reload();

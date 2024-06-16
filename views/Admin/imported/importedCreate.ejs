@@ -85,7 +85,7 @@
         alert("Imported created successfully!");
         document.querySelector("#exampleInputIDStaff").value = "";
         document.querySelector("#exampleInputIDWarehouse").value = "";
-        window.location.href = 'http://localhost:8082/admin/v1/imported';
+        window.location.href = '/admin/v1/imported';
       } else if (response.status === 409) {
         alert("Failed to create imported: Duplicate data found");
       } else {

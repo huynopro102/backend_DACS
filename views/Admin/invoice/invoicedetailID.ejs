@@ -64,7 +64,7 @@
                     </table>
                     <div class="infor-checkout d-flex justify-content-between">
                         <h3>Thông tin người nhận hàng</h3>
-                        <form action="http://localhost:8082/api/vnpay/create_payment_url" method="post" class="form-infor">
+                        <form action="/api/vnpay/create_payment_url" method="post" class="form-infor">
                             <div class="infor-content mb-2">
                                 <label for="fname" class="form-label">Tên khách hàng</label>
                                 <input class="form-control" type="text" id="fname" name="firstname" placeholder="" value="<%= invoiceDetails[0].Name %>">

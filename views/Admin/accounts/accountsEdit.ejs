@@ -22,7 +22,7 @@
         <div class="box-body">
 
 
-          <form action="http://localhost:8082/admin/v1/accounts/edit/<%= row[0].Username %>" method="post">
+          <form action="/admin/v1/accounts/edit/<%= row[0].Username %>" method="post">
             <!-- username -->
             <div class="form-group">
               <label for="exampleInputPassword1">Username</label>
@@ -51,7 +51,7 @@
 
             <!-- button submit -->
             <button type="submit" class="btn btn-primary btnSubmit"><i class="fa fa-save"></i> Submit</button>
-            <a href="http://localhost:8082/admin/v1/accounts" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
+            <a href="/admin/v1/accounts" class="btn btn-default"><i class="fa fa-arrow-left"></i> Trở lại</a>
 
           </form>
 
@@ -93,7 +93,7 @@ const checkEmpty = () => {
 
 const postRequired = async (requestBody) => {
   try {
-    const response = await fetch(`http://localhost:8082/admin/v1/accounts/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
+    const response = await fetch(`/admin/v1/accounts/edit/${document.querySelector(".cachCuChuoi").value.trim()}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const postRequired = async (requestBody) => {
     const responseData = await response.json();
     if (response.ok) {
       alert(responseData.message);
-      window.location.href = 'http://localhost:8082/admin/v1/accounts';
+      window.location.href = '/admin/v1/accounts';
     } else {
       alert(responseData.message);
     }
