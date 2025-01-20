@@ -11,7 +11,7 @@ let getAdminV1Staff = async (req, res) => {
       
         // total tổng các item trong database
         const [total, fields] = await pool.execute(
-          "select count(*) as total from staff"
+          "select count(*) as total from Staff"
         );
         let totalRow = total[0].total;
       
@@ -23,7 +23,7 @@ let getAdminV1Staff = async (req, res) => {
         //
         if (name) {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `staff` where `username` like ? limit ? , ? ",
+            "SELECT * FROM `Staff` where `username` like ? limit ? , ? ",
             [`%${name}%`, start, limit]
           );
           res.render("staff.ejs", {
@@ -32,7 +32,7 @@ let getAdminV1Staff = async (req, res) => {
             page: parseInt(_page),
           });
         } else {
-          const [rows, fields] = await pool.execute("SELECT * FROM `staff` limit "+ start+"," +limit);
+          const [rows, fields] = await pool.execute("SELECT * FROM `Staff` limit "+ start+"," +limit);
           res.render("./Admin/accounts/staff.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
@@ -49,7 +49,7 @@ let getAdminV1StaffEdit = async (req, res) => {
   const itemId = req.params.id;
   try {
       const [rows] = await pool.execute(
-          "SELECT * FROM `staff` WHERE IDStaff = ?",
+          "SELECT * FROM `Staff` WHERE IDStaff = ?",
           [itemId]
       );
 
@@ -75,7 +75,7 @@ let postAdminV1StaffEdit = async (req, res) => {
       }
 
       const [rows] = await pool.execute(
-          "SELECT * FROM `staff` WHERE IDStaff = ?",
+          "SELECT * FROM `Staff` WHERE IDStaff = ?",
           [itemId]
       );
 
@@ -84,7 +84,7 @@ let postAdminV1StaffEdit = async (req, res) => {
       }
 
       await pool.execute(
-          "UPDATE `staff` SET IDStaffType = ? WHERE IDStaff = ?",
+          "UPDATE `Staff` SET IDStaffType = ? WHERE IDStaff = ?",
           [IDStaffType, itemId]
       );
 
@@ -97,7 +97,7 @@ let postAdminV1StaffEdit = async (req, res) => {
 
 let exportToExcel = async (req, res) => {
     try {
-        const [rows, fields] = await pool.execute("SELECT * FROM `staff`");
+        const [rows, fields] = await pool.execute("SELECT * FROM `Staff`");
 
         // Tạo một đối tượng Workbook mới
         let wb = XLSX.utils.book_new();
@@ -132,7 +132,7 @@ let getAdminV1StaffType = async (req,res) =>{
         let name = req.query.name;
       
         // total tổng các item trong database
-        const [total, fields] = await pool.execute("select count(*) as total from stafftype");
+        const [total, fields] = await pool.execute("select count(*) as total from StaffType");
         let totalRow = total[0].total;
       
         // tong so trang
@@ -141,7 +141,7 @@ let getAdminV1StaffType = async (req,res) =>{
         //
         if (name) {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `stafftype` where `StaffTypeName` like ? limit ? , ? ",
+            "SELECT * FROM `Stafftype` where `StaffTypeName` like ? limit ? , ? ",
             [`%${name}%`, start, limit]
           );
           res.render("./Admin/accounts/stafftype.ejs", {
@@ -151,7 +151,7 @@ let getAdminV1StaffType = async (req,res) =>{
           });
         } else {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `stafftype` limit " + start +" , " + limit );
+            "SELECT * FROM `Stafftype` limit " + start +" , " + limit );
           res.render("./Admin/accounts/stafftype.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
@@ -171,7 +171,7 @@ let getAdminV1StafftypeCreate = async (req,res) =>{
 let getAdminV1StafftypeEdit = async (req,res) =>{
     const itemId = req.params.id;
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `stafftype` where IDStaffType = ? ",
+      "SELECT * FROM `Stafftype` where IDStaffType = ? ",
       [itemId]
     );
   
@@ -213,7 +213,7 @@ let postAdminV1StafftypeEdit = async (req, res) => {
         .json({ message: "Thông tin không đủ hoặc không hợp lệ." });
     }
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `stafftype` WHERE IDStaffType = ?",
+      "SELECT * FROM `Stafftype` WHERE IDStaffType = ?",
       [itemId]
     );
 
@@ -223,7 +223,7 @@ let postAdminV1StafftypeEdit = async (req, res) => {
     }
 
     const [existingRows, existingFields] = await pool.execute(
-      "SELECT * FROM `stafftype` WHERE StaffTypeName = ?",
+      "SELECT * FROM `Stafftype` WHERE StaffTypeName = ?",
       [StaffTypeName]
     );
 
@@ -233,7 +233,7 @@ let postAdminV1StafftypeEdit = async (req, res) => {
     }
 
     const [updateRows, updateFields] = await pool.execute(
-      "UPDATE `stafftype` SET StaffTypeName = ? WHERE IDStaffType = ?",
+      "UPDATE `Stafftype` SET StaffTypeName = ? WHERE IDStaffType = ?",
       [StaffTypeName,itemId]
     );
 
@@ -265,7 +265,7 @@ let postAdminV1StafftypeDelete = async (req, res) => {
     try {
       // Kiểm tra xem loại sản phẩm có tồn tại không
       const [existingRows, existingFields] = await connection.execute(
-        "SELECT * FROM `stafftype` WHERE IDStaffType = ?",
+        "SELECT * FROM `Stafftype` WHERE IDStaffType = ?",
         [itemId]
       );
 
@@ -277,7 +277,7 @@ let postAdminV1StafftypeDelete = async (req, res) => {
 
       // Thực hiện xóa loại sản phẩm
       const [deleteRows, deleteFields] = await connection.execute(
-        "DELETE FROM `stafftype` WHERE IDStaffType = ?",
+        "DELETE FROM `Stafftype` WHERE IDStaffType = ?",
         [itemId]
       );
 

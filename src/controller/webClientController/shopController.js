@@ -4,7 +4,7 @@ const getShop = async (req, res) => {
   let _page = req.query.page ? parseInt(req.query.page) : 1;
   let limit = 12;
   let start = (_page - 1) * limit;
-  const [totalProduct, totalFields] = await pool.execute(`SELECT count(*) as total FROM product`);
+  const [totalProduct, totalFields] = await pool.execute(`SELECT count(*) as total FROM Product`);
   const totalPage = Math.ceil(totalProduct[0].total / limit);
 
   // Tìm kiếm
@@ -27,12 +27,12 @@ const getShop = async (req, res) => {
   let idOrder = "";
   if (req.query.orderby === "date") {
       idOrder = " ORDER BY IDProduct DESC";
-  }
-
+  }      
   try {
-      let query = `SELECT * FROM product ${searchQuery} ${priceOrder} ${idOrder} LIMIT ?, ?`;
+      let query = `SELECT * FROM Product ${searchQuery} ${priceOrder} ${idOrder} LIMIT ${start}, ${limit}`;
       if (searchQuery && totalProduct[0].total === 1) {
-          query = `SELECT * FROM product ${searchQuery}`;
+        console.log("day la query 1")
+          query = `SELECT * FROM Product ${searchQuery}`;
           const [rows, fields] = await pool.execute(query, searchParams);
           res.render("./Client/shop.ejs", { 
               products: rows ? rows : [],
@@ -42,14 +42,17 @@ const getShop = async (req, res) => {
           });
       } else {
           const [rows, fields] = await pool.execute(query, [...searchParams, start, limit]);
-          await Promise.all(rows.map(async (element, index) => {
-              const [detailiImage, detailImageFields] = await pool.execute('select * from productimagesdetails where IDProduct = ' + [element.IDProduct] + ' limit 1 ');
-              const [image, imageFields] = await pool.execute("select * from images where IDImages = " + [detailiImage[0].IDImages] + " limit 1 ");
-              const [nameSupplier, nameSupplierFields] = await pool.execute("select * from supplier where IDSupplier = " + [element.IDSupplier]);
-              rows[index].url = image[0].UrlImages;
-              rows[index].SupplierName = nameSupplier[0].SupplierName;
-              rows[index].PriceVND =  parseInt(element.Price).toLocaleString('vi-VN');
-          }));
+          console.log("day la query 2", query, [...searchParams, start, limit])
+        //   await Promise.all(rows.map(async (element, index) => {
+        //     console.log("param ")
+        //       const [detailiImage, detailImageFields] = await pool.execute(`select * from ImportedProductsDetail where IDProduct = ${element.IDProduct} limit 1 `);
+        //       const [image, imageFields] = await pool.execute(`select * from Images where IDImages = ${detailiImage[0].IDImages}  limit 1 `);
+        //       const [nameSupplier, nameSupplierFields] = await pool.execute(`select * from Supplier where IDSupplier = ${element.IDSupplier}`);
+        //       rows[index].url = image[0].UrlImages;
+        //       rows[index].SupplierName = nameSupplier[0].SupplierName;
+        //       rows[index].PriceVND =  parseInt(element.Price).toLocaleString('vi-VN');
+        //   }));
+          console.log("done ")
           res.render("./Client/shop.ejs", { 
               products: rows ? rows : [],
               totalPage: totalPage,

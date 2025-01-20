@@ -28,7 +28,7 @@ console.log(isCaptchaValid)
 
   try {
     const [user, userFields] = await pool.execute(
-      "SELECT * FROM user WHERE Email = ?",
+      "SELECT * FROM User WHERE Email = ?",
       [result.data.email]
     );
 

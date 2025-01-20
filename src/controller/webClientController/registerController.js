@@ -21,7 +21,7 @@ let postRegister = async (req, res) => {
       try {
         // Kiểm tra trùng lặp dựa trên cả username và email
         const [doubleCheck, doubleCheckFields] = await pool.execute(
-          "SELECT * FROM user WHERE Username = ? OR Email = ?",
+          "SELECT * FROM User WHERE Username = ? OR Email = ?",
           [(firstName + " " + lastName).trim(), email]
         );
         if (doubleCheck.length > 0) {
@@ -39,7 +39,7 @@ let postRegister = async (req, res) => {
         
           // Thêm người dùng vào bảng user
           const userQuery =
-            "INSERT INTO user (Username, Email, Password, `Check`) VALUES (?, ?, ?, ?)";
+            "INSERT INTO User (Username, Email, Password, `Check`) VALUES (?, ?, ?, ?)";
           await conn.query(userQuery, [
             (firstName + " " + lastName).trim(),
             email,
@@ -49,7 +49,7 @@ let postRegister = async (req, res) => {
 
           // Thêm thông tin khách hàng vào bảng customer
           const customerQuery =
-            "INSERT INTO customer (Username, CustomerName, PhoneCustomer, CustomerAddress, CitizenIdentificationCode, DateOfBirth, Sex, IdImages) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO Customer (Username, CustomerName, PhoneCustomer, CustomerAddress, CitizenIdentificationCode, DateOfBirth, Sex, IdImages) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
           await conn.query(customerQuery, [
             (firstName + " " + lastName).trim(),
             null,

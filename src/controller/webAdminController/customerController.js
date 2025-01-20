@@ -11,7 +11,7 @@ let getAdminV1Customers = async (req, res) => {
       
         // total tổng các item trong database
         const [total, fields] = await pool.execute(
-          "select count(*) as total from customer"
+          "select count(*) as total from Customer"
         );
         let totalRow = total[0].total;
       
@@ -23,7 +23,7 @@ let getAdminV1Customers = async (req, res) => {
         //
         if (name) {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `customer` where `username` like ? limit ? , ? ",
+            "SELECT * FROM `Customer` where `Username` like ? limit ? , ? ",
             [`%${name}%`, start, limit]
           );
           res.render("customer.ejs", {
@@ -32,7 +32,7 @@ let getAdminV1Customers = async (req, res) => {
             page: parseInt(_page),
           });
         } else {
-          const [rows, fields] = await pool.execute("SELECT * FROM `customer` limit "+ start+"," +limit);
+          const [rows, fields] = await pool.execute("SELECT * FROM `Customer` limit "+ start+"," +limit);
           res.render("./Admin/accounts/customer.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
@@ -49,7 +49,7 @@ let getAdminV1CustomersView = async (req, res) => {
   const itemId = req.params.id;
   try {
       const [rows] = await pool.execute(
-          "SELECT * FROM `customer` WHERE IDCustomer = ?",
+          "SELECT * FROM `Customer` WHERE IDCustomer = ?",
           [itemId]
       );
 
@@ -69,7 +69,7 @@ let getAdminV1CustomersView = async (req, res) => {
 
 let exportToExcel = async (req, res) => {
     try {
-        const [rows, fields] = await pool.execute("SELECT * FROM `customer`");
+        const [rows, fields] = await pool.execute("SELECT * FROM `Customer`");
 
         // Tạo một đối tượng Workbook mới
         let wb = XLSX.utils.book_new();

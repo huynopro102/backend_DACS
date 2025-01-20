@@ -17,7 +17,6 @@ const {checkStaff ,  checkAdmin} = require("../utils/jwt_services")
  
 
 
-
 const uploadCloud = require("../middlewares/uploadFileCould")
 const assignPathNameImage = require("../middlewares/assignPathNameImage");
 const deleteImage = require("../middlewares/deleteFileCould")
@@ -28,7 +27,7 @@ router.post("/admin/v1/cloudinary-upload" , checkAdmin , uploadCloud.array('imag
 router.delete("/admin/v1/cloudinary-upload" , checkAdmin , deleteImage , webAdminControllerProducts.handleDeleteFileCould  )
 
 // dashboard
-router.get("/admin/v1" , checkAdmin ,webAdminControllerDashBoard.getAdminV1Dashboard)
+router.get("/admin/v1" , checkAdmin , webAdminControllerDashBoard.getAdminV1Dashboard)
 
 // accounts
 router.get('/admin/v1/accounts', webAdminControllerAccounts.getAdminV1Accounts);

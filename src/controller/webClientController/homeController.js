@@ -1,7 +1,7 @@
 const pool = require("../../models/connectDB");
 
 let getHome = async (req, res) => {
-    let limit = 18; // Set the limit for the number of products to display on the home page
+    let limit = 8; // Set the limit for the number of products to display on the home page
 
     // Tìm kiếm (Search)
     let searchQuery = "";
@@ -27,21 +27,21 @@ let getHome = async (req, res) => {
 
     try {
         // Construct query with search and order filters
-        let query = `SELECT * FROM product ${searchQuery} ${priceOrder} ${dateOrder} LIMIT ?`;
-        const [products, fields] = await pool.execute(query, [...searchParams, limit]);
-
+        let query = `SELECT * FROM Product ${searchQuery} ${priceOrder} ${dateOrder} LIMIT ${limit}`;
+        const [products, fields] = await pool.execute(query , ...searchParams);
+        console.log(products)
         // Process product images and supplier names (if necessary)
-        await Promise.all(products.map(async (element, index) => {
-            const [detailImage] = await pool.execute('SELECT * FROM productimagesdetails WHERE IDProduct = ? LIMIT 1', [element.IDProduct]);
-            const [image] = await pool.execute('SELECT * FROM images WHERE IDImages = ? LIMIT 1', [detailImage[0].IDImages]);
-            const [nameSupplier] = await pool.execute('SELECT * FROM supplier WHERE IDSupplier = ? LIMIT 1', [element.IDSupplier]);
+        // await Promise.all(products.map(async (element, index) => {
             
-            // Attach additional information to each product
-            products[index].url = image[0].UrlImages;
-            products[index].SupplierName = nameSupplier[0].SupplierName;
-            products[index].PriceVND = (element.Price * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-        }));
-
+        //     const [detailImage] = await pool.execute(`SELECT * FROM ProductImagesDetails WHERE IDProduct = ${element.IDProduct} LIMIT 1`);
+        //     const [image] = await pool.execute(`SELECT * FROM Images WHERE IDImages = ${detailImage[0].IDImages} LIMIT 1`);
+        //     const [nameSupplier] = await pool.execute(`SELECT * FROM Supplier WHERE IDSupplier = ${element.IDSupplier} LIMIT 1`);
+            
+        //     // Attach additional information to each product
+        //     products[index].url = image[0].UrlImages;
+        //     products[index].SupplierName = nameSupplier[0].SupplierName;
+        //     products[index].PriceVND = (element.Price * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        // }));
         // Render the products in home.ejs
         res.render('./Client/home.ejs', { products });
     } catch (err) {

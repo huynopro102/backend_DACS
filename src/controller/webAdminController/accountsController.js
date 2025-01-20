@@ -12,7 +12,7 @@ let getAdminV1Accounts = async (req, res) => {
       
         // total tổng các item trong database
         const [total, fields] = await pool.execute(
-          "select count(*) as total from user"
+          "select count(*) as total from User"
         );
         let totalRow = total[0].total;
       
@@ -22,7 +22,7 @@ let getAdminV1Accounts = async (req, res) => {
         //
         if (name) {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `user` where `username` like ? limit ? , ? ",
+            "SELECT * FROM `User` where `Username` like ? limit ? , ? ",
             [`%${name}%`, start, limit]
           );
           res.render("accounts.ejs", {
@@ -31,7 +31,7 @@ let getAdminV1Accounts = async (req, res) => {
             page: parseInt(_page),
           });
         } else {
-          const [rows, fields] = await pool.execute("SELECT * FROM `user` limit "+ start+"," +limit);
+          const [rows, fields] = await pool.execute("SELECT * FROM `User` limit "+ start+"," +limit);
           res.render("./Admin/accounts/accounts.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
@@ -106,7 +106,7 @@ const postAdminV1AccountsEdit = async (req, res) => {
         // console.log('ket qua ',reuslt)
 
         // Kiểm tra sự tồn tại của người dùng
-        const [rows] = await connection.execute("SELECT * FROM `user` WHERE Username = ?", [itemId]);
+        const [rows] = await connection.execute("SELECT * FROM `User` WHERE Username = ?", [itemId]);
 
         if (!rows || rows.length === 0) {
             console.log("Người dùng không tồn tại.");
@@ -115,7 +115,7 @@ const postAdminV1AccountsEdit = async (req, res) => {
         }
 
         // Kiểm tra trùng tên người dùng
-        const [existingRows] = await connection.execute("SELECT * FROM `user` WHERE Username = ? FOR UPDATE", [itemId]);
+        const [existingRows] = await connection.execute("SELECT * FROM `User` WHERE Username = ? FOR UPDATE", [itemId]);
 
         if (existingRows && existingRows.length > 0 && existingRows[0].Username !== itemId) {
             console.log("Tên người dùng đã tồn tại.");
@@ -125,7 +125,7 @@ const postAdminV1AccountsEdit = async (req, res) => {
 
         // Cập nhật thông tin người dùng trong cơ sở dữ liệu
         const [updateRows] = await connection.execute(
-            "UPDATE `user` SET Password = ?, `Check` = ? WHERE Username = ?",
+            "UPDATE `User` SET Password = ?, `Check` = ? WHERE Username = ?",
             [hashedPassword, Check, itemId]
         );
 
@@ -156,7 +156,7 @@ const postAdminV1AccountsDelete = async (req, res) => {
         await connection.beginTransaction();
 
         try {
-            const [existingRows] = await connection.execute("SELECT * FROM `user` WHERE Username = ?", [itemId]);
+            const [existingRows] = await connection.execute("SELECT * FROM `User` WHERE Username = ?", [itemId]);
 
             if (!existingRows || existingRows.length === 0) {
                 console.log("User không tồn tại.");
@@ -164,7 +164,7 @@ const postAdminV1AccountsDelete = async (req, res) => {
                 return res.status(404).json({ message: "User không tồn tại." });
             }
 
-            const [updateRows] = await connection.execute("UPDATE `user` SET `Check` = 0 WHERE Username = ?", [itemId]);
+            const [updateRows] = await connection.execute("UPDATE `User` SET `Check` = 0 WHERE Username = ?", [itemId]);
 
             if (updateRows.affectedRows > 0) {
                 console.log("Đã chặn tài khoản thành công.");
@@ -191,7 +191,7 @@ const postAdminV1AccountsDelete = async (req, res) => {
 let getAdminV1AccountsEdit = async (req, res) => {
     const itemId = req.params.id;
     try {
-        const [rows] = await pool.execute("SELECT * FROM `user` WHERE Username = ?", [itemId]);
+        const [rows] = await pool.execute("SELECT * FROM `User` WHERE Username = ?", [itemId]);
 
         if (!rows || rows.length === 0) {
             return res.status(404).json({ message: "User not found" });

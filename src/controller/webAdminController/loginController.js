@@ -9,7 +9,6 @@ const postSignAdmin = async (req, res) => {
   const { email, password, recaptchaToken } = req.body;
   const result = validateSignin(email, password);
 
-  // Gửi recaptchaToken lên Google reCAPTCHA Service để xác minh tính hợp lệ
   const isCaptchaValid = await verifyCaptchaToken(recaptchaToken);
   if (!isCaptchaValid) {
     return res.status(402).json({ message: "Xác thực không hợp lệ" });
@@ -21,7 +20,7 @@ const postSignAdmin = async (req, res) => {
 
   try {
     const [user] = await pool.execute(
-      "SELECT * FROM user WHERE Email = ?",
+      "SELECT * FROM User WHERE Email = ?",
       [result.data.email]
     );
 

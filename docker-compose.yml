@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:lts-oraclelinux9
+    container_name: db_dung_chinh
+    environment:
+      - MYSQL_DATABASE=dungchinh
+      - MYSQL_ROOT_PASSWORD=123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_dung_chinh:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      - PMA=db_dung_chinh
+      - MYSQL_ROOT_PASSWORD:123
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+volumes:
+  db_dung_chinh:

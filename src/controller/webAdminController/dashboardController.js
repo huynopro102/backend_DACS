@@ -8,9 +8,9 @@ let getAdminV1Dashboard = async (req, res) => {
         // Lấy tổng doanh thu (USD)
         const [totalRevenueRows] = await pool.execute(`
             SELECT SUM(TotalQuantity * Price) AS totalRevenue 
-            FROM invoicedetails 
-            INNER JOIN invoice ON invoicedetails.IDInvoice = invoice.IDInvoice 
-            WHERE invoice.Status = 3
+            FROM Invoicedetails 
+            INNER JOIN Invoice ON Invoicedetails.IDInvoice = Invoice.IDInvoice 
+            WHERE Invoice.Status = 3
         `);
 
         const totalRevenueUSD = totalRevenueRows[0].totalRevenue || 0;
@@ -24,7 +24,7 @@ let getAdminV1Dashboard = async (req, res) => {
         // Lấy tổng số đơn hàng
         const [totalOrdersRows] = await pool.execute(`
             SELECT COUNT(*) AS totalOrders 
-            FROM invoice 
+            FROM Invoice 
             WHERE Status = 3
         `);
 
@@ -33,7 +33,7 @@ let getAdminV1Dashboard = async (req, res) => {
         // Lấy tổng số khách hàng
         const [totalCustomersRows] = await pool.execute(`
             SELECT COUNT(*) AS totalCustomers 
-            FROM customer
+            FROM Customer
         `);
 
         const totalCustomers = totalCustomersRows[0].totalCustomers || 0;
@@ -41,19 +41,19 @@ let getAdminV1Dashboard = async (req, res) => {
         // Lấy tổng số sản phẩm tồn kho
         const [totalStockRows] = await pool.execute(`
             SELECT SUM(QuantityInStock) AS totalStock 
-            FROM warehousedetails
+            FROM Warehousedetails
         `);
 
         const totalStock = totalStockRows[0].totalStock || 0;
 
         // Lấy doanh thu theo tháng trong năm hiện tại
         const [monthlyRevenueRows] = await pool.execute(`
-            SELECT MONTH(invoice.DateCreated) AS month, SUM(TotalQuantity * Price) AS revenue
-            FROM invoicedetails
-            RIGHT JOIN invoice ON invoicedetails.IDInvoice = invoice.IDInvoice
-            WHERE invoice.Status = 3 AND YEAR(invoice.DateCreated) = YEAR(CURDATE())
-            GROUP BY MONTH(invoice.DateCreated)
-            ORDER BY MONTH(invoice.DateCreated) ASC
+            SELECT MONTH(Invoice.DateCreated) AS month, SUM(TotalQuantity * Price) AS revenue
+            FROM Invoicedetails
+            RIGHT JOIN Invoice ON Invoicedetails.IDInvoice = Invoice.IDInvoice
+            WHERE Invoice.Status = 3 AND YEAR(Invoice.DateCreated) = YEAR(CURDATE())
+            GROUP BY MONTH(Invoice.DateCreated)
+            ORDER BY MONTH(Invoice.DateCreated) ASC
         `);
         
         const monthlyRevenue = monthlyRevenueRows.map(row => ({
@@ -63,11 +63,11 @@ let getAdminV1Dashboard = async (req, res) => {
 
         // Lấy doanh thu theo năm
         const [yearlyRevenueRows] = await pool.execute(`
-            SELECT YEAR(invoice.DateCreated) AS year, SUM(TotalQuantity * Price) AS revenue
-            FROM invoicedetails
-            INNER JOIN invoice ON invoicedetails.IDInvoice = invoice.IDInvoice
-            WHERE invoice.Status = 3
-            GROUP BY YEAR(invoice.DateCreated)
+            SELECT YEAR(Invoice.DateCreated) AS year, SUM(TotalQuantity * Price) AS revenue
+            FROM Invoicedetails
+            INNER JOIN Invoice ON Invoicedetails.IDInvoice = Invoice.IDInvoice
+            WHERE Invoice.Status = 3
+            GROUP BY YEAR(Invoice.DateCreated)
         `);
 
         const yearlyRevenue = yearlyRevenueRows.map(row => ({

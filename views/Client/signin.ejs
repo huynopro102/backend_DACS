@@ -107,8 +107,7 @@
 
         // Lấy token reCAPTCHA
         const recaptchaToken = grecaptcha.getResponse();
-        console.log(recaptchaToken)
-        // Kiểm tra xem token có tồn tại không
+
         if (!recaptchaToken) {
           alert("Vui lòng xác minh bạn không phải là robot!");
           return;

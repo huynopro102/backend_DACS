@@ -13,7 +13,7 @@ const postAdminV1ProductEdit = async (req, res) => {
     try {
       // Câu truy vấn SQL để cập nhật sản phẩm
       const updateProductQuery = `
-        UPDATE product 
+        UPDATE Product 
         SET 
           ProductName = ?, 
           ProductDescription = ?, 
@@ -94,11 +94,11 @@ const postAdminV1ProductsCreate = async (req, res) => {
       const [imageIdResult] = await conn.query(imageIdQuery);
       const imageId = imageIdResult[0].imageId;
 
-      console.log("Inserting into the productimagesdetails table.");
+      console.log("Inserting into the Productimagesdetails table.");
 
       // Thêm chi tiết hình ảnh sản phẩm vào bảng productimagesdetails
       const productImageQuery =
-        "INSERT INTO productimagesdetails (IDImages, IDProduct) VALUES (?, ?)";
+        "INSERT INTO Productimagesdetails (IDImages, IDProduct) VALUES (?, ?)";
       await conn.query(productImageQuery, [imageId, productId]);
 
       console.log("Committing the transaction.");
@@ -124,12 +124,12 @@ const postAdminV1ProductsCreate = async (req, res) => {
 
 let getAdminV1ProductsCreate = async (req, res) => {
   const [supplier, supplierFields] = await pool.execute(
-    "select * from supplier"
+    "select * from Supplier"
   );
   const [categoryData, categoryDataFields] = await pool.execute(
-    "select * from producttype"
+    "select * from ProductType"
   );
-  const [rows, fields] = await pool.execute("SELECT * FROM `producttype`");
+  const [rows, fields] = await pool.execute("SELECT * FROM `ProductType`");
   if (rows.length <= 0) {
     res.render("./Admin/product/productCreate.ejs", {
       data: [],
@@ -148,21 +148,21 @@ let getAdminV1ProductsCreate = async (req, res) => {
 let getAdminV1ProductsEdit = async (req, res) => {
   const productId = req.params.id;
   const [productRows, productFields] = await pool.execute(
-    "SELECT * FROM product WHERE IDProduct = ?",
+    "SELECT * FROM Product WHERE IDProduct = ?",
     [productId]
   );
 
   const [categoryRows, categoryFields] = await pool.execute(
-    "SELECT * FROM `producttype`"
+    "SELECT * FROM `ProductType`"
   );
 
   const [supplier, supplierFields] = await pool.execute(
-    "select * from supplier"
+    "select * from Supplier"
   );
 
-  const [productimagesdetails, productimagesdetailsFields] = await pool.execute(
+  const [Productimagesdetails, ProductimagesdetailsFields] = await pool.execute(
     `
-    select * from productimagesdetails where IDProduct = ?
+    select * from ProductImagesDetails where IDProduct = ?
   `,
     [productId]
   );
@@ -170,10 +170,10 @@ let getAdminV1ProductsEdit = async (req, res) => {
   const list_img = [];
 
   await Promise.all(
-    productimagesdetails.map(async (element, index) => {
+    Productimagesdetails.map(async (element, index) => {
       const [image, imageDetail] = await pool.execute(
-        `SELECT * FROM images WHERE IDImages = ?`,
-        [productimagesdetails[index].IDImages]
+        `SELECT * FROM Images WHERE IDImages = ?`,
+        [Productimagesdetails[index].IDImages]
       );
       list_img.push(...image);
     })
@@ -200,7 +200,7 @@ let getAdminV1ProductsTypeEdit = async (req, res) => {
 
   try {
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `producttype` WHERE IDProductType = ?",
+      "SELECT * FROM `ProductType` WHERE IDProductType = ?",
       [itemId]
     );
 
@@ -236,7 +236,7 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
         .json({ message: "Thông tin không đủ hoặc không hợp lệ." });
     }
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `producttype` WHERE IDProductType = ?",
+      "SELECT * FROM `ProductType` WHERE IDProductType = ?",
       [itemId]
     );
 
@@ -246,7 +246,7 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
     }
 
     const [existingRows, existingFields] = await pool.execute(
-      "SELECT * FROM `producttype` WHERE ProductTypeName = ?",
+      "SELECT * FROM `ProductType` WHERE ProductTypeName = ?",
       [name]
     );
 
@@ -264,7 +264,7 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
       existingRows[0].start == radio
     ) {
       const [updateRows, updateFields] = await pool.execute(
-        "UPDATE `producttype` SET ProductTypeName = ?, Status = ? WHERE IDProductType = ?",
+        "UPDATE `ProductType` SET ProductTypeName = ?, Status = ? WHERE IDProductType = ?",
         [name, radio, itemId]
       );
       console.log("Đã cập nhật tên loại sản phẩm thành công.");
@@ -274,7 +274,7 @@ const postAdminV1ProductsTypeEdit = async (req, res) => {
     }
 
     const [updateRows, updateFields] = await pool.execute(
-      "UPDATE `producttype` SET ProductTypeName = ?, Status = ? WHERE IDProductType = ?",
+      "UPDATE `ProductType` SET ProductTypeName = ?, Status = ? WHERE IDProductType = ?",
       [name, radio, itemId]
     );
 
@@ -301,7 +301,7 @@ let postAdminV1ProductsTypeCreate = async (req, res) => {
 
   try {
     const [existingRows, existingFields] = await pool.execute(
-      `SELECT * FROM producttype WHERE ProductTypeName = ?`,
+      `SELECT * FROM ProductType WHERE ProductTypeName = ?`,
       [name]
     );
 
@@ -313,7 +313,7 @@ let postAdminV1ProductsTypeCreate = async (req, res) => {
     }
 
     const [rows, fields] = await pool.execute(
-      `INSERT INTO producttype (ProductTypeName, Status) VALUES (?, ?)`,
+      `INSERT INTO ProductType (ProductTypeName, Status) VALUES (?, ?)`,
       [name, radio]
     );
 
@@ -321,10 +321,10 @@ let postAdminV1ProductsTypeCreate = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Product type created successfully." });
   } catch (error) {
-    console.error("Error creating product type:", error);
+    console.error("Error creating Product type:", error);
     res
       .status(500)
-      .json({ success: false, message: "Failed to create product type." });
+      .json({ success: false, message: "Failed to create Product type." });
   }
 };
 
@@ -336,7 +336,7 @@ let getAdminV1ProductsType = async (req, res) => {
   let name = req.query.name;
   // total tổng các item trong database
   const [total, fields] = await pool.execute(
-    "select count(*) as total from producttype"
+    "select count(*) as total from ProductType"
   );
   let totalRow = total[0].total;
   // tong so trang
@@ -344,7 +344,7 @@ let getAdminV1ProductsType = async (req, res) => {
   //
   if (name) {
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `producttype` where `ProductTypeName` like ? limit ? , ? ",
+      "SELECT * FROM `ProductType` where `ProductTypeName` like ? limit ? , ? ",
       [`%${ProductTypeName}%`, start, limit]
     );
     res.render("./Admin/product/productType.ejs", {
@@ -353,7 +353,7 @@ let getAdminV1ProductsType = async (req, res) => {
       page: parseInt(_page),
     });
   } else {
-    const [rows, fields] = await pool.execute( "SELECT * FROM `producttype` limit " + start + "," + limit );
+    const [rows, fields] = await pool.execute( "SELECT * FROM `ProductType` limit " + start + "," + limit );
     res.render("./Admin/product/productType.ejs", {
       dataUser: rows ? rows : [],
       totalPage: totalPage,
@@ -363,45 +363,60 @@ let getAdminV1ProductsType = async (req, res) => {
 };
 let getAdminV1Products = async (req, res) => {
   try {
-    let _page = req.query.page ? req.query.page : 1;
+    let _page = parseInt(req.query.page) || 1;
     let limit = 10;
     let start = (_page - 1) * limit;
     let name = req.query.name;
 
-    // Tính tổng số sản phẩm trong database
-    const [total, fields] = await pool.execute(
-      "SELECT count(*) as total from product"
+    // Convert start và limit sang số nguyên
+    start = parseInt(start);
+    limit = parseInt(limit);
+
+    // Đếm tổng số sản phẩm
+    const [total] = await pool.execute(
+      "SELECT COUNT(*) as total FROM Product"
     );
     let totalRow = total[0].total;
-
-    // Tính tổng số trang
     let totalPage = Math.ceil(totalRow / limit);
 
+    let rows;
     if (name) {
-      const [rows, fields] = await pool.execute(
-        "SELECT p.*, c.*, s.SupplierName, i.UrlImages FROM product p JOIN category c ON p.IDProductType = c.IDProductType JOIN supplier s ON p.IDSupplier = s.IDSupplier LEFT JOIN productimagesdetails pid ON p.IDProduct = pid.IDProduct LEFT JOIN images i ON pid.IDImages = i.IDImages WHERE p.ProductTypeName LIKE ? LIMIT ?, ?",
-        [`%${name}%`, start, limit]
+      [rows] = await pool.execute(
+        `SELECT p.*, c.*, s.SupplierName, i.UrlImages 
+         FROM Product p 
+         JOIN ProductType c ON p.IDProductType = c.IDProductType 
+         JOIN Supplier s ON p.IDSupplier = s.IDSupplier 
+         LEFT JOIN ProductImagesDetails pid ON p.IDProduct = pid.IDProduct 
+         LEFT JOIN Images i ON pid.IDImages = i.IDImages 
+         WHERE p.ProductTypeName LIKE ? 
+         LIMIT ?, ?`,
+        [name, start, limit]
       );
-
-      res.render("ProductsAdmin.ejs", {
-        dataProduct: rows ? rows : [],
-        totalPage: totalPage,
-        page: parseInt(_page),
-      });
     } else {
-      const [rows, fields] = await pool.execute(
-        "SELECT p.*, c.*, s.SupplierName, i.UrlImages FROM product p JOIN producttype c ON p.IDProductType = c.IDProductType JOIN supplier s ON p.IDSupplier = s.IDSupplier LEFT JOIN productimagesdetails pid ON p.IDProduct = pid.IDProduct LEFT JOIN images i ON pid.IDImages = i.IDImages LIMIT ?, ?",
-        [start, limit]
+      // Thay đổi cách truyền tham số LIMIT
+      [rows] = await pool.query(
+        `SELECT p.*, c.*, s.SupplierName, i.UrlImages 
+         FROM Product p 
+         JOIN ProductType c ON p.IDProductType = c.IDProductType 
+         JOIN Supplier s ON p.IDSupplier = s.IDSupplier 
+         LEFT JOIN ProductImagesDetails pid ON p.IDProduct = pid.IDProduct 
+         LEFT JOIN Images i ON pid.IDImages = i.IDImages 
+         LIMIT ${start}, ${limit}`
       );
-
-      res.render("./Admin/product/product.ejs", {
-        dataProduct: rows ? rows : [],
-        totalPage: totalPage,
-        page: parseInt(_page),
-      });
     }
+
+    return res.render("./Admin/product/product.ejs", {
+      dataProduct: rows || [],
+      totalPage: totalPage,
+      page: _page
+    });
+
   } catch (error) {
-    console.error("Error in gethomeControllerProduct:", error);
+    console.error("Error in getAdminV1Products:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message
+    });
   }
 };
 
@@ -422,7 +437,7 @@ let handleUploadFileCould = async (req, res) => {
     try {
       // Thêm hình ảnh vào bảng images
       const imageQuery =
-        "INSERT INTO images (NameImages, UrlImages) VALUES (?, ?)";
+        "INSERT INTO Images (NameImages, UrlImages) VALUES (?, ?)";
       await conn.query(imageQuery, [correctName, path]);
 
       // Lấy ID của hình ảnh vừa được thêm
@@ -430,14 +445,14 @@ let handleUploadFileCould = async (req, res) => {
       const [imageIdResult] = await conn.query(imageIdQuery);
       const imageId = imageIdResult[0].imageId;
 
-      console.log("Inserting into the productimagesdetails table.");
+      console.log("Inserting into the Productimagesdetails table.");
 
       // Thêm chi tiết hình ảnh sản phẩm vào bảng productimagesdetails
       // Giả sử productId đã được truyền vào từ phía client
       const productId = req.body.productId; // Cần cập nhật dòng này để lấy ID sản phẩm từ client
 
       const productImageQuery =
-        "INSERT INTO productimagesdetails (IDImages, IDProduct) VALUES (?, ?)";
+        "INSERT INTO ProductImagesDetails (IDImages, IDProduct) VALUES (?, ?)";
       await conn.query(productImageQuery, [imageId, id]);
 
       console.log("Committing the transaction.");
@@ -470,15 +485,15 @@ let handleDeleteFileCould = async (req, res) => {
 
     const { productId, publicId, imageUrl } = req.body;
 
-    const[image,fieldsImage] = await pool.execute('select * from images where UrlImages = ? limit 1 ',[imageUrl])
+    const[image,fieldsImage] = await pool.execute('select * from Images where UrlImages = ? limit 1 ',[imageUrl])
    
     // Xóa chi tiết hình ảnh sản phẩm từ bảng productimagesdetails
-    const deleteDetailsQuery = "DELETE FROM productimagesdetails WHERE IDProduct = ? and IDImages = ?";
+    const deleteDetailsQuery = "DELETE FROM ProductImagesDetails WHERE IDProduct = ? and IDImages = ?";
     const detailsDeleteResult = await connection.query(deleteDetailsQuery, [productId,image[0].IDImages]);
    
     if (detailsDeleteResult[0].affectedRows > 0) {
       // Xóa hình ảnh từ bảng images
-      const deleteImageQuery = "DELETE FROM images WHERE IDImages = ?";
+      const deleteImageQuery = "DELETE FROM Images WHERE IDImages = ?";
       const imageDeleteResult = await connection.query(deleteImageQuery, [image[0].IDImages]);
 
       if (imageDeleteResult[0].affectedRows > 0) {
@@ -493,7 +508,7 @@ let handleDeleteFileCould = async (req, res) => {
     } else {
       // Rollback transaction nếu xóa chi tiết hình ảnh sản phẩm thất bại
       await connection.rollback();
-      res.status(500).json({ message: "Failed to delete product image details" });
+      res.status(500).json({ message: "Failed to delete Product image details" });
     }
   } catch (error) {
     console.error("Error deleting image and details:", error);
@@ -516,7 +531,7 @@ const deleteAdminV1Product = async (req, res) => {
     try {
       // Kiểm tra xem sản phẩm có tồn tại không
       const [existingRows, existingFields] = await connection.execute(
-        "SELECT * FROM `product` WHERE IDProduct = ?",
+        "SELECT * FROM `Product` WHERE IDProduct = ?",
         [productId]
       );
 
@@ -528,7 +543,7 @@ const deleteAdminV1Product = async (req, res) => {
 
       // Thực hiện xóa sản phẩm
       const [deleteRows, deleteFields] = await connection.execute(
-        "DELETE FROM `product` WHERE IDProduct = ?",
+        "DELETE FROM `Product` WHERE IDProduct = ?",
         [productId]
       );
 
@@ -556,6 +571,7 @@ const deleteAdminV1Product = async (req, res) => {
     console.error("Lỗi kết nối cơ sở dữ liệu:", error);
     res.status(500).json({ message: "Internal Server Error - Database connection" });
   }
+  
 };
 
 const deleteAdminV1ProductsType = async (req, res) => {
@@ -568,7 +584,7 @@ const deleteAdminV1ProductsType = async (req, res) => {
     try {
       // Kiểm tra xem loại sản phẩm có tồn tại không
       const [existingRows, existingFields] = await connection.execute(
-        "SELECT * FROM `producttype` WHERE IDProductType = ?",
+        "SELECT * FROM `ProductType` WHERE IDProductType = ?",
         [itemId]
       );
 
@@ -580,7 +596,7 @@ const deleteAdminV1ProductsType = async (req, res) => {
 
       // Thực hiện xóa loại sản phẩm
       const [deleteRows, deleteFields] = await connection.execute(
-        "DELETE FROM `producttype` WHERE IDProductType = ?",
+        "DELETE FROM `ProductType` WHERE IDProductType = ?",
         [itemId]
       );
 

@@ -2,7 +2,7 @@ const pool = require("../../models/connectDB")
 
 let postLogout = async(req,res) =>{
 
-    const [userAlreadyExists , userFields] = await pool.execute("select * from user where Username =  ?", [req.payload.userID])
+    const [userAlreadyExists , userFields] = await pool.execute("select * from User where Username =  ?", [req.payload.userID])
     if(userAlreadyExists[0]){
         
         res.setHeader("Set-Cookie", [

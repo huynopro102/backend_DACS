@@ -54,9 +54,12 @@
                         </div>
                         </div>
                     </div>
+                    
                     <div class="col-12">
+                        <!-- captcha -->
                         <div class="g-recaptcha" data-sitekey="6LeIX8opAAAAAEJpYg83aaB9yjPEtJo-9b2T_vhr"></div>
                     </div>
+
                     <div class="col-12">
                         <div class="d-grid my-3">
                         <button class="btn btn-primary btn-lg" type="submit">Đăng Nhập</button>
@@ -78,6 +81,12 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         const recaptchaToken = grecaptcha.getResponse();
+
+        if (!recaptchaToken) {
+          alert("Vui lòng xác minh bạn không phải là robot!");
+          return;
+        }
+
 
         const formData = {
             email: email,

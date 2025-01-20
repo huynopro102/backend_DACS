@@ -9,7 +9,7 @@ let getProfile = async  (req, res) => {
 
     // Truy vấn thông tin khách hàng từ bảng customer
     const [customerRows, customerFields] = await pool.execute(
-      "SELECT * FROM customer WHERE Username = ?",
+      "SELECT * FROM Customer WHERE Username = ?",
       [username]
     );
 
@@ -56,7 +56,7 @@ const updateAccountInfo = async (req, res) => {
     }
 
     // Thực hiện cập nhật thông tin tài khoản trong bảng customer
-    const updateQuery = "UPDATE customer SET CustomerName = ?, PhoneCustomer = ?, CustomerAddress = ?, CitizenIdentificationCode = ?, DateOfBirth = ?, Sex = ? WHERE Username = ?";
+    const updateQuery = "UPDATE Customer SET CustomerName = ?, PhoneCustomer = ?, CustomerAddress = ?, CitizenIdentificationCode = ?, DateOfBirth = ?, Sex = ? WHERE Username = ?";
     await pool.query(updateQuery, [customerName, phoneNumber, address, citizenID, formattedDOB, gender, username]);
 
     return res.status(200).json({ message: "Thông tin tài khoản đã được cập nhật thành công" });
@@ -125,7 +125,7 @@ const getOrders = async (req, res) => {
       
 
       const Username = req.cookies.Username
-      const [customer] = await connection.execute("SELECT * FROM customer WHERE Username = ?", [Username]);
+      const [customer] = await connection.execute("SELECT * FROM Customer WHERE Username = ?", [Username]);
       console.log(customer)
       if (customer.length === 0) {
           await connection.rollback();
