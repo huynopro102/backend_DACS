@@ -1,5 +1,6 @@
 version: '3.8'
 services:
+
   db:
     image: mysql:lts-oraclelinux9
     container_name: db_dung_chinh
@@ -10,6 +11,8 @@ services:
       - "3306:3306"
     volumes:
       - db_dung_chinh:/var/lib/mysql
+
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin

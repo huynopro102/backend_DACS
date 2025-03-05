@@ -2,7 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const { loginSuccess } = require("../controller/webClientController/passportController");
 
-// localhost:8082/api/auth/google
+// <%= BASE_URL %>/api/auth/google
 router.get( "/google", passport.authenticate("google", { scope: ["profile" ,"email" ], session: false }) );
 
 router.get("/google/callback" ,(req,res,next) => {

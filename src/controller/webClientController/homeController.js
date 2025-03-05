@@ -29,19 +29,18 @@ let getHome = async (req, res) => {
         // Construct query with search and order filters
         let query = `SELECT * FROM Product ${searchQuery} ${priceOrder} ${dateOrder} LIMIT ${limit}`;
         const [products, fields] = await pool.execute(query , ...searchParams);
-        console.log(products)
+        console.log(products[0])
         // Process product images and supplier names (if necessary)
-        // await Promise.all(products.map(async (element, index) => {
+        await Promise.all(products.map(async (element, index) => {  
+            const [detailImage] = await pool.execute(`SELECT * FROM ProductImagesDetails WHERE IDProduct = ${element.IDProduct} LIMIT 1`);
+            const [image] = await pool.execute(`SELECT * FROM Images WHERE IDImages = ${detailImage[0].IDImages} LIMIT 1`);
+            const [nameSupplier] = await pool.execute(`SELECT * FROM Supplier WHERE IDSupplier = ${element.IDSupplier} LIMIT 1`);
             
-        //     const [detailImage] = await pool.execute(`SELECT * FROM ProductImagesDetails WHERE IDProduct = ${element.IDProduct} LIMIT 1`);
-        //     const [image] = await pool.execute(`SELECT * FROM Images WHERE IDImages = ${detailImage[0].IDImages} LIMIT 1`);
-        //     const [nameSupplier] = await pool.execute(`SELECT * FROM Supplier WHERE IDSupplier = ${element.IDSupplier} LIMIT 1`);
-            
-        //     // Attach additional information to each product
-        //     products[index].url = image[0].UrlImages;
-        //     products[index].SupplierName = nameSupplier[0].SupplierName;
-        //     products[index].PriceVND = (element.Price * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-        // }));
+            // Attach additional information to each product
+            products[index].url = image[0].UrlImages;
+            products[index].SupplierName = nameSupplier[0].SupplierName;
+            products[index].PriceVND = (element.Price * 23000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }));
         // Render the products in home.ejs
         res.render('./Client/home.ejs', { products });
     } catch (err) {

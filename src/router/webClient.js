@@ -52,6 +52,9 @@ router.get("/cart", controllerCart.getCart)
 router.get("/checkout" ,controllerCheckout.getCheckout ) 
 router.post("/checkout" , verifyAccessTokenCheckout , controllerCheckout.postCheckout , controllerCheckout.postCheckout2 , controllerCheckout.thanhtoanonline ) 
 
+// checkout successfully
+
+router.get("/api/vnpay/vnpay_return" , controllerCheckout.getCheckoutSuccess)
 
 // get guild
 router.get("/guild" ,controllerGuild.getGuild)

@@ -11,7 +11,7 @@ let getAdminV1Invoices = async (req, res) => {
       
         // total tổng các item trong database
         const [total, fields] = await pool.execute(
-          "select count(*) as total from invoice"
+          "select count(*) as total from Invoice"
         );
         let totalRow = total[0].total;
       
@@ -19,7 +19,7 @@ let getAdminV1Invoices = async (req, res) => {
         let totalPage = Math.ceil(totalRow / limit);
       
         // get all staff
-        const [staff,staffField] = await pool.execute("select * from staff")
+        const [staff,staffField] = await pool.execute("select * from Staff")
         
         //
         if (name) {
@@ -34,7 +34,7 @@ let getAdminV1Invoices = async (req, res) => {
             totalStaff : staff
           });
         } else {
-          const [rows, fields] = await pool.execute("SELECT * FROM `invoice` limit "+ start+"," +limit);
+          const [rows, fields] = await pool.execute("SELECT * FROM `Invoice` limit "+ start+"," +limit);
           res.render("./Admin/invoice/invoice.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
@@ -87,11 +87,11 @@ let upgrade_to_one_from_two = async (req, res) => {
       await connection.beginTransaction();
 
       // Cập nhật bảng invoice
-      await connection.execute("UPDATE `invoice` SET `Status` = ?, `IDStaff` = ? WHERE `IDInvoice` = ?",[newStatus, idStaff, idInvoice]);
+      await connection.execute("UPDATE `Invoice` SET `Status` = ?, `IDStaff` = ? WHERE `IDInvoice` = ?",[newStatus, idStaff, idInvoice]);
 
       // Cập nhật bảng deliverynotes
       await connection.execute(
-        "UPDATE `deliverynotes` SET `Status` = ?, `IDStaff` = ? WHERE `IDInvoice` = ?",
+        "UPDATE `DeliveryNotes` SET `Status` = ?, `IDStaff` = ? WHERE `IDInvoice` = ?",
         [newStatus, idStaff, idInvoice]
     );
     

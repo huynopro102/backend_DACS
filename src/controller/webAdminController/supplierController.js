@@ -10,7 +10,7 @@ let getAdminV1Supplier = async (req,res) =>{
         let name = req.query.name;
       
         // total tổng các item trong database
-        const [total, fields] = await pool.execute("select count(*) as total from supplier");
+        const [total, fields] = await pool.execute("select count(*) as total from Supplier");
         let totalRow = total[0].total;
       
         // tong so trang
@@ -19,7 +19,7 @@ let getAdminV1Supplier = async (req,res) =>{
         //
         if (name) {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `supplier` where `SupplierName` like ? limit ? , ? ",
+            "SELECT * FROM `Supplier` where `SupplierName` like ? limit ? , ? ",
             [`%${name}%`, start, limit]
           );
           res.render("./Admin/supplier/supplier.ejs", {
@@ -29,7 +29,7 @@ let getAdminV1Supplier = async (req,res) =>{
           });
         } else {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `supplier` limit " + start +" , " + limit );
+            "SELECT * FROM `Supplier` limit " + start +" , " + limit );
           res.render("./Admin/supplier/supplier.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
@@ -49,7 +49,7 @@ let getAdminV1SupplierCreate = async (req,res) =>{
 let getAdminV1SupplierEdit = async (req,res) =>{
     const itemId = req.params.id;
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `supplier` where IDSupplier = ? ",
+      "SELECT * FROM `Supplier` where IDSupplier = ? ",
       [itemId]
     );
   
@@ -62,13 +62,13 @@ let postAdminV1SupplierCreate = async (req, res) => {
   try {
       const { SupplierName, SupplierAddress, PhoneSupplier, EmailSupplier } = req.body;
       // Chỉ kiểm tra trùng lặp đối với tên nhà cung cấp và email
-      const sqlCheckDuplicate = "SELECT * FROM supplier WHERE SupplierName = ? OR EmailSupplier = ?";
+      const sqlCheckDuplicate = "SELECT * FROM Supplier WHERE SupplierName = ? OR EmailSupplier = ?";
       const [duplicateRows] = await pool.execute(sqlCheckDuplicate, [SupplierName, EmailSupplier]);
       if (duplicateRows.length > 0) {
           return res.status(409).json({ message: "Duplicate data found for Supplier Name or Email" });
       }
 
-      const sqlInsert = "INSERT INTO supplier (SupplierName, SupplierAddress, PhoneSupplier, EmailSupplier) VALUES (?, ?, ?, ?)";
+      const sqlInsert = "INSERT INTO Supplier (SupplierName, SupplierAddress, PhoneSupplier, EmailSupplier) VALUES (?, ?, ?, ?)";
       await pool.execute(sqlInsert, [SupplierName, SupplierAddress, PhoneSupplier, EmailSupplier]);
       return res.status(201).json({ message: "Created Successfully" });
   } catch (error) {

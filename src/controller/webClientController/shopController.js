@@ -42,16 +42,18 @@ const getShop = async (req, res) => {
           });
       } else {
           const [rows, fields] = await pool.execute(query, [...searchParams, start, limit]);
-          console.log("day la query 2", query, [...searchParams, start, limit])
-        //   await Promise.all(rows.map(async (element, index) => {
-        //     console.log("param ")
-        //       const [detailiImage, detailImageFields] = await pool.execute(`select * from ImportedProductsDetail where IDProduct = ${element.IDProduct} limit 1 `);
-        //       const [image, imageFields] = await pool.execute(`select * from Images where IDImages = ${detailiImage[0].IDImages}  limit 1 `);
-        //       const [nameSupplier, nameSupplierFields] = await pool.execute(`select * from Supplier where IDSupplier = ${element.IDSupplier}`);
-        //       rows[index].url = image[0].UrlImages;
-        //       rows[index].SupplierName = nameSupplier[0].SupplierName;
-        //       rows[index].PriceVND =  parseInt(element.Price).toLocaleString('vi-VN');
-        //   }));
+          console.log(rows[0])
+
+          // filter image for product
+          await Promise.all(rows.map(async (element, index) => {
+            //   const [detailiImage, detailImageFields] = await pool.execute(`select * from ImportedProductsDetail where IDProduct = ${element.IDProduct} limit 1 `)
+            //   const [image, imageFields] = await pool.execute(`select * from Images where IDImages = ${detailiImage[0].IDImages}  limit 1 `);
+            //   const [nameSupplier, nameSupplierFields] = await pool.execute(`select * from Supplier where IDSupplier = ${element.IDSupplier}`);
+            const [ProductImagesDetails,ProductImagesDetailsFields] = await pool.execute(`SELECT * FROM ProductImagesDetails  WHERE IDProduct = `+rows[index].IDProduct);
+            const [Images,ImagesFields] = await pool.execute(`SELECT * FROM Images  WHERE IDImages = `+ProductImagesDetails[0].IDImages);
+            rows[index].url = Images[0].UrlImages;
+          }));
+          console.log(rows)
           console.log("done ")
           res.render("./Client/shop.ejs", { 
               products: rows ? rows : [],

@@ -37,7 +37,7 @@ let postCheckout = async (req, res, next) => {
 
     let totalPriceDb = 0;
     const [user, userFields] = await pool.execute(
-      "select * from user where Username = ? ",
+      "select * from User where Username = ? ",
       [userID]
     );
 
@@ -48,7 +48,7 @@ let postCheckout = async (req, res, next) => {
             return new Promise(async (resolve, reject) => {
               try {
                 const [products, FieldProducts] = await pool.execute(
-                  "select * from product where IDProduct = ?",
+                  "select * from Product where IDProduct = ?",
                   [item.IDProduct]
                 );
                 totalPriceDb += (   (item.soluong * products[0].Price ) - ( item.soluong * products[0].Sale)    );
@@ -111,7 +111,7 @@ let postCheckout2 = async (req, res, next) => {
     const { Username, Email, Password, Check, id } = req.payload.infoUser;
 
     const [customer, customerFields] = await connection.execute(
-      "SELECT * FROM customer WHERE Username = ?",
+      "SELECT * FROM Customer WHERE Username = ?",
       [Username]
     );
     if (paymentMethod === "cash") {
@@ -120,7 +120,7 @@ let postCheckout2 = async (req, res, next) => {
 
         // Thêm thông tin hóa đơn vào bảng invoice
         const [invoiceResult] = await connection.execute(
-          "INSERT INTO invoice (IDCustomer, IDStaff , DateCreated, Status,paymentMethods) VALUES (?, ?, ?, ?,?)",
+          "INSERT INTO Invoice (IDCustomer, IDStaff , DateCreated, Status,PaymentMethods) VALUES (?, ?, ?, ?,?)",
           [customer[0].IDCustomer, null, currentDate, 1,"PaymentOnDelivery"]
         );
         const invoiceId = invoiceResult.insertId;
@@ -128,7 +128,7 @@ let postCheckout2 = async (req, res, next) => {
         // Thêm thông tin chi tiết hóa đơn vào bảng invoiceDetail
         for (const item of cartItems) {
           await connection.execute(
-            "INSERT INTO invoicedetails (IDInvoice , IDProduct, TotalQuantity, Price) VALUES (?, ?, ?, ?)",
+            "INSERT INTO Invoicedetails (IDInvoice , IDProduct, TotalQuantity, Price) VALUES (?, ?, ?, ?)",
             [
               invoiceId,
               item.IDProduct,
@@ -140,7 +140,7 @@ let postCheckout2 = async (req, res, next) => {
 
         // Thêm thông tin vận chuyển vào bảng deliveryNotes
         await connection.execute(
-          "INSERT INTO deliverynotes (IDInvoice , DateCreated , DeliveryAddress , RecipientPhone , Name , Status , IDStaff ) VALUES (?,?,?,?,?,?,?)",
+          "INSERT INTO Deliverynotes (IDInvoice , DateCreated , DeliveryAddress , RecipientPhone , Name , Status , IDStaff ) VALUES (?,?,?,?,?,?,?)",
           [invoiceId , currentDate , diaChi , soDienThoai , tenKhachHang , 1 , null]
         );
 
@@ -174,6 +174,8 @@ let postCheckout2 = async (req, res, next) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------------
+
 let thanhtoanonline = async (req, res) => {
   try {
     process.env.TZ = "Asia/Ho_Chi_Minh";
@@ -187,8 +189,8 @@ let thanhtoanonline = async (req, res) => {
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
 
-    const config = require("../../../config/default.json");
-    let tmnCode = config.vnp_TmnCode;
+    const config = require("../../../config/default");
+    let tmnCode = config.vnp_TmnCode
     let secretKey = config.vnp_HashSecret;
     let vnpUrl = config.vnp_Url;
     let returnUrl = config.vnp_ReturnUrl;
@@ -222,7 +224,7 @@ let thanhtoanonline = async (req, res) => {
     let querystring = require("qs");
     let signData = querystring.stringify(vnp_Params, { encode: false });
     let crypto = require("crypto");
-    let hmac = crypto.createHmac("sha512", secretKey);
+    let hmac = crypto.createHash("sha512", secretKey);
     let signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
     vnp_Params["vnp_SecureHash"] = signed;
     vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
@@ -250,9 +252,16 @@ function sortObject(obj) {
   return sorted;
 }
 
+let getCheckoutSuccess = async (req,res) =>{
+  console.log("redirect thanh cong")
+  console.log(req.query)
+  res.request("./Client/success.ejs")
+}
+
 module.exports = {
   getCheckout,
   postCheckout,
   postCheckout2,
   thanhtoanonline,
+  getCheckoutSuccess
 };

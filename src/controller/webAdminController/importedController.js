@@ -9,14 +9,14 @@ const pool = require("../../models/connectDB");
             let name = req.query.name;
     
             // Get total number of items in the database
-            const [total, fields] = await pool.execute("SELECT COUNT(*) AS total FROM `imported products`");
+            const [total, fields] = await pool.execute("SELECT COUNT(*) AS total FROM `ImportedProducts`");
             let totalRow = total[0].total;
     
             // Calculate total number of pages
             let totalPage = Math.ceil(totalRow / limit);
             if (name) {
                 const [rows, fields] = await pool.execute(
-                    "SELECT * FROM `imported products` where `IDImportedProducts` like ? limit ? , ? ",
+                    "SELECT * FROM `ImportedProducts` where `IDImportedProducts` like ? limit ? , ? ",
                     [`%${name}%`, start, limit]
                 );
                 // Định dạng lại ngày trước khi render
@@ -33,7 +33,7 @@ const pool = require("../../models/connectDB");
                 });
             } else {
                 const [rows, fields] = await pool.execute(
-                    "SELECT * FROM `imported products` limit " + start +" , " + limit );
+                    "SELECT * FROM `ImportedProducts` limit " + start +" , " + limit );
                 // Định dạng lại ngày trước khi render
                 const formattedRows = rows.map(row => {
                     return {
@@ -55,12 +55,12 @@ const pool = require("../../models/connectDB");
 
     let getAdminV1ImportedCreate = async (req,res) =>{
       const [staff, staffFields] = await pool.execute(
-        "select * from staff"
+        "select * from Staff"
       );
       const [warehouse,warehouseFields] = await pool.execute(
-        "select * from warehouse"
+        "select * from Warehouse"
       );
-      const [rows, fields] = await pool.execute("SELECT * FROM `staff`");
+      const [rows, fields] = await pool.execute("SELECT * FROM `Staff`");
       if (rows.length <= 0) {
         res.render("./Admin/imported/importedCreate.ejs", {
           data: [],
@@ -79,13 +79,13 @@ const pool = require("../../models/connectDB");
     let getAdminV1ImportedEdit = async (req,res) =>{
         const itemId = req.params.id;
         const [staff, staffFields] = await pool.execute(
-          "select * from staff"
+          "select * from Staff"
         );
         const [warehouse,warehouseFields] = await pool.execute(
-          "select * from warehouse"
+          "select * from Warehouse"
         );
         const [rows, fields] = await pool.execute(
-          "SELECT * FROM `imported products` where IDImportedProducts = ? ",
+          "SELECT * FROM `ImportedProducts` where IDImportedProducts = ? ",
           [itemId]
         );
       
@@ -109,7 +109,7 @@ const pool = require("../../models/connectDB");
         try {
             const { IDStaff, IDWarehouse } = req.body;
             const currentDate = moment().format('YYYY-MM-DD HH:mm:ss');
-            const sqlInsert = "INSERT INTO `imported products` (IDStaff, IDWarehouse, DateCreated) VALUES (?, ?, ?)";
+            const sqlInsert = "INSERT INTO `ImportedProducts` (IDStaff, IDWarehouse, DateCreated) VALUES (?, ?, ?)";
             await pool.execute(sqlInsert, [IDStaff, IDWarehouse,currentDate]);
             return res.status(201).json({ message: "Created Successfully" });
         } catch (error) {
@@ -132,7 +132,7 @@ const pool = require("../../models/connectDB");
           }
           
           const [rows] = await pool.execute(
-              "SELECT * FROM `imported products` WHERE IDImportedProducts = ?",
+              "SELECT * FROM `ImportedProducts` WHERE IDImportedProducts = ?",
               [itemId]
           );
   
@@ -149,7 +149,7 @@ const pool = require("../../models/connectDB");
           }
   
           const [updateRows] = await pool.execute(
-              "UPDATE `imported products` SET IDStaff = ?, IDWarehouse = ?, DateCreated = ? WHERE IDImportedProducts = ?",
+              "UPDATE `ImportedProducts` SET IDStaff = ?, IDWarehouse = ?, DateCreated = ? WHERE IDImportedProducts = ?",
               [IDStaff, IDWarehouse, currentDate, itemId]
           );
   
@@ -180,7 +180,7 @@ const pool = require("../../models/connectDB");
       try {
         // Kiểm tra xem loại sản phẩm có tồn tại không
         const [existingRows, existingFields] = await connection.execute(
-          "SELECT * FROM `imported products` WHERE IDImportedProducts = ?",
+          "SELECT * FROM `ImportedProducts` WHERE IDImportedProducts = ?",
           [itemId]
         );
   
@@ -192,7 +192,7 @@ const pool = require("../../models/connectDB");
   
         // Thực hiện xóa loại sản phẩm
         const [deleteRows, deleteFields] = await connection.execute(
-          "DELETE FROM `imported products` WHERE IDImportedProducts = ?",
+          "DELETE FROM `ImportedProducts` WHERE IDImportedProducts = ?",
           [itemId]
         );
   
@@ -227,9 +227,9 @@ const pool = require("../../models/connectDB");
         const { IDProduct, Quantity, InputPrice } = req.body;
         const IDImportedProducts = req.params.id;
         
-        // Check if the imported products exists and if it is completed
+        // Check if the ImportedProducts exists and if it is completed
         const [importedRows] = await pool.execute(
-            "SELECT * FROM `imported products` WHERE IDImportedProducts = ?",
+            "SELECT * FROM `ImportedProducts` WHERE IDImportedProducts = ?",
             [IDImportedProducts]
         );
 
@@ -246,7 +246,7 @@ const pool = require("../../models/connectDB");
         }
 
         const sqlInsertOrUpdateDetail = `
-            INSERT INTO importedproductsdetail (IDImportedProducts, IDProduct, Quantity, InputPrice)
+            INSERT INTO ImportedProductsDetail (IDImportedProducts, IDProduct, Quantity, InputPrice)
             VALUES (?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE 
                 Quantity = VALUES(Quantity),
@@ -254,13 +254,13 @@ const pool = require("../../models/connectDB");
         `;
         
         const sqlUpdateWarehouseDetail = `
-            INSERT INTO warehousedetails (IDWarehouse, IDProduct, QuantityInStock)
+            INSERT INTO Warehousedetails (IDWarehouse, IDProduct, QuantityInStock)
             VALUES (?, ?, ?)
             ON DUPLICATE KEY UPDATE QuantityInStock = QuantityInStock + VALUES(QuantityInStock)
         `;
         
         const sqlUpdateImportedStatus = `
-            UPDATE \`imported products\` SET Status = 'Completed' WHERE IDImportedProducts = ?
+            UPDATE \`ImportedProducts\` SET Status = 'Completed' WHERE IDImportedProducts = ?
         `;
 
         // Begin transaction
@@ -268,17 +268,17 @@ const pool = require("../../models/connectDB");
         await connection.beginTransaction();
 
         try {
-            // Insert or update detail of imported products
+            // Insert or update detail of ImportedProducts
             await connection.execute(sqlInsertOrUpdateDetail, [IDImportedProducts, IDProduct, Quantity, InputPrice]);
 
-            // Get IDWarehouse from imported products table
-            const [rows] = await connection.execute("SELECT IDWarehouse FROM `imported products` WHERE IDImportedProducts = ?", [IDImportedProducts]);
+            // Get IDWarehouse from ImportedProducts table
+            const [rows] = await connection.execute("SELECT IDWarehouse FROM `ImportedProducts` WHERE IDImportedProducts = ?", [IDImportedProducts]);
             const IDWarehouse = rows[0].IDWarehouse;
 
             // Update warehouse details
             await connection.execute(sqlUpdateWarehouseDetail, [IDWarehouse, IDProduct, Quantity]);
 
-            // Update imported products status to 'Completed'
+            // Update ImportedProducts status to 'Completed'
             await connection.execute(sqlUpdateImportedStatus, [IDImportedProducts]);
 
             await connection.commit();
@@ -301,11 +301,11 @@ let getAdminV1ImportedImport = async (req, res) => {
       const IDImportedProducts = req.params.id;
       
       // Lấy thông tin sản phẩm
-      const [productData, productFields] = await pool.execute("SELECT * FROM `product`");
+      const [productData, productFields] = await pool.execute("SELECT * FROM `Product`");
 
       // Lấy thông tin chi tiết nhập hàng nếu cần
       const [importedProductData, importedProductFields] = await pool.execute(
-          "SELECT * FROM `imported products` WHERE IDImportedProducts = ?",
+          "SELECT * FROM `ImportedProducts` WHERE IDImportedProducts = ?",
           [IDImportedProducts]
       );
 
@@ -338,7 +338,7 @@ let getAdminV1ImportedDetails = async (req, res) => {
       let name = req.query.name;
 
       // Get total number of items in the database
-      const [total, fields1] = await pool.execute("SELECT COUNT(*) AS total FROM `importedproductsdetail`");
+      const [total, fields1] = await pool.execute("SELECT COUNT(*) AS total FROM `ImportedProductsDetail`");
       let totalRow = total[0].total;
 
       // Calculate total number of pages
@@ -347,14 +347,12 @@ let getAdminV1ImportedDetails = async (req, res) => {
       let rows;
       if (name) {
           [rows, fields2] = await pool.execute(
-              "SELECT * FROM `importedproductsdetail` where `IDImportedProducts` like ? limit ? , ? ",
+              "SELECT * FROM `ImportedProductsDetail` where `IDImportedProducts` like ? limit ? , ? ",
               [`%${name}%`, start, limit]
           );
       } else {
-          [rows, fields2] = await pool.execute(
-              "SELECT * FROM `importedproductsdetail` limit ?, ?",
-              [start, limit]
-          );
+        let query = `SELECT * FROM \`ImportedProductsDetail\` LIMIT ${start}, ${limit}`;
+        [rows, fields2] = await pool.execute(query);
       }
 
       res.render("./Admin/imported/importeddetails.ejs", {
@@ -376,18 +374,18 @@ let getImportedProductDetailsView = async (req, res) => {
     // Fetch product details along with supplier information
     const [product, productFields] = await pool.execute(
       "SELECT p.IDProduct, p.ProductName, p.Price, s.SupplierName " +
-      "FROM product p " +
-      "JOIN supplier s ON p.IDSupplier = s.IDSupplier"
+      "FROM Product p " +
+      "JOIN Supplier s ON p.IDSupplier = s.IDSupplier"
     );
 
     // Fetch imported product details including images
     const [rows, fields] = await pool.execute(
       "SELECT ip.IDImportedProducts, ip.IDProduct, p.ProductName, s.SupplierName, p.Price, img.UrlImages, ip.Quantity, ip.InputPrice " +
-      "FROM importedproductsdetail ip " +
-      "JOIN product p ON ip.IDProduct = p.IDProduct " +
-      "JOIN supplier s ON p.IDSupplier = s.IDSupplier " +
-      "JOIN productimagesdetails pid ON p.IDProduct = pid.IDProduct " +
-      "JOIN images img ON pid.IDImages = img.IDImages " +
+      "FROM ImportedProductsDetail ip " +
+      "JOIN Product p ON ip.IDProduct = p.IDProduct " +
+      "JOIN Supplier s ON p.IDSupplier = s.IDSupplier " +
+      "JOIN Productimagesdetails pid ON p.IDProduct = pid.IDProduct " +
+      "JOIN Images img ON pid.IDImages = img.IDImages " +
       "WHERE ip.IDImportedProducts = ?",
       [itemId]
     );
@@ -399,7 +397,7 @@ let getImportedProductDetailsView = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error fetching imported product details:", error);
+    console.error("Error fetching imported Product details:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

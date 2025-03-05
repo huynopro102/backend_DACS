@@ -141,7 +141,7 @@ let getAdminV1StaffType = async (req,res) =>{
         //
         if (name) {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `Stafftype` where `StaffTypeName` like ? limit ? , ? ",
+            "SELECT * FROM `StaffType` where `StaffTypeName` like ? limit ? , ? ",
             [`%${name}%`, start, limit]
           );
           res.render("./Admin/accounts/stafftype.ejs", {
@@ -151,8 +151,8 @@ let getAdminV1StaffType = async (req,res) =>{
           });
         } else {
           const [rows, fields] = await pool.execute(
-            "SELECT * FROM `Stafftype` limit " + start +" , " + limit );
-          res.render("./Admin/accounts/stafftype.ejs", {
+            "SELECT * FROM `StaffType` limit " + start +" , " + limit );
+          res.render("./Admin/accounts/Stafftype.ejs", {
             dataUser: rows ? rows : [],
             totalPage: totalPage,   
             page: parseInt(_page),
@@ -171,7 +171,7 @@ let getAdminV1StafftypeCreate = async (req,res) =>{
 let getAdminV1StafftypeEdit = async (req,res) =>{
     const itemId = req.params.id;
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `Stafftype` where IDStaffType = ? ",
+      "SELECT * FROM `StaffType` where IDStaffType = ? ",
       [itemId]
     );
   
@@ -186,17 +186,17 @@ let postAdminV1StafftypeCreate = async (req, res) => {
   try {
       const { StaffTypeName } = req.body;
       // Chỉ kiểm tra trùng lặp đối với tên nhà cung cấp và email
-      const sqlCheckDuplicate = "SELECT * FROM stafftype WHERE StaffTypeName = ?";
+      const sqlCheckDuplicate = "SELECT * FROM StaffType WHERE StaffTypeName = ?";
       const [duplicateRows] = await pool.execute(sqlCheckDuplicate, [StaffTypeName]);
       if (duplicateRows.length > 0) {
           return res.status(409).json({ message: "Duplicate data found for StaffTypeName" });
       }
 
-      const sqlInsert = "INSERT INTO stafftype (StaffTypeName) VALUES (?)";
+      const sqlInsert = "INSERT INTO StaffType (StaffTypeName) VALUES (?)";
       await pool.execute(sqlInsert, [StaffTypeName]);
       return res.status(201).json({ message: "Created Successfully" });
   } catch (error) {
-      console.error('Error creating stafftype:', error);
+      console.error('Error creating StaffType:', error);
       res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -213,7 +213,7 @@ let postAdminV1StafftypeEdit = async (req, res) => {
         .json({ message: "Thông tin không đủ hoặc không hợp lệ." });
     }
     const [rows, fields] = await pool.execute(
-      "SELECT * FROM `Stafftype` WHERE IDStaffType = ?",
+      "SELECT * FROM `StaffType` WHERE IDStaffType = ?",
       [itemId]
     );
 
@@ -223,7 +223,7 @@ let postAdminV1StafftypeEdit = async (req, res) => {
     }
 
     const [existingRows, existingFields] = await pool.execute(
-      "SELECT * FROM `Stafftype` WHERE StaffTypeName = ?",
+      "SELECT * FROM `StaffType` WHERE StaffTypeName = ?",
       [StaffTypeName]
     );
 
@@ -233,7 +233,7 @@ let postAdminV1StafftypeEdit = async (req, res) => {
     }
 
     const [updateRows, updateFields] = await pool.execute(
-      "UPDATE `Stafftype` SET StaffTypeName = ? WHERE IDStaffType = ?",
+      "UPDATE `StaffType` SET StaffTypeName = ? WHERE IDStaffType = ?",
       [StaffTypeName,itemId]
     );
 
@@ -265,7 +265,7 @@ let postAdminV1StafftypeDelete = async (req, res) => {
     try {
       // Kiểm tra xem loại sản phẩm có tồn tại không
       const [existingRows, existingFields] = await connection.execute(
-        "SELECT * FROM `Stafftype` WHERE IDStaffType = ?",
+        "SELECT * FROM `StaffType` WHERE IDStaffType = ?",
         [itemId]
       );
 
@@ -277,7 +277,7 @@ let postAdminV1StafftypeDelete = async (req, res) => {
 
       // Thực hiện xóa loại sản phẩm
       const [deleteRows, deleteFields] = await connection.execute(
-        "DELETE FROM `Stafftype` WHERE IDStaffType = ?",
+        "DELETE FROM `StaffType` WHERE IDStaffType = ?",
         [itemId]
       );
 
@@ -309,7 +309,7 @@ let postAdminV1StafftypeDelete = async (req, res) => {
 
 let getAdminV1StaffTypes = async (req, res) => {
   try {
-      const [rows] = await pool.execute("SELECT IDStaffType as id, StaffTypeName as name FROM stafftype");
+      const [rows] = await pool.execute("SELECT IDStaffType as id, StaffTypeName as name FROM StaffType");
       res.json(rows);
   } catch (err) {
       console.error('Error fetching staff types', err);

@@ -28,10 +28,12 @@ app.options('*', (req, res) => {
   res.status(200).send();
 });
 
+app.locals.BASE_URL  = "https://dungchinh.onrender.com" || process.env.HOST_URL
+
 // configure dotenv
 require('dotenv').config()
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT_LOCAL || 3000
 
   app.use('/api/auth',authGoogle)
   // app.use('/api/zalo',zaloPay)

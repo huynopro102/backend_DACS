@@ -94,6 +94,7 @@ const verifyAccessTokenCheckout = async (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET
     );
     req.payload = payload;
+    console.log("pass verify token");
     next();
   } catch (err) {
     if (err.name === "TokenExpiredError") {

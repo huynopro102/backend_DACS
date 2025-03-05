@@ -25,7 +25,7 @@ router.post(
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
 
-    const config = require("../../config/default.json");
+    const config = require("../../config/default.js");
     let tmnCode = config.vnp_TmnCode;
     let secretKey = config.vnp_HashSecret;
     let vnpUrl = config.vnp_Url;
@@ -100,6 +100,7 @@ router.post(
       await connection.commit();
       connection.release();
       res.redirect(vnpUrl);
+
     } catch (error) {
       if (connection) {
         await connection.rollback();
@@ -125,7 +126,7 @@ router.get("/vnpay_return", async function (req, res, next) {
 
   vnp_Params = sortObject(vnp_Params);
 
-  let config = require("../../config/default.json");
+  let config = require("../../config/default.js");
   let tmnCode = config.vnp_TmnCode;
   let secretKey = config.vnp_HashSecret;
 
@@ -153,7 +154,7 @@ router.get("/vnpay_return", async function (req, res, next) {
         `SELECT * FROM tamthoi WHERE secretKey = ? AND transactionCode = ?`,
         [secretKey, transactionCode]
       );
-      console.log(rows[0]);
+
       const value = JSON.parse(JSON.parse(rows[0].cartItems));
       if (rows.length > 0) {
         const transaction = rows[0];
@@ -170,7 +171,7 @@ router.get("/vnpay_return", async function (req, res, next) {
 
           // customer
           const [customerExists] = await connection.execute(
-            "select * from customer where Username = ? ",
+            "select * from Customer where Username = ? ",
             [rows[0].idUser]
           );
 
@@ -182,7 +183,7 @@ router.get("/vnpay_return", async function (req, res, next) {
           //invoice
           const currentDate = new Date().toISOString().slice(0, 10);
           const [invoiceResult] = await connection.execute(
-            "INSERT INTO invoice (IDCustomer, IDStaff, DateCreated, Status,paymentMethods	) VALUES (?, ?, ?, ?,?)",
+            "INSERT INTO Invoice (IDCustomer, IDStaff, DateCreated, Status,paymentMethods	) VALUES (?, ?, ?, ?,?)",
             [customerExists[0].IDCustomer, null, currentDate, 1,"onlinePayment"]
           );
           const idInvoiced = invoiceResult.insertId;
@@ -190,7 +191,7 @@ router.get("/vnpay_return", async function (req, res, next) {
           if (Array.isArray(value)) {
             for (const item of value) {
               const [invoiceDetailExists] = await connection.execute(
-                "INSERT INTO invoicedetails (IDInvoice, IDProduct, TotalQuantity, Price) VALUES (?, ?, ?, ?)",
+                "INSERT INTO Invoicedetails (IDInvoice, IDProduct, TotalQuantity, Price) VALUES (?, ?, ?, ?)",
                 [idInvoiced, item.IDProduct, item.soluong, (item.Price - item.Sale)]
               );
             }
@@ -203,7 +204,7 @@ router.get("/vnpay_return", async function (req, res, next) {
           const invoiceId = invoiceResult.insertId;
           // deliveryNotes
           const [deliverynoteExists] = await connection.execute(
-            "insert into deliverynotes (IDInvoice,DateCreated,DeliveryAddress,RecipientPhone,Status,IDStaff,Name) values (?, ?, ?, ?, ?, ?,?)",
+            "insert into DeliveryNotes (IDInvoice,DateCreated,DeliveryAddress,RecipientPhone,Status,IDStaff,Name) values (?, ?, ?, ?, ?, ?,?)",
             [
               invoiceId,
               currentDate,

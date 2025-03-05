@@ -9,14 +9,14 @@
             let name = req.query.name;
     
             // Get total number of items in the database
-            const [total, fields] = await pool.execute("SELECT COUNT(*) AS total FROM warehouse");
+            const [total, fields] = await pool.execute("SELECT COUNT(*) AS total FROM Warehouse");
             let totalRow = total[0].total;
     
             // Calculate total number of pages
             let totalPage = Math.ceil(totalRow / limit);
             if (name) {
                 const [rows, fields] = await pool.execute(
-                    "SELECT * FROM `warehouse` where `WarehouseName` like ? limit ? , ? ",
+                    "SELECT * FROM `Warehouse` where `WarehouseName` like ? limit ? , ? ",
                     [`%${name}%`, start, limit]
                 );
                 // Định dạng lại ngày trước khi render
@@ -33,7 +33,7 @@
                 });
             } else {
                 const [rows, fields] = await pool.execute(
-                    "SELECT * FROM `warehouse` limit " + start +" , " + limit );
+                    "SELECT * FROM `Warehouse` limit " + start +" , " + limit );
                 // Định dạng lại ngày trước khi render
                 const formattedRows = rows.map(row => {
                     return {
@@ -63,7 +63,7 @@
           
             // total tổng các item trong database
             const [total, fields] = await pool.execute(
-              "select count(*) as total from warehousedetails"
+              "select count(*) as total from Warehousedetails"
             );
             let totalRow = total[0].total;
           
@@ -75,7 +75,7 @@
             //
             if (name) {
               const [rows, fields] = await pool.execute(
-                "SELECT * FROM `warehousedetails` where `IDWarehouse` like ? limit ? , ? ",
+                "SELECT * FROM `Warehousedetails` where `IDWarehouse` like ? limit ? , ? ",
                 [`%${name}%`, start, limit]
               );
               res.render("staff.ejs", {
@@ -84,7 +84,7 @@
                 page: parseInt(_page),
               });
             } else {
-              const [rows, fields] = await pool.execute("SELECT * FROM `warehousedetails` limit "+ start+"," +limit);
+              const [rows, fields] = await pool.execute("SELECT * FROM `Warehousedetails` limit "+ start+"," +limit);
               res.render("./Admin/warehouse/warehousedetail.ejs", {
                 dataUser: rows ? rows : [],
                 totalPage: totalPage,   
@@ -104,7 +104,7 @@
     let getAdminV1WarehouseEdit = async (req,res) =>{
         const itemId = req.params.id;
         const [rows, fields] = await pool.execute(
-        "SELECT * FROM `warehouse` where IDWarehouse = ? ",
+        "SELECT * FROM `Warehouse` where IDWarehouse = ? ",
         [itemId]
         );
     
@@ -117,13 +117,13 @@
     try {
         const { WarehouseName, WarehouseAddress, DateCreated } = req.body;
         // Chỉ kiểm tra trùng lặp đối với tên nhà cung cấp và email
-        const sqlCheckDuplicate = "SELECT * FROM warehouse WHERE WarehouseName = ?";
+        const sqlCheckDuplicate = "SELECT * FROM Warehouse WHERE WarehouseName = ?";
         const [duplicateRows] = await pool.execute(sqlCheckDuplicate, [WarehouseName]);
         if (duplicateRows.length > 0) {
             return res.status(409).json({ message: "Duplicate data found for Warehouse Name" });
         }
 
-        const sqlInsert = "INSERT INTO warehouse (WarehouseName, WarehouseAddress, DateCreated) VALUES (?, ?, ?)";
+        const sqlInsert = "INSERT INTO Warehouse (WarehouseName, WarehouseAddress, DateCreated) VALUES (?, ?, ?)";
         await pool.execute(sqlInsert, [WarehouseName, WarehouseAddress, DateCreated]);
         return res.status(201).json({ message: "Created Successfully" });
     } catch (error) {
@@ -144,7 +144,7 @@
             .json({ message: "Thông tin không đủ hoặc không hợp lệ." });
         }
         const [rows, fields] = await pool.execute(
-        "SELECT * FROM `warehouse` WHERE IDWarehouse = ?",
+        "SELECT * FROM `Warehouse` WHERE IDWarehouse = ?",
         [itemId]
         );
 
@@ -154,7 +154,7 @@
         }
 
         const [existingRows, existingFields] = await pool.execute(
-        "SELECT * FROM `warehouse` WHERE WarehouseName = ?",
+        "SELECT * FROM `Warehouse` WHERE WarehouseName = ?",
         [WarehouseName]
         );
 
@@ -164,7 +164,7 @@
         }
 
         const [updateRows, updateFields] = await pool.execute(
-        "UPDATE `warehouse` SET WarehouseName = ?, WarehouseAddress = ?, DateCreated = ? WHERE IDWarehouse = ?",
+        "UPDATE `Warehouse` SET WarehouseName = ?, WarehouseAddress = ?, DateCreated = ? WHERE IDWarehouse = ?",
         [WarehouseName, WarehouseAddress, DateCreated, itemId]
         );
 
@@ -196,7 +196,7 @@
         try {
         // Kiểm tra xem kho có tồn tại không
         const [existingRows, existingFields] = await connection.execute(
-            "SELECT * FROM `warehouse` WHERE IDWarehouse = ?",
+            "SELECT * FROM `Warehouse` WHERE IDWarehouse = ?",
             [itemId]
         );
 
@@ -208,7 +208,7 @@
 
         // Thực hiện xóa loại sản phẩm
         const [deleteRows, deleteFields] = await connection.execute(
-            "DELETE FROM `warehouse` WHERE IDWarehouse = ?",
+            "DELETE FROM `Warehouse` WHERE IDWarehouse = ?",
             [itemId]
         );
 

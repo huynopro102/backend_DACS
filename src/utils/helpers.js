@@ -96,11 +96,22 @@ const hashPassword = async (password) => {
 };
 
 
-const  encrypt = async (text, secretKey) => {
-    let cipher = crypto.createCipher('aes-256-cbc', secretKey);
+// const  encrypt = async (text, secretKey) => {
+//     let cipher = crypto.createCipheriv('aes-256-cbc', secretKey);
+//     let encrypted = cipher.update(text, 'utf8', 'hex');
+//     encrypted += cipher.final('hex');
+//     return encrypted;
+// }
+
+const encrypt = async (text, secretKey) => {
+    // Tạo IV ngẫu nhiên 16 byte
+    const iv = crypto.randomBytes(16);
+    // Tạo cipher với IV
+    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
-    return encrypted;
+    // Thông thường, IV cần được lưu kèm với dữ liệu đã mã hóa để có thể giải mã sau này
+    return iv.toString('hex') + ':' + encrypted;
 }
 
 

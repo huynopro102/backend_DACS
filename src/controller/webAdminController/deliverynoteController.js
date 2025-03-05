@@ -8,7 +8,7 @@ let getDeliveryNote = async (req, res) => {
 
         // Lấy tổng số dòng trong bảng deliverynotes
         const [total, deliverynotesfields] = await pool.execute(
-            "select count(*) as total from deliverynotes"
+            "select count(*) as total from DeliveryNotes"
         );
         let totalRow = total[0].total;
 
@@ -16,7 +16,7 @@ let getDeliveryNote = async (req, res) => {
         let totalPage = Math.ceil(totalRow / limit);
 
         // Lấy dữ liệu từ bảng deliverynotes với phân trang
-        const [rows, fields] = await pool.execute("SELECT * FROM `deliverynotes` limit "+  `${start} , ${limit}`);
+        const [rows, fields] = await pool.execute("SELECT * FROM `DeliveryNotes` limit "+  `${start} , ${limit}`);
 
         // Render ra giao diện
         res.render("./Admin/deliverynotes/deliverynote.ejs", {
@@ -39,10 +39,10 @@ let postDeliveryNote = async (req, res) => {
         await connection.beginTransaction();
 
         // Cập nhật bảng deliverynotes
-        await connection.execute("UPDATE `deliverynotes` SET `Status` = ? WHERE `IdDeliveryNotes` = ?", [status, idDeliveryNotes]);
+        await connection.execute("UPDATE `DeliveryNotes` SET `Status` = ? WHERE `IdDeliveryNotes` = ?", [status, idDeliveryNotes]);
 
         // Cập nhật bảng invoice
-        await connection.execute("UPDATE `invoice` SET `Status` = ? WHERE `IDInvoice` = ?", [status, idInvoice]);
+        await connection.execute("UPDATE `Invoice` SET `Status` = ? WHERE `IDInvoice` = ?", [status, idInvoice]);
 
         await connection.commit();
         res.status(200).json({ message: 'Update successful' });

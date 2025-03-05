@@ -26,19 +26,19 @@ let getAdminV1InvoiceDetailID = async (req, res) => {
             deli.RecipientPhone,
             deli.Name
         FROM 
-            invoice i
+            Invoice i
         JOIN 
-            invoicedetails id ON i.IDInvoice = id.IDInvoice
+            Invoicedetails id ON i.IDInvoice = id.IDInvoice
         JOIN 
-            product p ON id.IDProduct = p.IDProduct
+            Product p ON id.IDProduct = p.IDProduct
         LEFT JOIN
-            productimagesdetails pid ON p.IDProduct = pid.IDProduct
+            ProductImagesDetails pid ON p.IDProduct = pid.IDProduct
         LEFT JOIN 
-            images image ON pid.IDImages = image.IDImages
+            Images image ON pid.IDImages = image.IDImages
         LEFT JOIN
-            supplier splir ON p.IDSupplier = splir.IDSupplier
+            Supplier splir ON p.IDSupplier = splir.IDSupplier
         LEFT JOIN
-            deliverynotes deli ON i.IDInvoice = deli.IDInvoice
+            DeliveryNotes deli ON i.IDInvoice = deli.IDInvoice
         WHERE 
             i.IDInvoice = ?
     `;
