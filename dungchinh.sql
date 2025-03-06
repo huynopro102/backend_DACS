@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: db
--- Thời gian đã tạo: Th3 05, 2025 lúc 03:15 PM
+-- Thời gian đã tạo: Th3 06, 2025 lúc 09:37 AM
 -- Phiên bản máy phục vụ: 8.4.4
 -- Phiên bản PHP: 8.2.27
 
@@ -57,7 +57,7 @@ CREATE TABLE `Customer` (
 --
 
 INSERT INTO `Customer` (`IDCustomer`, `Username`, `CustomerName`, `PhoneCustomer`, `CustomerAddress`, `CitizenIdentificationCode`, `DateOfBirth`, `Sex`, `IdImages`) VALUES
-(16, 'nguyen huy', 'Nguyễn Tuấn Huy', '0344403943', 'QUẬN 9 , PHƯỜNG TẰNG NHƠN PHÚ A , 39/12 ĐƯỜNG 102', '0', NULL, 1, NULL),
+(16, 'nguyen huy', 'nguyen tuan huy', '0344403943', 'QUẬN 9 , PHƯỜNG TẰNG NHƠN PHÚ A , 39/12 ĐƯỜNG 102', '0', NULL, 1, NULL),
 (17, 'nguyentuan huy', '', '', '', '', '2003-12-09', 0, NULL),
 (18, 'nguyen d', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
@@ -466,24 +466,25 @@ INSERT INTO `tamthoi` (`tenKhachHang`, `soDienThoai`, `diaChi`, `totalPrice`, `c
 --
 
 CREATE TABLE `User` (
-  `Username` char(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Username` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `Email` char(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `Password` varchar(255) NOT NULL,
-  `Check` int NOT NULL
+  `Check` int NOT NULL,
+  `google_id` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `User`
 --
 
-INSERT INTO `User` (`Username`, `Email`, `Password`, `Check`) VALUES
-('Adminlor', 'Admin@gmail.com', '$2b$10$uRqj7VTd19BS9/rZpMTvEuEScybzXYizSc28G3WKQbdzYYUSDZiqu', 3),
-('nguyen d', 'sodienthoai1230123@gmail.com', '$2b$10$jQXPGjwwkhx/I/uGFLEKNOYWipiCK2k8ZTd6iu/zLNL96wW7HtSRq', 1),
-('nguyen huy', 'huynopro102@gmail.com', '$2b$10$jkQaLUe/9WXgIIJOWtThze/TI.gR.rP728so5HnIRKjIynjfB2uZS', 1),
-('nguyentuan huy', 'tuanhuy16903@gmail.com', '$2b$10$RvFQHWV9ha7XyxIagxYeOO9gEqZpY0Q39Ff1q8XLl9/IaVvLLGIVa', 1),
-('User_NV1', 'nhanvien1@gmail.com', '$2b$10$MSRxC5wfzDg9HhifoA0wfeCDVIfklzDMinJ6uXOEcls42pJVF/B/i', 1),
-('User_NV2', 'nhanvien2@gmail.com', '$2b$10$FjRECFUTN9fEoM4rMM/Oi.s4iN1gljJAnie8gvmpNo.YCFr/HYztG', 1),
-('User_NV3', 'nhanvien3@gmail.com', '$2b$10$9saP.UOSRX08XwKbVJDVKe6Y3iSc9obag.6iDCIxEKD0QUl7.2JKK', 1);
+INSERT INTO `User` (`Username`, `Email`, `Password`, `Check`, `google_id`) VALUES
+('Adminlor', 'Admin@gmail.com', '$2b$10$uRqj7VTd19BS9/rZpMTvEuEScybzXYizSc28G3WKQbdzYYUSDZiqu', 3, NULL),
+('nguyen d', 'sodienthoai1230123@gmail.com', '$2b$10$jQXPGjwwkhx/I/uGFLEKNOYWipiCK2k8ZTd6iu/zLNL96wW7HtSRq', 1, NULL),
+('nguyen huy', 'huynopro102@gmail.com', '$2b$10$jkQaLUe/9WXgIIJOWtThze/TI.gR.rP728so5HnIRKjIynjfB2uZS', 1, '116564034558518562722'),
+('nguyentuan huy', 'tuanhuy16903@gmail.com', '$2b$10$RvFQHWV9ha7XyxIagxYeOO9gEqZpY0Q39Ff1q8XLl9/IaVvLLGIVa', 1, NULL),
+('User_NV1', 'nhanvien1@gmail.com', '$2b$10$MSRxC5wfzDg9HhifoA0wfeCDVIfklzDMinJ6uXOEcls42pJVF/B/i', 1, NULL),
+('User_NV2', 'nhanvien2@gmail.com', '$2b$10$FjRECFUTN9fEoM4rMM/Oi.s4iN1gljJAnie8gvmpNo.YCFr/HYztG', 1, NULL),
+('User_NV3', 'nhanvien3@gmail.com', '$2b$10$9saP.UOSRX08XwKbVJDVKe6Y3iSc9obag.6iDCIxEKD0QUl7.2JKK', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -697,7 +698,7 @@ ALTER TABLE `Banner`
 -- AUTO_INCREMENT cho bảng `Customer`
 --
 ALTER TABLE `Customer`
-  MODIFY `IDCustomer` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `IDCustomer` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `DeliveryNotes`
@@ -715,7 +716,7 @@ ALTER TABLE `Footer`
 -- AUTO_INCREMENT cho bảng `Images`
 --
 ALTER TABLE `Images`
-  MODIFY `IDImages` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `IDImages` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT cho bảng `ImportedProducts`

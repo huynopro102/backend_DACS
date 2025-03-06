@@ -67,9 +67,6 @@ router.post('/admin/v1/producttype/delete/:id',webAdminControllerProducts.delete
 
 
 
-
-
-
 //imported
 router.get("/admin/v1/imported",webAdminControllerImported.getAdminV1Imported)
 router.get('/admin/v1/imported/create',webAdminControllerImported.getAdminV1ImportedCreate)
@@ -81,9 +78,6 @@ router.post('/admin/v1/imported/import/:id',webAdminControllerImported.postAdmin
 router.get('/admin/v1/imported/import/:id',webAdminControllerImported.getAdminV1ImportedImport)
 router.get('/admin/v1/importeddetail',webAdminControllerImported.getAdminV1ImportedDetails)
 router.get('/admin/v1/importeddetail/view/:id',webAdminControllerImported.getImportedProductDetailsView)
-
-
-
 
 
 //warehouse
@@ -119,7 +113,7 @@ router.post('/admin/v1/staff/edit/:id', webAdminControllerStaff.postAdminV1Staff
 
  
 //stafftype
-router.get('/admin/v1/stafftype',webAdminControllerStaff.getAdminV1StaffType)
+router.get('/admin/v1/stafftype',checkAdmin,webAdminControllerStaff.getAdminV1StaffType)
 router.get('/admin/v1/stafftypes',webAdminControllerStaff.getAdminV1StaffTypes)
 router.get('/admin/v1/stafftype/create',webAdminControllerStaff.getAdminV1StafftypeCreate)
 router.post('/admin/v1/stafftype/create',webAdminControllerStaff.postAdminV1StafftypeCreate)
@@ -136,11 +130,11 @@ router.post('/admin/v1/supplier/edit/:id',webAdminControllerSupplier.postAdminV1
 router.post('/admin/v1/supplier/delete/:id',webAdminControllerSupplier.postAdminV1SupplierDelete)
 
 //document
-router.get("/admin/v1/document",checkAdmin ,webAdminControllerDocument.getAdminV1Documents)
+router.get("/admin/v1/document", checkAdmin ,webAdminControllerDocument.getAdminV1Documents)
 
 
 // dashboard
-router.get("/admin/v1",checkAdmin ,webAdminControllerDashBoard.getAdminV1Dashboard)
+router.get("/admin/v1", checkAdmin ,webAdminControllerDashBoard.getAdminV1Dashboard)
 
 
 // login admin
