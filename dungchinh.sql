@@ -6,7 +6,7 @@
 -- Thời gian đã tạo: Th3 06, 2025 lúc 09:37 AM
 -- Phiên bản máy phục vụ: 8.4.4
 -- Phiên bản PHP: 8.2.27
-
+SET SESSION sql_require_primary_key = 0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
