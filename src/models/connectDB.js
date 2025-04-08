@@ -26,10 +26,10 @@ const pool = mysql.createPool({
 
 const testConnection = async () => {
   try {
-    // Try to get a connection from the pool
+
     const connection = await pool.getConnection();
     console.log('Connected to MySQL successfully!');
-    // Release the connection back to the pool
+
     connection.release();
     return true;
   } catch (err) {
@@ -38,7 +38,7 @@ const testConnection = async () => {
   }
 };
 
-// Test connection immediately
+
 testConnection();
 
 module.exports = pool;
